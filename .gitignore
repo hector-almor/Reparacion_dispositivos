@@ -40,3 +40,12 @@ build/
 /src/main/resources/app.properties
 
 /DB.sql
+
+# IntelliJ
+.idea/
+
+# SOs
+Thumbs.db        # Windows
+
+# Archivos temporales
+*.log
