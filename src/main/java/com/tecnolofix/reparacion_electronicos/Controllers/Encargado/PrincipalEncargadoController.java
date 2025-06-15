@@ -1,5 +1,6 @@
 package com.tecnolofix.reparacion_electronicos.Controllers.Encargado;
 
+import com.tecnolofix.reparacion_electronicos.Controllers.ControladorConRootPane;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,7 +26,7 @@ public class PrincipalEncargadoController implements Initializable {
     @FXML ToggleButton btnReparaciones;
 //    @FXML ToggleButton btnOrdenReparacion;
     @FXML ToggleButton btnOrdenRevision;
-    @FXML BorderPane rootPane;
+    @FXML public BorderPane rootPane;
     @FXML ToggleGroup toggleMenu;
 
     @Override
@@ -60,13 +61,22 @@ public class PrincipalEncargadoController implements Initializable {
     }
 
     private void cambiarCentro(String rutaFxml){
-        Parent vistaCentro = null;
         try {
-            vistaCentro = FXMLLoader.load(getClass().getResource(rutaFxml));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFxml));
+            Parent vistaCentro = loader.load(); // Carga la vista y guarda el root
+
+            // Obtener el controlador de esa vista
+            Object controlador = loader.getController();
+
+            // Si el controlador tiene un método para recibir el rootPane, lo llamas:
+            if (controlador instanceof ControladorConRootPane) {
+                ((ControladorConRootPane) controlador).setRootPane(rootPane);
+            }
+
+            rootPane.setCenter(vistaCentro);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        rootPane.setCenter(vistaCentro);
         actualizarEstilos();
     }
 

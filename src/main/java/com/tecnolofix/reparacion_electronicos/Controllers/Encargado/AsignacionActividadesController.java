@@ -42,8 +42,8 @@ public class AsignacionActividadesController implements Initializable {
     ObservableList<OrdenConDispositivo> listaOrdenes = FXCollections.observableArrayList();
     ObservableList<Tecnico> listaTecnicos = FXCollections.observableArrayList();
 
-    FilteredList<OrdenConDispositivo> listaFiltradaOrdenes;
-    FilteredList<Tecnico> listaFiltradaTecnicos;
+        FilteredList<OrdenConDispositivo> listaFiltradaOrdenes;
+        FilteredList<Tecnico> listaFiltradaTecnicos;
 
 
     @Override

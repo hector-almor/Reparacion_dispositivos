@@ -1,11 +1,11 @@
 package com.tecnolofix.reparacion_electronicos.DB.DAO;
 
-import com.tecnolofix.reparacion_electronicos.Models.Cliente;
-import com.tecnolofix.reparacion_electronicos.Models.Dispositivo;
-import com.tecnolofix.reparacion_electronicos.Models.OrdenConDispositivo;
-import com.tecnolofix.reparacion_electronicos.Models.OrdenReparacion;
+import com.tecnolofix.reparacion_electronicos.Models.*;
 
+import java.lang.reflect.Array;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 public interface OrdenReparacionDAO {
     //Crea una orden de revision en la tabla "Orden_reparacion", sin fecha de egreso, sin tecnico y sin garantía (NULL), pero si debe
@@ -18,4 +18,21 @@ public interface OrdenReparacionDAO {
 
     //Actualiza una orden de reparacion/revision para asignarle un tecnico (actualiza la llave foranea)
     boolean enlazaOrdenConTecnico(int idOrden, int idTecnico);
+
+    //Obtiene toda la información de las órdenes de reparación y revisión junto con la información del dispositivo asociado a cada una
+    //Solo en las que en el campo "estado" esté en cualquier otro menos "PENDIENTE"
+    ArrayList<OrdenConDispositivo> getAllOrdenesConDispositivo();
+
+    //Obtiene toda la información de una orden de revisión, junto con, el dispositivo, el técnico, y el cliente
+    OrdenCompleta obtenerRevisionCompleta(int idOrden);
+
+    //Se marca una revisión como "CANCELADA" y se actualiza su fecha de egreso
+    boolean cancelarRevision(int idRevision, LocalDate fechaEgreso);
+
+    //Se marca una revisión como "tipo_orden"=REPARACION y se actualiza su estado a ASIGNADO
+    boolean marcarParaReparacion(int idRevision);
+
+    //Devuelve todas las herramientas usadas por una revision, checar tabla de Herramientas y Orden_herramientas
+    //Devolver la cantidad usada en la propiedad stockEnUso
+    ArrayList<HerramientaConCantidad> obtenerHerramientasConCantidad();
 }
