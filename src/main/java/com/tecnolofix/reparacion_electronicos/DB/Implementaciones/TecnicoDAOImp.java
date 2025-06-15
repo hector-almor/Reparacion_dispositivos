@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class TecnicoDAOImp implements TecnicoDAO {
 
@@ -24,5 +25,10 @@ public class TecnicoDAOImp implements TecnicoDAO {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public ArrayList<Tecnico> getAllTecnicos() {
+        return null;
     }
 }

@@ -24,14 +24,14 @@
       <ComboBox fx:id="cmbTipoFalla" layoutX="256.0" layoutY="78.0" onAction="#cmbTipoFalla_change" prefHeight="26.0" prefWidth="208.0" />
       <Label layoutX="500.0" layoutY="82.0" text="Filtrar por estado:" />
       <ComboBox fx:id="cmbEstado" layoutX="636.0" layoutY="78.0" onAction="#cmbEstado_change" prefHeight="26.0" prefWidth="246.0" />
-      <Label layoutX="408.0" layoutY="410.0" text="Asignar al técnico:" />
-      <TableView fx:id="tblTecnicos" layoutX="41.0" layoutY="446.0" prefHeight="265.0" prefWidth="919.0">
+      <Label layoutX="429.0" layoutY="410.0" text="Asignar al técnico:" />
+      <TableView fx:id="tblTecnicos" layoutX="112.0" layoutY="448.0" prefHeight="265.0" prefWidth="777.0">
         <columns>
           <TableColumn fx:id="clmIdTecnicos" prefWidth="75.0" text="ID" />
-          <TableColumn fx:id="clmNombre" prefWidth="67.0" text="Nombre" />
-            <TableColumn fx:id="clmTelefono" minWidth="0.0" prefWidth="106.0" text="Telefono" />
-            <TableColumn fx:id="clmCorreo" prefWidth="52.0" text="Correo" />
-            <TableColumn fx:id="clmEspecialidad" prefWidth="75.0" text="Especialidad" />
+          <TableColumn fx:id="clmNombre" prefWidth="234.0" text="Nombre" />
+            <TableColumn fx:id="clmTelefono" minWidth="0.0" prefWidth="127.0" text="Telefono" />
+            <TableColumn fx:id="clmCorreo" prefWidth="201.0" text="Correo" />
+            <TableColumn fx:id="clmEspecialidad" prefWidth="139.0" text="Especialidad" />
         </columns>
       </TableView>
       <Button fx:id="btnAsignar" layoutX="451.0" layoutY="739.0" mnemonicParsing="false" onAction="#btnAsignar_click" text="Asignar" />
