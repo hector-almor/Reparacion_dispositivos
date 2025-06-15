@@ -23,7 +23,7 @@ public class PrincipalEncargadoController implements Initializable {
     @FXML ToggleButton btnAsignacionActividades;
     @FXML ToggleButton btnRefacciones;
     @FXML ToggleButton btnReparaciones;
-    @FXML ToggleButton btnOrdenReparacion;
+//    @FXML ToggleButton btnOrdenReparacion;
     @FXML ToggleButton btnOrdenRevision;
     @FXML BorderPane rootPane;
     @FXML ToggleGroup toggleMenu;
@@ -74,9 +74,9 @@ public class PrincipalEncargadoController implements Initializable {
         cambiarCentro("/com/tecnolofix/reparacion_electronicos/Encargado/OrdenDeRevision.fxml");
     }
 
-    public void btnOrdenReparacion_click(ActionEvent actionEvent) {
-        cambiarCentro("/com/tecnolofix/reparacion_electronicos/Encargado/OrdenReparacion.fxml");
-    }
+//    public void btnOrdenReparacion_click(ActionEvent actionEvent) {
+//        cambiarCentro("/com/tecnolofix/reparacion_electronicos/Encargado/OrdenReparacion.fxml");
+//    }
 
     public void btnAsignacionActividades_click(ActionEvent actionEvent) {
         cambiarCentro("/com/tecnolofix/reparacion_electronicos/Encargado/AsignacionActividades.fxml");

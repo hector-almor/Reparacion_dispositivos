@@ -13,12 +13,11 @@
             <URL value="@../BotonesBootstrap.css" />
          </stylesheets>
          <children>
-            <ToggleButton fx:id="btnOrdenRevision" layoutX="10.0" layoutY="272.0" mnemonicParsing="false" onAction="#btnOrdenRevision_click" prefHeight="85.0" prefWidth="119.0" styleClass="button-info" text="Orden de &#10;revisión">
+            <ToggleButton fx:id="btnOrdenRevision" layoutX="10.0" layoutY="272.0" mnemonicParsing="false" onAction="#btnOrdenRevision_click" prefHeight="85.0" prefWidth="119.0" styleClass="button-info" text="Orden de &#10;reparación">
                <toggleGroup>
                   <ToggleGroup fx:id="toggleMenu" />
                </toggleGroup>
             </ToggleButton>
-            <ToggleButton fx:id="btnOrdenReparacion" mnemonicParsing="false" onAction="#btnOrdenReparacion_click" prefHeight="85.0" prefWidth="119.0" styleClass="button-info" text="Orden de &#10;reparación" toggleGroup="$toggleMenu" />
             <ToggleButton fx:id="btnAsignacionActividades" layoutX="10.0" layoutY="308.0" mnemonicParsing="false" onAction="#btnAsignacionActividades_click" prefHeight="73.0" prefWidth="119.0" styleClass="button-info" text="Asignacción de&#10;actividades&#10;&#10;" textAlignment="CENTER" toggleGroup="$toggleMenu" />
             <ToggleButton fx:id="btnRevisiones" layoutX="10.0" layoutY="471.0" mnemonicParsing="false" onAction="#btnRevisiones_click" prefHeight="73.0" prefWidth="119.0" styleClass="button-info" text="Revisiones" toggleGroup="$toggleMenu" />
             <ToggleButton fx:id="btnReparaciones" layoutX="10.0" layoutY="229.0" mnemonicParsing="false" onAction="#btnReparaciones_click" prefHeight="73.0" prefWidth="119.0" styleClass="button-info" text="Reparaciones" toggleGroup="$toggleMenu" />

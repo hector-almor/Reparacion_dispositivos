@@ -17,6 +17,7 @@ import java.util.ResourceBundle;
 
 public class OrdenDeRevisionController implements Initializable {
     @FXML public TextField txtTelefono;
+    @FXML ComboBox<String> cmbTipoRevision;
     @FXML Button btnRegistrar;
     @FXML TextArea txtDescripcion;
     @FXML ComboBox<String> cmbTipoFalla;
@@ -32,6 +33,7 @@ public class OrdenDeRevisionController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         cmbTipoFalla.getItems().addAll("HARDWARE", "SOFTWARE");
         cmbDispositivo.getItems().addAll("LAPTOP","PC","CELULAR","TABLET");
+        cmbTipoRevision.getItems().addAll("REVISION","REPARACION");
     }
 
     private void limpiarCampos(){
@@ -67,7 +69,7 @@ public class OrdenDeRevisionController implements Initializable {
         reparacion.setFechaIng(LocalDate.now());
         reparacion.setFechaEg(null);
         reparacion.setTipoFalla(OrdenReparacion.TipoFalla.valueOf(cmbTipoFalla.getValue()));
-        reparacion.setTipoOrden(OrdenReparacion.TipoOrden.REVISION);
+        reparacion.setTipoOrden(OrdenReparacion.TipoOrden.valueOf(cmbTipoRevision.getValue()));
         String txtLimpio2 = txtObservaciones.getText().replace("\n", " ");
         reparacion.setDescripcion(txtLimpio2);
         reparacion.setEstado(OrdenReparacion.Estado.PENDIENTE);
