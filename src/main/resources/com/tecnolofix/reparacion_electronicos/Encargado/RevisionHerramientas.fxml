@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane fx:controller="com.tecnolofix.reparacion_electronicos.Controllers.Encargado.RevisionHerramientasController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="397.0" layoutY="46.0" text="Herramientas usadas por revisión" />
+      <TableView fx:id="tblHerramientas" layoutX="142.0" layoutY="111.0" prefHeight="272.0" prefWidth="717.0">
+        <columns>
+          <TableColumn fx:id="clmId" prefWidth="63.0" text="ID" />
+          <TableColumn fx:id="clmNombre" prefWidth="210.0" text="Nombre" />
+            <TableColumn fx:id="clmDescripcion" prefWidth="299.0" text="Descripción" />
+            <TableColumn fx:id="clmCantidad" prefWidth="144.0" text="Cantidad usada" />
+        </columns>
+      </TableView>
+      <Button fx:id="btnRegresar" layoutX="455.0" layoutY="417.0" mnemonicParsing="false" onAction="#btnRegresar_click" text="Regresar" />
+   </children>
+</AnchorPane>

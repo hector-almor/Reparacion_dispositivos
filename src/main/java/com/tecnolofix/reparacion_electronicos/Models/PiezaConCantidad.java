@@ -1,18 +1,20 @@
 package com.tecnolofix.reparacion_electronicos.Models;
 
-public class Pieza {
+
+public class PiezaConCantidad {
     private String id;
     private String nombre;
     private String descripcion;
     private int stock;
     private double costo;
+    private int cantidad;
 
     // Constructor vacío
-    public Pieza() {
+    public PiezaConCantidad() {
     }
 
     // Constructor completo
-    public Pieza(String id, String nombre, String descripcion, int stock, double costo) {
+    public PiezaConCantidad(String id, String nombre, String descripcion, int stock, double costo) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -71,6 +73,12 @@ public class Pieza {
                 ", costo=" + costo +
                 '}';
     }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
 }
-
-

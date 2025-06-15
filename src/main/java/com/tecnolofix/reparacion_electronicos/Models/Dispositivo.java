@@ -1,33 +1,79 @@
 package com.tecnolofix.reparacion_electronicos.Models;
 
 public class Dispositivo {
-    public enum TipoDispo {
-        LAPTOP, PC, CELULAR, TABLET
-    }
-
     private int id;
     private String nombre;
     private String marca;
-    private String modelo;
-    private TipoDispo tipoDispo;
+    private TipoDispositivo tipoDispo;
     private String observaciones;
 
-    // Getters y setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public enum TipoDispositivo {
+        LAPTOP, PC, CELULAR, TABLET
+    }
 
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    // Constructor vacío
+    public Dispositivo() {
+    }
 
-    public String getMarca() { return marca; }
-    public void setMarca(String marca) { this.marca = marca; }
+    // Constructor completo
+    public Dispositivo(int id, String nombre, String marca, TipoDispositivo tipoDispo, String observaciones) {
+        this.id = id;
+        this.nombre = nombre;
+        this.marca = marca;
+        this.tipoDispo = tipoDispo;
+        this.observaciones = observaciones;
+    }
 
-    public String getModelo() { return modelo; }
-    public void setModelo(String modelo) { this.modelo = modelo; }
+    // Getters y Setters
+    public int getId() {
+        return id;
+    }
 
-    public TipoDispo getTipoDispo() { return tipoDispo; }
-    public void setTipoDispo(TipoDispo tipoDispo) { this.tipoDispo = tipoDispo; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public String getObservaciones() { return observaciones; }
-    public void setObservaciones(String observaciones) { this.observaciones = observaciones; }
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public TipoDispositivo getTipoDispo() {
+        return tipoDispo;
+    }
+
+    public void setTipoDispo(TipoDispositivo tipoDispo) {
+        this.tipoDispo = tipoDispo;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
+    @Override
+    public String toString() {
+        return "Dispositivo{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", marca='" + marca + '\'' +
+                ", tipoDispo=" + tipoDispo +
+                ", observaciones='" + observaciones + '\'' +
+                '}';
+    }
 }
+

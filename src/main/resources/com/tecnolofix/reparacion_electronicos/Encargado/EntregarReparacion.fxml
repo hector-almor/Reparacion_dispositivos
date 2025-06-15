@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tecnolofix.reparacion_electronicos.Controllers.Encargado.EntregarReparacionController">
+   <children>
+      <Label layoutX="445.0" layoutY="46.0" text="Entregar reparación" />
+      <Button fx:id="btnRegresar" layoutX="85.0" layoutY="42.0" mnemonicParsing="false" onAction="#btnRegresar_click" text="Regresar" />
+      <Label layoutX="463.0" layoutY="128.0" text="Agregar garantía" />
+      <Label fx:id="lblFechaInicio" layoutX="74.0" layoutY="190.0" text="Fecha de inicio: " />
+      <Label layoutX="319.0" layoutY="199.0" text="Duración (meses):" />
+      <Spinner fx:id="spnrDuracion" layoutX="463.0" layoutY="195.0" />
+      <Label fx:id="lblFechaFinalizacion" layoutX="686.0" layoutY="199.0" text="Fecha finalización:" />
+      <Label layoutX="81.0" layoutY="286.0" text="Cobertura:" />
+      <TextArea fx:id="txtCobertura" layoutX="199.0" layoutY="286.0" prefHeight="124.0" prefWidth="707.0" />
+      <Button fx:id="btnFinalizar" layoutX="446.0" layoutY="453.0" mnemonicParsing="false" onAction="#btnFinalizar_click" text="Finalizar entrega" />
+   </children>
+</AnchorPane>

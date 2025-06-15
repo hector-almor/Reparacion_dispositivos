@@ -5,8 +5,8 @@ import java.math.BigDecimal;
 public class Compra {
     private int id;
     private int cantidad;
-    private BigDecimal precio;
-    private BigDecimal total; // Calculado en la lógica de negocio
+    private double precio;
+    private double total; // Calculado en la lógica de negocio
     private int fkProveedor;
     private int fkPieza;
 
@@ -17,11 +17,11 @@ public class Compra {
     public int getCantidad() { return cantidad; }
     public void setCantidad(int cantidad) { this.cantidad = cantidad; }
 
-    public BigDecimal getPrecio() { return precio; }
-    public void setPrecio(BigDecimal precio) { this.precio = precio; }
+    public double getPrecio() { return precio; }
+    public void setPrecio(double precio) { this.precio = precio; }
 
-    public BigDecimal getTotal() { return total; }
-    public void setTotal(BigDecimal total) { this.total = total; }
+    public double getTotal() { return total; }
+    public void setTotal(double total) { this.total = total; }
 
     public int getFkProveedor() { return fkProveedor; }
     public void setFkProveedor(int fkProveedor) { this.fkProveedor = fkProveedor; }

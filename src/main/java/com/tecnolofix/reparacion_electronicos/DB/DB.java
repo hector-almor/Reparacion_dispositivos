@@ -24,6 +24,18 @@ public class DB implements AutoCloseable {
         DB.password = password;
     }
 
+    public static String getUsername() {
+        return username;
+    }
+
+    public static String getPassword() {
+        return password;
+    }
+
+    public static String getUrl() {
+        return url;
+    }
+
     public Connection getConnection() throws SQLException {
         if(connection == null||connection.isClosed()) {
             connection = DriverManager.getConnection(url,username,password);

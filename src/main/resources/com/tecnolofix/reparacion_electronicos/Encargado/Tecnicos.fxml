@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tecnolofix.reparacion_electronicos.Controllers.Encargado.TecnicosController">
+   <children>
+      <Label layoutX="474.0" layoutY="60.0" text="Técnicos" />
+      <TableView fx:id="tblTecnicos" layoutX="71.0" layoutY="114.0" prefHeight="421.0" prefWidth="858.0">
+        <columns>
+          <TableColumn fx:id="clmId" prefWidth="70.0" text="ID" />
+          <TableColumn fx:id="clmNombre" prefWidth="298.0" text="Nombre" />
+            <TableColumn fx:id="clmTelefono" prefWidth="151.0" text="Teléfono" />
+            <TableColumn fx:id="clmCorreo" minWidth="4.0" prefWidth="178.0" text="Correo" />
+            <TableColumn fx:id="clmEspecialidad" prefWidth="160.0" text="Especialidad" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>
