@@ -56,4 +56,9 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
     public ArrayList<OrdenConDispositivo> obtenerOrdenReparacionConDispositivo() {
         return null;
     }
+
+    @Override
+    public HerramientasPiezasConCosto obtenerHerramientasPiezasConCosto(int idReparacion) {
+        return null;
+    }
 }
