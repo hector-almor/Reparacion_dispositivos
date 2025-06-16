@@ -26,6 +26,10 @@ public interface OrdenReparacionDAO {
     //Obtiene toda la información de una orden de revisión, junto con, el dispositivo, el técnico, y el cliente
     OrdenCompleta obtenerRevisionCompleta(int idOrden);
 
+    //Obtiene toda la información de una orden de revisión, junto con el dispositivo, el técnico, y el cliente
+    //Revisa si tiene garantía, si no la tiene regresa en el campo de FK_Garantía "-1" y si sí, solo regresa toda la info en los objetos
+    OrdenCompleta obtenerReparacionCompleta(int idOrden);
+
     //Se marca una revisión como "CANCELADA" y se actualiza su fecha de egreso
     boolean cancelarRevision(int idRevision, LocalDate fechaEgreso);
 
@@ -35,4 +39,7 @@ public interface OrdenReparacionDAO {
     //Devuelve todas las herramientas usadas por una revision, checar tabla de Herramientas y Orden_herramientas
     //Devolver la cantidad usada en la propiedad stockEnUso
     ArrayList<HerramientaConCantidad> obtenerHerramientasConCantidad();
+
+    //Devuelve todas las reparaciones con el dispositivo asociado donde (tipo_orden=REPARACION) y donde el estado no sea "ASIGNADO" ni "CANCELADO"
+    ArrayList<OrdenConDispositivo> obtenerOrdenReparacionConDispositivo();
 }

@@ -99,7 +99,6 @@ public class RevisionesController implements Initializable, ControladorConRootPa
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
 }
