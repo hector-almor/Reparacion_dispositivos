@@ -20,7 +20,7 @@
       <Button fx:id="btnRegresar" layoutX="43.0" layoutY="36.0" mnemonicParsing="false" onAction="#btnRegresar_click" text="Regresar" />
       <Label layoutX="217.0" layoutY="84.0" text="Herramientas" />
       <Label layoutX="479.0" layoutY="409.0" text="Piezas" />
-      <TableView fx:id="tblPiezas" layoutX="140.0" layoutY="452.0" prefHeight="200.0" prefWidth="717.0">
+      <TableView layoutX="140.0" layoutY="452.0" prefHeight="200.0" prefWidth="717.0">
         <columns>
           <TableColumn fx:id="clmIdPieza" prefWidth="75.0" text="ID" />
           <TableColumn fx:id="clmNombrePieza" prefWidth="132.0" text="Nombre" />
