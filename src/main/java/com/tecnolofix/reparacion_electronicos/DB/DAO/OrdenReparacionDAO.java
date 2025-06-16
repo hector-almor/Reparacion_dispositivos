@@ -42,4 +42,8 @@ public interface OrdenReparacionDAO {
 
     //Devuelve todas las reparaciones con el dispositivo asociado donde (tipo_orden=REPARACION) y donde el estado no sea "ASIGNADO" ni "CANCELADO"
     ArrayList<OrdenConDispositivo> obtenerOrdenReparacionConDispositivo();
+
+    //Devuelve todas las herramientas y piezas utilizadas en una reparación (checar tablas Orden_herramientas y Orden_piezas)
+    //Y el total del costo de las piezas utilizadas
+    HerramientasPiezasConCosto obtenerHerramientasPiezasConCosto(int idReparacion);
 }

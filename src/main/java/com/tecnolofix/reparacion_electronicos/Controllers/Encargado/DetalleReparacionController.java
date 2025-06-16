@@ -6,11 +6,16 @@ import com.tecnolofix.reparacion_electronicos.DB.Implementaciones.OrdenReparacio
 import com.tecnolofix.reparacion_electronicos.Models.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -56,7 +61,7 @@ public class DetalleReparacionController implements Initializable, ControladorCo
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         OrdenReparacionDAO db = new OrdenReparacionDAOImp();
-        OrdenCompleta ordenCompleta = db.obtenerRevisionCompleta(idReparacion);
+        OrdenCompleta ordenCompleta = db.obtenerReparacionCompleta(idReparacion);
         this.cliente = ordenCompleta.getCliente();
         this.tecnico = ordenCompleta.getTecnico();
         var dispositivo = new Dispositivo();
@@ -95,18 +100,64 @@ public class DetalleReparacionController implements Initializable, ControladorCo
         lblObservaciones.setText(lblObservaciones.getText()+" "+dispositivo.getObservaciones());
 
         lblTecnicoAsignado.setText(lblTecnicoAsignado.getText()+" "+tecnico.getNombre());
+
+        garantia = ordenCompleta.getGarantia();
     }
 
     public void btnHerramientasPiezas_click(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Encargado/ReparacionHerramientasPiezas.fxml"));
+            Parent vistaCentro = loader.load(); // Carga la vista y guarda el root
 
+            // Obtener el controlador de esa vista
+            Object controlador = loader.getController();
+
+            // Si el controlador tiene un método para recibir el rootPane, lo llamas:
+            if (controlador instanceof ControladorConRootPane) {
+                ((ControladorConRootPane) controlador).setRootPane(rootPane);
+            }
+
+            if(controlador instanceof ReparacionHerramientasPiezasController){
+                ((ReparacionHerramientasPiezasController) controlador).setIdReparacion(orden.getId());
+            }
+            rootPane.setCenter(vistaCentro);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void btnGarantia_click(ActionEvent actionEvent) {
         if(orden.getFkGarantia()==-1){
+            Alerts.showAlert("Aviso","Esta orden de reparación aún no tiene garantía", Alert.AlertType.CONFIRMATION,new ButtonType[]{ButtonType.OK});
+            return;
         }
+
+        String txtGarantia = """
+                            Garantía
+                Fecha de inicio: %s
+                Duración: %s
+                Fecha de fin: %s
+                Cobertura: %s
+                """.formatted(garantia.getFechaInicio(),garantia.getDuracion(),garantia.getFechaFin(),garantia.getCobertura());
+        Alerts.showAlert("Detalle de garantía",txtGarantia,Alert.AlertType.CONFIRMATION,new ButtonType[]{ButtonType.OK});
     }
 
     public void btnRegresar_click(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Encargado/Reparaciones.fxml"));
+            Parent vistaCentro = loader.load(); // Carga la vista y guarda el root
+
+            // Obtener el controlador de esa vista
+            Object controlador = loader.getController();
+
+            // Si el controlador tiene un método para recibir el rootPane, lo llamas:
+            if (controlador instanceof ControladorConRootPane) {
+                ((ControladorConRootPane) controlador).setRootPane(rootPane);
+            }
+            rootPane.setCenter(vistaCentro);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void btnEntregar_click(ActionEvent actionEvent) {

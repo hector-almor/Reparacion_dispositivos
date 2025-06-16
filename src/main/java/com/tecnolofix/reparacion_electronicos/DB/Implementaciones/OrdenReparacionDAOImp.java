@@ -33,6 +33,11 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
     }
 
     @Override
+    public OrdenCompleta obtenerReparacionCompleta(int idOrden) {
+        return null;
+    }
+
+    @Override
     public boolean cancelarRevision(int idRevision, LocalDate fechaEgreso) {
         return false;
     }
@@ -44,6 +49,11 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
 
     @Override
     public ArrayList<HerramientaConCantidad> obtenerHerramientasConCantidad() {
+        return null;
+    }
+
+    @Override
+    public ArrayList<OrdenConDispositivo> obtenerOrdenReparacionConDispositivo() {
         return null;
     }
 }
