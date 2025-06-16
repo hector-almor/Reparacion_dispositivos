@@ -5,18 +5,22 @@
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tecnolofix.reparacion_electronicos.Controllers.Encargado.EntregarReparacionController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: #2c3e50;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tecnolofix.reparacion_electronicos.Controllers.Encargado.EntregarReparacionController">
    <children>
-      <Label layoutX="445.0" layoutY="46.0" text="Entregar reparación" />
-      <Button fx:id="btnRegresar" layoutX="85.0" layoutY="42.0" mnemonicParsing="false" onAction="#btnRegresar_click" text="Regresar" />
-      <Label layoutX="463.0" layoutY="128.0" text="Agregar garantía" />
-      <Label fx:id="lblFechaInicio" layoutX="74.0" layoutY="190.0" text="Fecha de inicio: " />
-      <Label layoutX="319.0" layoutY="199.0" text="Duración (meses):" />
+      <Label layoutX="445.0" layoutY="46.0" text="Entregar reparación" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
+      <Button fx:id="btnRegresar" layoutX="85.0" layoutY="42.0" mnemonicParsing="false" onAction="#btnRegresar_click" style="-fx-background-color: #e67e22;" text="Regresar" />
+      <Label layoutX="484.0" layoutY="127.0" text="Agregar garantía" textFill="WHITE" />
+      <Label fx:id="lblFechaInicio" layoutX="74.0" layoutY="190.0" text="Fecha de inicio: " textFill="WHITE" />
+      <Label layoutX="319.0" layoutY="199.0" text="Duración (meses):" textFill="WHITE" />
       <Spinner fx:id="spnrDuracion" layoutX="463.0" layoutY="195.0" />
-      <Label fx:id="lblFechaFinalizacion" layoutX="686.0" layoutY="199.0" text="Fecha finalización:" />
-      <Label layoutX="81.0" layoutY="286.0" text="Cobertura:" />
+      <Label fx:id="lblFechaFinalizacion" layoutX="686.0" layoutY="199.0" text="Fecha finalización:" textFill="WHITE" />
+      <Label layoutX="81.0" layoutY="286.0" text="Cobertura:" textFill="WHITE" />
       <TextArea fx:id="txtCobertura" layoutX="199.0" layoutY="286.0" prefHeight="124.0" prefWidth="707.0" />
-      <Button fx:id="btnFinalizar" layoutX="446.0" layoutY="453.0" mnemonicParsing="false" onAction="#btnFinalizar_click" text="Finalizar entrega" />
+      <Button fx:id="btnFinalizar" layoutX="477.0" layoutY="453.0" mnemonicParsing="false" onAction="#btnFinalizar_click" style="-fx-background-color: #e67e22;" text="Finalizar entrega" />
    </children>
 </AnchorPane>
