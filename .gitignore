@@ -50,4 +50,5 @@ Thumbs.db        # Windows
 # Archivos temporales
 *.log
 
+#Metadata de eclipse
 .metadata/
