@@ -5,11 +5,12 @@
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="818.0" prefWidth="1171.0" style="-fx-background-color: #2c3e50;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tecnolofix.reparacion_electronicos.Controllers.Encargado.PrincipalEncargadoController">
+<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="818.0" prefWidth="1171.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tecnolofix.reparacion_electronicos.Controllers.Encargado.PrincipalEncargadoController">
    <left>
-      <VBox alignment="CENTER" prefHeight="395.0" prefWidth="119.0" spacing="3.0" BorderPane.alignment="CENTER">
-          <stylesheets>
+      <VBox fx:id="vboxBotones" alignment="CENTER" prefHeight="395.0" prefWidth="119.0" spacing="3.0" BorderPane.alignment="CENTER">
+         <stylesheets>
             <URL value="@../BotonesBootstrap.css" />
          </stylesheets>
          <children>
@@ -17,14 +18,38 @@
                <toggleGroup>
                   <ToggleGroup fx:id="toggleMenu" />
                </toggleGroup>
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
             </ToggleButton>
-            <ToggleButton fx:id="btnAsignacionActividades" layoutX="10.0" layoutY="308.0" mnemonicParsing="false" onAction="#btnAsignacionActividades_click" prefHeight="73.0" prefWidth="119.0" styleClass="button-info" text="Asignacción de&#10;actividades&#10;&#10;" textAlignment="CENTER" toggleGroup="$toggleMenu" />
-            <ToggleButton fx:id="btnRevisiones" layoutX="10.0" layoutY="471.0" mnemonicParsing="false" onAction="#btnRevisiones_click" prefHeight="73.0" prefWidth="119.0" styleClass="button-info" text="Revisiones" toggleGroup="$toggleMenu" />
-            <ToggleButton fx:id="btnReparaciones" layoutX="10.0" layoutY="229.0" mnemonicParsing="false" onAction="#btnReparaciones_click" prefHeight="73.0" prefWidth="119.0" styleClass="button-info" text="Reparaciones" toggleGroup="$toggleMenu" />
-            <ToggleButton fx:id="btnHerramientas" layoutX="10.0" layoutY="271.0" mnemonicParsing="false" onAction="#btnHerramientas_click" prefHeight="73.0" prefWidth="119.0" styleClass="button-info" text="Herramientas" toggleGroup="$toggleMenu" />
-            <ToggleButton fx:id="btnPiezas" layoutX="10.0" layoutY="585.0" mnemonicParsing="false" onAction="#btnPiezas_click" prefHeight="73.0" prefWidth="119.0" styleClass="button-info" text="Piezas" toggleGroup="$toggleMenu" />
-            <ToggleButton fx:id="btnComprarPiezas" layoutX="10.0" layoutY="585.0" mnemonicParsing="false" onAction="#btnComprarPiezas_click" prefHeight="73.0" prefWidth="119.0" styleClass="button-info" text="Comprar piezas" toggleGroup="$toggleMenu" />
-            <ToggleButton fx:id="btnTecnicos" layoutX="10.0" layoutY="623.0" mnemonicParsing="false" onAction="#btnTecnicos_click" prefHeight="73.0" prefWidth="119.0" styleClass="button-info" text="Técnicos" toggleGroup="$toggleMenu" />
+            <ToggleButton fx:id="btnAsignacionActividades" layoutX="10.0" layoutY="308.0" mnemonicParsing="false" onAction="#btnAsignacionActividades_click" prefHeight="73.0" prefWidth="119.0" styleClass="button-info" text="Asignacción de&#10;actividades&#10;&#10;" textAlignment="CENTER" toggleGroup="$toggleMenu">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font></ToggleButton>
+            <ToggleButton fx:id="btnRevisiones" layoutX="10.0" layoutY="471.0" mnemonicParsing="false" onAction="#btnRevisiones_click" prefHeight="73.0" prefWidth="119.0" styleClass="button-info" text="Revisiones" toggleGroup="$toggleMenu">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font></ToggleButton>
+            <ToggleButton fx:id="btnReparaciones" layoutX="10.0" layoutY="229.0" mnemonicParsing="false" onAction="#btnReparaciones_click" prefHeight="73.0" prefWidth="119.0" styleClass="button-info" text="Reparaciones" toggleGroup="$toggleMenu">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font></ToggleButton>
+            <ToggleButton fx:id="btnHerramientas" layoutX="10.0" layoutY="271.0" mnemonicParsing="false" onAction="#btnHerramientas_click" prefHeight="73.0" prefWidth="119.0" styleClass="button-info" text="Herramientas" toggleGroup="$toggleMenu">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font></ToggleButton>
+            <ToggleButton fx:id="btnPiezas" layoutX="10.0" layoutY="585.0" mnemonicParsing="false" onAction="#btnPiezas_click" prefHeight="73.0" prefWidth="119.0" styleClass="button-info" text="Piezas" toggleGroup="$toggleMenu">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font></ToggleButton>
+            <ToggleButton fx:id="btnComprarPiezas" layoutX="10.0" layoutY="585.0" mnemonicParsing="false" onAction="#btnComprarPiezas_click" prefHeight="73.0" prefWidth="119.0" styleClass="button-info" text="Comprar &#10;piezas" textAlignment="CENTER" toggleGroup="$toggleMenu">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font></ToggleButton>
+            <ToggleButton fx:id="btnTecnicos" layoutX="10.0" layoutY="623.0" mnemonicParsing="false" onAction="#btnTecnicos_click" prefHeight="73.0" prefWidth="119.0" styleClass="button-info" text="Técnicos" toggleGroup="$toggleMenu">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font></ToggleButton>
          </children>
       </VBox>
    </left>
