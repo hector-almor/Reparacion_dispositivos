@@ -1,6 +1,9 @@
 package com.tecnolofix.reparacion_electronicos.Models;
 
+import java.util.List;
+
 public class Tecnico {
+
     public enum Especialidad {
         HARDWARE, SOFTWARE
     }
