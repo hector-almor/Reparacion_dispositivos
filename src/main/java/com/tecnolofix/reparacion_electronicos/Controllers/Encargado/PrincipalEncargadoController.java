@@ -43,11 +43,6 @@ public class PrincipalEncargadoController implements Initializable {
         rootPane.setCenter(vistaCentro);
         rootPane.setTop(null);
 
-//        btnRefacciones.setOnAction(event -> actualizarEstilos());
-//        btnReparaciones.setOnAction(event -> actualizarEstilos());
-//        btnAsignacionTareas.setOnAction(event -> actualizarEstilos());
-//        btnOrdenReparacion.setOnAction(event -> actualizarEstilos());
-//        btnOrdenRevision.setOnAction(event -> actualizarEstilos());
         rootPane.setStyle("-fx-background-color: #2c3e50");
         vboxBotones.setStyle("-fx-background-color: #bdc3c7;");
     }

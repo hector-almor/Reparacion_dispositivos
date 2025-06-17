@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import java.net.URL?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -16,7 +17,7 @@
          <font>
             <Font name="System Bold" size="18.0" />
          </font></Label>
-      <TableView fx:id="tblHerramientas" layoutX="131.0" layoutY="139.0" prefHeight="383.0" prefWidth="756.0">
+      <TableView fx:id="tblHerramientas" layoutX="137.0" layoutY="209.0" prefHeight="383.0" prefWidth="756.0">
         <columns>
           <TableColumn fx:id="clmId" prefWidth="75.0" text="ID" />
           <TableColumn fx:id="clmNombre" prefWidth="156.0" text="Nombre" />
@@ -25,6 +26,7 @@
             <TableColumn fx:id="clmStockUso" prefWidth="122.0" text="Cantidad en uso" />
         </columns>
       </TableView>
-      <Button fx:id="btnRegresar" layoutX="483.0" layoutY="562.0" mnemonicParsing="false" onAction="#btnRegresar_click" style="-fx-background-color: #e67e22;" text="Regresar" />
+      <TextField fx:id="txtFiltro" layoutX="486.0" layoutY="125.0" />
+      <Label layoutX="307.0" layoutY="129.0" text="Filtrar por nombre:" textFill="WHITE" />
    </children>
 </AnchorPane>
