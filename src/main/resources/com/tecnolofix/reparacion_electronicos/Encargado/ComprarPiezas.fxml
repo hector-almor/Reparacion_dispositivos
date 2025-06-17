@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -9,7 +10,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<?import java.net.URL?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: #2c3e50;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tecnolofix.reparacion_electronicos.Controllers.Encargado.ComprarPiezasController">
     <stylesheets>
       <URL value="@../EstilosTableView.css" />
@@ -66,5 +66,6 @@
          </font>
       </Label>
       <TextField fx:id="txtNombre" layoutX="158.0" layoutY="194.0" prefHeight="26.0" prefWidth="238.0" />
+      <Button fx:id="btnNuevoProveedor" layoutX="674.0" layoutY="99.0" mnemonicParsing="false" onAction="#btnNuevoProveedor_click" style="-fx-background-color: #e67e22;" styleClass="button-dark" text="Nuevo" />
    </children>
 </AnchorPane>

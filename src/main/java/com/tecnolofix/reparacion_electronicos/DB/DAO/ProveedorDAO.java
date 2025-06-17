@@ -7,4 +7,7 @@ import java.util.ArrayList;
 public interface ProveedorDAO {
     //Obtiene todos los proveedores de la BD
     ArrayList<Proveedor> getAllProveedores();
+
+    //Registra un nuevo proveedor
+    boolean registrarProveedor(Proveedor proveedor);
 }

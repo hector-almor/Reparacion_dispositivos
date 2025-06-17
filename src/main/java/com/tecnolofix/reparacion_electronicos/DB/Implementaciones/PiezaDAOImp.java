@@ -10,4 +10,9 @@ public class PiezaDAOImp implements PiezaDAO {
     public ArrayList<Pieza> getAllPiezas() {
         return null;
     }
+
+    @Override
+    public boolean registrarCompras(ArrayList<Pieza> piezas, int idProveedor) {
+        return false;
+    }
 }

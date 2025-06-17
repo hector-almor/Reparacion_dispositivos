@@ -1,5 +1,6 @@
 package com.tecnolofix.reparacion_electronicos.Controllers.Encargado;
 
+import com.tecnolofix.reparacion_electronicos.Controllers.ControladorConRootPane;
 import com.tecnolofix.reparacion_electronicos.DB.DAO.PiezaDAO;
 import com.tecnolofix.reparacion_electronicos.DB.DAO.ProveedorDAO;
 import com.tecnolofix.reparacion_electronicos.DB.Implementaciones.PiezaDAOImp;
@@ -11,16 +12,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ComprarPiezasController implements Initializable {
+public class ComprarPiezasController implements Initializable, ControladorConRootPane {
+    @FXML Button btnNuevoProveedor;
     @FXML TextField txtNombre;
     @FXML Button btnRegistrar;
     @FXML TableColumn<Pieza,Integer> clmCantidad;
@@ -38,6 +44,13 @@ public class ComprarPiezasController implements Initializable {
 
     ArrayList<Proveedor> proveedores = new ArrayList<>();
     ObservableList<Pieza> observablePiezas = FXCollections.observableArrayList();
+
+    private BorderPane rootPane;
+
+    @Override
+    public void setRootPane(BorderPane rootPane) {
+        this.rootPane = rootPane;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -76,6 +89,25 @@ public class ComprarPiezasController implements Initializable {
             observablePiezas.clear();
         }else{
             Alerts.showAlert("Error","No se pudo registrar la compra. Intente de nuevo", Alert.AlertType.ERROR,new ButtonType[]{ButtonType.OK});
+        }
+    }
+
+    public void btnNuevoProveedor_click(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Encargado/RegistrarProveedores.fxml"));
+            Parent vistaCentro = loader.load(); // Carga la vista y guarda el root
+
+            // Obtener el controlador de esa vista
+            Object controlador = loader.getController();
+
+            // Si el controlador tiene un método para recibir el rootPane, lo llamas:
+            if (controlador instanceof ControladorConRootPane) {
+                ((ControladorConRootPane) controlador).setRootPane(rootPane);
+            }
+
+            rootPane.setCenter(vistaCentro);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
