@@ -61,4 +61,9 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
     public HerramientasPiezasConCosto obtenerHerramientasPiezasConCosto(int idReparacion) {
         return null;
     }
+
+    @Override
+    public boolean entregarReparacion(int idReparacion, Garantia garantia) {
+        return false;
+    }
 }
