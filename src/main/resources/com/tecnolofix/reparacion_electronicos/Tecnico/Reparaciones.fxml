@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="448.0" layoutY="61.0" text="Tus reparaciones" />
+      <ComboBox layoutX="420.0" layoutY="104.0" prefHeight="26.0" prefWidth="219.0" />
+      <Label layoutX="193.0" layoutY="108.0" text="Filtrar por revisión/reparación:" />
+      <TableView fx:id="tblReparaciones" layoutX="35.0" layoutY="166.0" prefHeight="374.0" prefWidth="932.0">
+         <columns>
+            <TableColumn fx:id="clmId" prefWidth="75.0" text="ID" />
+            <TableColumn fx:id="clmFechaIngreso" prefWidth="133.0" text="Fecha de ingreso" />
+            <TableColumn fx:id="clmTipoReparacion" prefWidth="130.0" text="Tipo" />
+            <TableColumn fx:id="clmEstado" prefWidth="101.0" text="Estado" />
+            <TableColumn fx:id="clmTipoFalla" prefWidth="113.0" text="Tipo de falla" />
+            <TableColumn fx:id="clmDispositivo" prefWidth="103.0" text="Dispositivo" />
+            <TableColumn prefWidth="276.0" text="Descripción" />
+            <TableColumn fx:id="clmDescripcion" prefWidth="276.0" text="Descripción" />
+         </columns>
+      </TableView>
+      <Button fx:id="btnDetalleReparacion" layoutX="465.0" layoutY="573.0" mnemonicParsing="false" onAction="#btnDetalleReparacion_click" prefHeight="51.0" prefWidth="88.0" style="-fx-background-color: #e67e22;" text="Detalle">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

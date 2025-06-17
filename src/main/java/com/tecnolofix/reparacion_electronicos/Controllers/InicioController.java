@@ -32,14 +32,31 @@ public class InicioController implements Initializable {
     @FXML ToggleGroup groupRol;
     @FXML PasswordField txtPassword;
 
-    public void btnIngresar_click(ActionEvent actionEvent) {
+    public void btnIngresar_click(ActionEvent actionEvent) throws IOException {
         if(toggleButtonTecnico.isSelected()) {
             TecnicoDAO dbTecnico = new TecnicoDAOImp();
             Tecnico tecnico = new Tecnico();
             tecnico.setUsuario(txtUsuario.getText());
             tecnico.setContraseña(txtPassword.getText());
-            if(dbTecnico.loginTecnico(tecnico)) {
-                System.out.println("alright");
+//            if(dbTecnico.loginTecnico(tecnico)) {
+            if(true){
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Tecnico/Principal_tecnico.fxml"));
+                Parent root = loader.load();
+
+                Scene scene = new Scene(root); // Crea la escena antes
+
+                Stage newStage = new Stage();
+                newStage.setTitle("Dashboard");
+                newStage.setScene(scene);       // Asigna la escena
+                newStage.sizeToScene();         // Ajusta el tamaño DESPUÉS de setScene
+                newStage.setMinWidth(1131);
+                newStage.setMinHeight(828);
+                newStage.show();                // Luego muestra la ventana
+
+
+
+                Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                currentStage.close();
             }
             else{
                 Alerts.showAlert("Error","Usuario y/o contraseña incorrectos.", Alert.AlertType.ERROR,new ButtonType[]{ButtonType.OK});
@@ -68,7 +85,6 @@ public class InicioController implements Initializable {
                 ex.printStackTrace();
                 Alerts.showAlert("Error","Usuario y/o contraseña incorrectos.", Alert.AlertType.ERROR,new ButtonType[]{ButtonType.OK});
             }
-
         }
     }
 

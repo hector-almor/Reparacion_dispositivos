@@ -9,30 +9,34 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class PrincipalTecnicoController implements Initializable {
+    @FXML VBox vboxBotones;
     @FXML ToggleButton btnPiezas;
     @FXML ToggleButton btnHerramientas;
     @FXML ToggleButton btnReparaciones;
     @FXML ToggleGroup toggleMenu;
-    @FXML ToggleButton btnRevisiones;
     @FXML BorderPane rootPane;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Parent vistaCentro = null;
         try {
-            vistaCentro = FXMLLoader.load(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Tecnicosd/Revisiones.fxml"));
+            vistaCentro = FXMLLoader.load(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Encargado/Herramientas.fxml"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         // Reemplazar el centro del BorderPane con la nueva vista
         rootPane.setCenter(vistaCentro);
         rootPane.setTop(null);
+
+        rootPane.setStyle("-fx-background-color: #2c3e50");
+        vboxBotones.setStyle("-fx-background-color: #bdc3c7;");
     }
 
     private void actualizarEstilos() {
@@ -58,17 +62,15 @@ public class PrincipalTecnicoController implements Initializable {
         actualizarEstilos();
     }
 
-    public void btnRevisiones_click(ActionEvent actionEvent) {
-        cambiarCentro("/com/tecnolofix/reparacion_electronicos/Tecnico/Revisiones.fxml");
-    }
-
     public void btnReparaciones_click(ActionEvent actionEvent) {
     }
 
     public void btnHerramientas_click(ActionEvent actionEvent) {
+        cambiarCentro("/com/tecnolofix/reparacion_electronicos/Encargado/Herramientas.fxml");
     }
 
     public void btnPiezas_click(ActionEvent actionEvent) {
+        cambiarCentro("/com/tecnolofix/reparacion_electronicos/Encargado/Piezas.fxml");
     }
 
 }
