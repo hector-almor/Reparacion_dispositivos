@@ -154,6 +154,7 @@ public class DetalleReparacionController implements Initializable, ControladorCo
             if (controlador instanceof ControladorConRootPane) {
                 ((ControladorConRootPane) controlador).setRootPane(rootPane);
             }
+
             rootPane.setCenter(vistaCentro);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -161,6 +162,28 @@ public class DetalleReparacionController implements Initializable, ControladorCo
     }
 
     public void btnEntregar_click(ActionEvent actionEvent) {
+        if(!orden.getEstado().name().equalsIgnoreCase("COMPLETADO")){
+            Alerts.showAlert("Error","No se puede entregar una orden de reparación aún no completada.", Alert.AlertType.ERROR,new ButtonType[]{ButtonType.OK});
+        }
 
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Encargado/Reparaciones.fxml"));
+            Parent vistaCentro = loader.load(); // Carga la vista y guarda el root
+
+            // Obtener el controlador de esa vista
+            Object controlador = loader.getController();
+
+            // Si el controlador tiene un método para recibir el rootPane, lo llamas:
+            if (controlador instanceof ControladorConRootPane) {
+                ((ControladorConRootPane) controlador).setRootPane(rootPane);
+            }
+
+            if(controlador instanceof EntregarReparacionController){
+                ((EntregarReparacionController) controlador).setIdReparacion(idReparacion);
+            }
+            rootPane.setCenter(vistaCentro);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

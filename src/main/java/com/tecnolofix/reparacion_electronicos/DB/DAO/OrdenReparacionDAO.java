@@ -46,4 +46,8 @@ public interface OrdenReparacionDAO {
     //Devuelve todas las herramientas y piezas utilizadas en una reparación (checar tablas Orden_herramientas y Orden_piezas)
     //Y el total del costo de las piezas utilizadas
     HerramientasPiezasConCosto obtenerHerramientasPiezasConCosto(int idReparacion);
+
+    //Actualiza el estado de una reparación a "ENTREGADO", crea una garantía y le asigna el id de la nueva garantía a la llave foranea
+    //De orden de reparación
+    boolean entregarReparacion(int idReparacion,Garantia garantia);
 }
