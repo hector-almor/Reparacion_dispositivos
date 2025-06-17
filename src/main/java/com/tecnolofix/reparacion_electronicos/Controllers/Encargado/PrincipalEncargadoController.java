@@ -46,6 +46,7 @@ public class PrincipalEncargadoController implements Initializable {
 //        btnAsignacionTareas.setOnAction(event -> actualizarEstilos());
 //        btnOrdenReparacion.setOnAction(event -> actualizarEstilos());
 //        btnOrdenRevision.setOnAction(event -> actualizarEstilos());
+        rootPane.setStyle("-fx-background-color: #f8f9fa;");
     }
 
     private void actualizarEstilos() {
