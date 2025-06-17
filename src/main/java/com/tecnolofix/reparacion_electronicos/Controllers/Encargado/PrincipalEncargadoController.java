@@ -10,6 +10,7 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
@@ -17,6 +18,7 @@ import java.util.ResourceBundle;
 
 public class PrincipalEncargadoController implements Initializable {
     @FXML public ToggleButton btnRevisiones;
+    @FXML VBox vboxBotones;
     @FXML ToggleButton btnTecnicos;
     @FXML ToggleButton btnComprarPiezas;
     @FXML ToggleButton btnPiezas;
@@ -46,7 +48,8 @@ public class PrincipalEncargadoController implements Initializable {
 //        btnAsignacionTareas.setOnAction(event -> actualizarEstilos());
 //        btnOrdenReparacion.setOnAction(event -> actualizarEstilos());
 //        btnOrdenRevision.setOnAction(event -> actualizarEstilos());
-        rootPane.setStyle("-fx-background-color: #f8f9fa;");
+        rootPane.setStyle("-fx-background-color: #2c3e50");
+        vboxBotones.setStyle("-fx-background-color: #bdc3c7;");
     }
 
     private void actualizarEstilos() {
