@@ -9,6 +9,9 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: #2c3e50;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tecnolofix.reparacion_electronicos.Controllers.Encargado.AsignacionActividadesController">
+ <stylesheets>
+      <URL value="@../EstilosTableView.css" />
+   </stylesheets>
    <children>
       <Label layoutX="407.0" layoutY="38.0" text="Asignación de actividades" textAlignment="CENTER" textFill="WHITE">
          <font>
