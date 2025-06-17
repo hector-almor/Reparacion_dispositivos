@@ -49,3 +49,5 @@ Thumbs.db        # Windows
 
 # Archivos temporales
 *.log
+
+.metadata/
