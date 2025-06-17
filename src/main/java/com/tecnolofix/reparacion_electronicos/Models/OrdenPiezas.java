@@ -3,7 +3,7 @@ package com.tecnolofix.reparacion_electronicos.Models;
 public class OrdenPiezas {
     private int id;
     private int fkOrden;
-    private int fkPieza;
+    private String fkPieza;
     private int cantidad;
 
     // Getters y Setters
@@ -13,8 +13,8 @@ public class OrdenPiezas {
     public int getFkOrden() { return fkOrden; }
     public void setFkOrden(int fkOrden) { this.fkOrden = fkOrden; }
 
-    public int getFkPieza() { return fkPieza; }
-    public void setFkPieza(int fkPieza) { this.fkPieza = fkPieza; }
+    public String getFkPieza() { return fkPieza; }
+    public void setFkPieza(String fkPieza) { this.fkPieza = fkPieza; }
 
     public int getCantidad() { return cantidad; }
     public void setCantidad(int cantidad) { this.cantidad = cantidad; }

@@ -8,7 +8,7 @@ public class Compra {
     private double precio;
     private double total; // Calculado en la lógica de negocio
     private int fkProveedor;
-    private int fkPieza;
+    private String fkPieza;
 
     // Getters y Setters
     public int getId() { return id; }
@@ -26,7 +26,7 @@ public class Compra {
     public int getFkProveedor() { return fkProveedor; }
     public void setFkProveedor(int fkProveedor) { this.fkProveedor = fkProveedor; }
 
-    public int getFkPieza() { return fkPieza; }
-    public void setFkPieza(int fkPieza) { this.fkPieza = fkPieza; }
+    public String getFkPieza() { return fkPieza; }
+    public void setFkPieza(String fkPieza) { this.fkPieza = fkPieza; }
 }
 
