@@ -13,4 +13,6 @@ module com.tecnolofix.reparacion_electronicos {
     opens com.tecnolofix.reparacion_electronicos.Controllers.Encargado to javafx.fxml;
     exports com.tecnolofix.reparacion_electronicos.Controllers.Tecnico;
     opens com.tecnolofix.reparacion_electronicos.Controllers.Tecnico to javafx.fxml;
+    exports com.tecnolofix.reparacion_electronicos.Models;
+    opens com.tecnolofix.reparacion_electronicos.Models to javafx.fxml;
 }

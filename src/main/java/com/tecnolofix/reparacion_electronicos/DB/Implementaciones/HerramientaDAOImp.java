@@ -44,7 +44,7 @@ public class HerramientaDAOImp implements HerramientaDAO {
                 herra.setDescripcion(rs.getString("descripcion"));
                 herra.setStockDisponible(rs.getInt("stock_disponible"));
                 herra.setStockEnUso(rs.getInt("stock_en_uso"));
-                herra.setStockMantenimiento(rs.getInt("stock_en_mantenimiento"));
+                herra.setStockMantenimiento(rs.getInt("stock_mantenimiento"));
 
                 lista.add(herra);
             }
