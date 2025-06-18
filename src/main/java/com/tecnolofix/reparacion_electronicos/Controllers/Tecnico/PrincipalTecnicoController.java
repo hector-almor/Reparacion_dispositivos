@@ -1,5 +1,7 @@
 package com.tecnolofix.reparacion_electronicos.Controllers.Tecnico;
 
+import com.tecnolofix.reparacion_electronicos.Controllers.ControladorConRootPane;
+import com.tecnolofix.reparacion_electronicos.Models.Tecnico;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,11 +25,13 @@ public class PrincipalTecnicoController implements Initializable {
     @FXML ToggleGroup toggleMenu;
     @FXML BorderPane rootPane;
 
+    public static Tecnico sesionTecnico;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Parent vistaCentro = null;
         try {
-            vistaCentro = FXMLLoader.load(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Encargado/Herramientas.fxml"));
+            vistaCentro = FXMLLoader.load(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Tecnico/Reparaciones.fxml"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -52,13 +56,22 @@ public class PrincipalTecnicoController implements Initializable {
     }
 
     private void cambiarCentro(String rutaFxml){
-        Parent vistaCentro = null;
         try {
-            vistaCentro = FXMLLoader.load(getClass().getResource(rutaFxml));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFxml));
+            Parent vistaCentro = loader.load(); // Carga la vista y guarda el root
+
+            // Obtener el controlador de esa vista
+            Object controlador = loader.getController();
+
+            // Si el controlador tiene un método para recibir el rootPane, lo llamas:
+            if (controlador instanceof ControladorConRootPane) {
+                ((ControladorConRootPane) controlador).setRootPane(rootPane);
+            }
+
+            rootPane.setCenter(vistaCentro);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        rootPane.setCenter(vistaCentro);
         actualizarEstilos();
     }
 

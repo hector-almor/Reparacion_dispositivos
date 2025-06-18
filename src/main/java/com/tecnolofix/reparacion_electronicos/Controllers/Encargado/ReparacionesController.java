@@ -20,6 +20,7 @@ import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -32,8 +33,8 @@ public class ReparacionesController implements Initializable, ControladorConRoot
     @FXML TableColumn<OrdenConDispositivo,String> clmDispositivo;
     @FXML TableColumn<OrdenConDispositivo,String> clmTipoFalla;
     @FXML TableColumn<OrdenConDispositivo,String> clmEstado;
-    @FXML TableColumn<OrdenConDispositivo,Date> clmFechaEgreso;
-    @FXML TableColumn<OrdenConDispositivo,Date> clmFechaIngreso;
+    @FXML TableColumn<OrdenConDispositivo, LocalDate> clmFechaEgreso;
+    @FXML TableColumn<OrdenConDispositivo,LocalDate> clmFechaIngreso;
     @FXML TableColumn<OrdenConDispositivo,Integer> clmId;
 
     ObservableList<OrdenConDispositivo> ordenConDispositivos = FXCollections.observableArrayList();
@@ -60,7 +61,7 @@ public class ReparacionesController implements Initializable, ControladorConRoot
         ArrayList<OrdenConDispositivo> ordenes = db.obtenerOrdenReparacionConDispositivo();
         ordenConDispositivos.setAll(ordenes);
         listaFiltrada = new FilteredList<>(ordenConDispositivos,o->true);
-        tblReparaciones.setItems(ordenConDispositivos);
+        tblReparaciones.setItems(listaFiltrada);
     }
 
     public void cmbFiltro_change(ActionEvent actionEvent) {

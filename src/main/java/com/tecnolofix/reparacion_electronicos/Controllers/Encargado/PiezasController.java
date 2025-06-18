@@ -26,7 +26,7 @@ public class PiezasController implements Initializable {
     @FXML TableColumn<Pieza,Integer> clmStock;
     @FXML TableColumn<Pieza,String> clmDescripcion;
     @FXML TableColumn<Pieza,String> clmNNombre;
-    @FXML TableColumn<Pieza,Integer> clmId;
+    @FXML TableColumn<Pieza,String> clmId;
     @FXML TableView<Pieza> tblPiezas;
 
     ObservableList<Pieza> observablePiezas = FXCollections.observableArrayList();

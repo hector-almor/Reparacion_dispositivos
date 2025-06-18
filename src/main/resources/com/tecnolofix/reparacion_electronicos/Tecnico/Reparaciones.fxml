@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -8,12 +9,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane fx:controller="com.tecnolofix.reparacion_electronicos.Controllers.Tecnico.ReparacionesController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: #2c3e50;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tecnolofix.reparacion_electronicos.Controllers.Tecnico.ReparacionesController">
+   <stylesheets>
+      <URL value="@../EstilosTableView.css" />
+   </stylesheets>
    <children>
-      <Label layoutX="448.0" layoutY="61.0" text="Tus reparaciones" />
-      <ComboBox layoutX="420.0" layoutY="104.0" prefHeight="26.0" prefWidth="219.0" />
-      <Label layoutX="193.0" layoutY="108.0" text="Filtrar por revisión/reparación:" />
+      <ComboBox fx:id="cmbFiltro" layoutX="420.0" layoutY="104.0" prefHeight="26.0" prefWidth="219.0" />
       <TableView fx:id="tblReparaciones" layoutX="35.0" layoutY="166.0" prefHeight="374.0" prefWidth="932.0">
          <columns>
             <TableColumn fx:id="clmId" prefWidth="75.0" text="ID" />
@@ -31,5 +32,11 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
+      <Label layoutX="426.0" layoutY="61.0" text="Tus reparaciones" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblFechaIngreso" layoutX="201.0" layoutY="108.0" prefHeight="18.0" prefWidth="207.0" text="Filtrar por revisión/reparación:" textFill="WHITE" />
    </children>
 </AnchorPane>

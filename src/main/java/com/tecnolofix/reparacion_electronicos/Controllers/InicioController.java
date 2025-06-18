@@ -1,5 +1,6 @@
 package com.tecnolofix.reparacion_electronicos.Controllers;
 
+import com.tecnolofix.reparacion_electronicos.Controllers.Tecnico.PrincipalTecnicoController;
 import com.tecnolofix.reparacion_electronicos.DB.DAO.TecnicoDAO;
 import com.tecnolofix.reparacion_electronicos.DB.DB;
 import com.tecnolofix.reparacion_electronicos.DB.Implementaciones.TecnicoDAOImp;
@@ -38,8 +39,10 @@ public class InicioController implements Initializable {
             Tecnico tecnico = new Tecnico();
             tecnico.setUsuario(txtUsuario.getText());
             tecnico.setContraseña(txtPassword.getText());
-//            if(dbTecnico.loginTecnico(tecnico)) {
+//            tecnico =  dbTecnico.loginTecnico(tecnico);
+//            if(tecnico != null) {
             if(true){
+                PrincipalTecnicoController.sesionTecnico = tecnico;
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Tecnico/Principal_tecnico.fxml"));
                 Parent root = loader.load();
 

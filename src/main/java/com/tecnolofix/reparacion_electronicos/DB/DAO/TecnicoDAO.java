@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 public interface TecnicoDAO {
 
-    //Devuelve verdadero si encuentra un empleado con el usuario y contraseña especificado
-    boolean loginTecnico(Tecnico t);
+    //Devuelve verdadero si encuentra un empleado con el usuario y contraseña especificado si no lo encuentra, devuelve NULL
+    Tecnico loginTecnico(Tecnico t);
 
     //Obtiene la información de todos los técnicos en la BD
     ArrayList<Tecnico> getAllTecnicos();

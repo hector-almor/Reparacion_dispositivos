@@ -40,7 +40,7 @@ public interface OrdenReparacionDAO {
     //Devolver la cantidad usada en la propiedad stockEnUso
     ArrayList<HerramientaConCantidad> obtenerHerramientasConCantidad();
 
-    //Devuelve todas las reparaciones con el dispositivo asociado donde (tipo_orden=REPARACION) y donde el estado no sea "ASIGNADO" ni "CANCELADO"
+    //Devuelve todas las reparaciones con el dispositivo asociado donde (tipo_orden=REPARACION)
     ArrayList<OrdenConDispositivo> obtenerOrdenReparacionConDispositivo();
 
     //Devuelve todas las herramientas y piezas utilizadas en una reparación (checar tablas Orden_herramientas y Orden_piezas)
@@ -50,4 +50,13 @@ public interface OrdenReparacionDAO {
     //Actualiza el estado de una reparación a "ENTREGADO", crea una garantía y le asigna el id de la nueva garantía a la llave foranea
     //De orden de reparación
     boolean entregarReparacion(int idReparacion,Garantia garantia);
+
+    //Obtiene todas las reparaciones con su dispositivo relacionado y filtra que solo se seleccionen las que se relacionan con el tecnico (fk_tecnico)
+    ArrayList<OrdenConDispositivo> obtenerOrdenesDeTecnico(int idTecnico);
+
+    //Mara el estado de una reparación (id del parámetro) al estado (usar parámetro)
+    boolean cambiarEstadoReparacion(int idReparacion,String estado);
+
+    //Actualiza la descripción de una reparación (usar parámetros)
+    boolean actualizarDescripcionReparacion(int idReparacion,String descripcion);
 }

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: #2c3e50;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tecnolofix.reparacion_electronicos.Controllers.Tecnico.UsarHerramientasController">
+   <stylesheets>
+      <URL value="@../EstilosTableView.css" />
+   </stylesheets>
+   <children>
+      <Label layoutX="429.0" layoutY="41.0" text="Usar herramientas" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tblHerramientas" layoutX="39.0" layoutY="140.0" prefHeight="212.0" prefWidth="922.0">
+         <columns>
+            <TableColumn fx:id="clmId" prefWidth="75.0" text="ID" />
+            <TableColumn fx:id="clmNombre" prefWidth="165.0" text="Nombre" />
+            <TableColumn fx:id="clmDescripcion" prefWidth="403.0" text="Descripción" />
+            <TableColumn fx:id="clmStockDisponible" prefWidth="149.0" text="Cantidad disponible" />
+            <TableColumn fx:id="clmStockUso" prefWidth="127.0" text="Cantidad usada" />
+         </columns>
+      </TableView>
+      <TextField fx:id="txtFiltro" layoutX="491.0" layoutY="96.0" />
+      <Label layoutX="312.0" layoutY="100.0" text="Filtrar por nombre:" textFill="WHITE" />
+      <Label layoutX="301.0" layoutY="372.0" text="Cantidad a usar:" textFill="WHITE" />
+      <Button fx:id="btnUsar" layoutX="590.0" layoutY="362.0" mnemonicParsing="false" onAction="#btnUsar_click" prefHeight="38.0" prefWidth="100.0" style="-fx-background-color: #16a6b8;" text="Usar " textAlignment="CENTER" />
+      <Spinner fx:id="spnrCantidadUsar" layoutX="425.0" layoutY="368.0" prefHeight="26.0" prefWidth="131.0" />
+      <TableView fx:id="tblHerramientasUso" layoutX="109.0" layoutY="501.0" prefHeight="181.0" prefWidth="810.0">
+         <columns>
+            <TableColumn fx:id="clmIdUso" prefWidth="75.0" text="ID" />
+            <TableColumn fx:id="clmNombreUso" prefWidth="165.0" text="Nombre" />
+            <TableColumn fx:id="clmDescripcionUso" prefWidth="440.0" text="Descripción" />
+            <TableColumn fx:id="clmCantidadUso" prefWidth="126.0" text="Cantidad en uso" />
+         </columns>
+      </TableView>
+      <Label layoutX="406.0" layoutY="432.0" text="Herramientas en uso" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="344.0" layoutY="707.0" text="Devolver" textFill="WHITE" />
+      <Button fx:id="btnDevolver" layoutX="595.0" layoutY="697.0" mnemonicParsing="false" onAction="#btnDevolver_click" prefHeight="38.0" prefWidth="100.0" style="-fx-background-color: #16a6b8;" text="Devolver" textAlignment="CENTER" />
+      <Spinner fx:id="spnrDevolver" layoutX="430.0" layoutY="703.0" prefHeight="26.0" prefWidth="131.0" />
+      <Button fx:id="btnRegresar" layoutX="82.0" layoutY="41.0" mnemonicParsing="false" onAction="#btnRegresar_click" style="-fx-background-color: #e67e22;" text="Regresar" />
+   </children>
+</AnchorPane>

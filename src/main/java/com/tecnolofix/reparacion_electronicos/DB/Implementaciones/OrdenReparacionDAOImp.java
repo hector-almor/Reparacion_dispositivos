@@ -75,6 +75,21 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
         return false;
     }
 
+    @Override
+    public ArrayList<OrdenConDispositivo> obtenerOrdenesDeTecnico(int idTecnico) {
+        return null;
+    }
+
+    @Override
+    public boolean cambiarEstadoReparacion(int idReparacion, String estado) {
+        return false;
+    }
+
+    @Override
+    public boolean actualizarDescripcionReparacion(int idReparacion, String descripcion) {
+        return false;
+    }
+
     public boolean loginTecnico(Tecnico t) {
         try (DB db = new DB()) {
             Connection conn = db.getConnection();

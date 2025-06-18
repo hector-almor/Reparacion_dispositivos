@@ -13,7 +13,8 @@ import java.util.ArrayList;
 public class TecnicoDAOImp implements TecnicoDAO {
 
     @Override
-    public boolean loginTecnico(Tecnico t) {
+    public Tecnico loginTecnico(Tecnico t) {
+        Tecnico tecnico = null;
         try (DB db = new DB()) {
             Connection conn = db.getConnection();
             PreparedStatement stmt = conn.prepareStatement(
@@ -22,8 +23,15 @@ public class TecnicoDAOImp implements TecnicoDAO {
             stmt.setString(1, t.getUsuario());
             stmt.setString(2, t.getContraseña());
             ResultSet rs = stmt.executeQuery();
-            return rs.next(); // devuelve true si encuentra coincidencia
-
+            while (rs.next()) {
+                tecnico = new Tecnico();
+                tecnico.setId(rs.getInt("id"));
+                tecnico.setNombre(rs.getString("nombre"));
+                tecnico.setTelefono(rs.getString("telefono"));
+                tecnico.setCorreo(rs.getString("correo"));
+                tecnico.setEspecialidad(Tecnico.Especialidad.valueOf(rs.getString("especialidad")));
+            }
+            return tecnico;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
