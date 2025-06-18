@@ -551,17 +551,96 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
 
     @Override
     public ArrayList<OrdenConDispositivo> obtenerOrdenesDeTecnico(int idTecnico) {
-        return null;
+        ArrayList<OrdenConDispositivo> lista = new ArrayList<>();
+
+        String sql = "SELECT " +
+                "o.ID AS idOrden, o.Fecha_ing, o.Fecha_eg, o.Tipo_falla, o.Descripcion, o.Estado, o.Tipo_orden, " +
+                "d.ID AS idDispositivo, d.Nombre, d.Marca, d.Modelo, d.Numero_serie, d.Tipo_dispositivo, d.Observaciones_dispositivo " +
+                "FROM Orden_reparacion o " +
+                "INNER JOIN Dispositivo d ON o.Fk_dispositivo = d.ID " +
+                "WHERE o.Fk_tecnico = ?";
+
+        try (DB db = new DB()) {
+            Connection conn = db.getConnection();
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setInt(1, idTecnico);
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    OrdenConDispositivo orden = new OrdenConDispositivo();
+
+                    // Datos de la orden
+                    orden.setId(rs.getInt("idOrden"));
+
+                    Date fechaIngSQL = rs.getDate("fecha_ing");
+                    if (fechaIngSQL != null) {
+                        orden.setFechaIng(fechaIngSQL.toLocalDate());
+                    }
+
+                    Date fechaEgSQL = rs.getDate("fecha_eg");
+                    if (fechaEgSQL != null) {
+                        orden.setFechaEg(fechaEgSQL.toLocalDate());
+                    }
+
+                    orden.setTipoFalla(OrdenReparacion.TipoFalla.valueOf(rs.getString("tipo_falla").toUpperCase()));
+                    orden.setDescripcion(rs.getString("descripcion"));
+                    orden.setEstado(OrdenReparacion.Estado.valueOf(rs.getString("estado").toUpperCase()));
+                    orden.setTipoOrden(OrdenReparacion.TipoOrden.valueOf(rs.getString("tipo_orden").toUpperCase()));
+
+                    // Datos del dispositivo
+                    orden.setIdDispositivo(rs.getInt("idDispositivo"));
+                    orden.setNombreDispositivo(rs.getString("nombre"));
+                    orden.setMarcaDispositivo(rs.getString("marca"));
+                    orden.setTipoDispositivo(Dispositivo.TipoDispositivo.valueOf(rs.getString("tipo_dispositivo").toUpperCase()));
+                    orden.setObservacionesDispositivo(rs.getString("observaciones_dispositivo"));
+
+                    lista.add(orden);
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return lista;
     }
 
     @Override
     public boolean cambiarEstadoReparacion(int idReparacion, String estado) {
-        return false;
+        String sql = "UPDATE Orden_reparacion SET Estado = ? WHERE ID = ?";
+
+        try (DB db = new DB()) {
+            Connection conn = db.getConnection();
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, estado.toUpperCase());  // Asegura coincidencia con Enum o convención en BD
+                stmt.setInt(2, idReparacion);
+
+                int rowsUpdated = stmt.executeUpdate();
+                return rowsUpdated > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
     public boolean actualizarDescripcionReparacion(int idReparacion, String descripcion) {
-        return false;
+        String sql = "UPDATE Orden_reparacion SET Descripcion = ? WHERE ID = ?";
+
+        try (DB db = new DB()) {
+            Connection conn = db.getConnection();
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, descripcion);
+                stmt.setInt(2, idReparacion);
+
+                int rowsUpdated = stmt.executeUpdate();
+                return rowsUpdated > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public boolean loginTecnico(Tecnico t) {
