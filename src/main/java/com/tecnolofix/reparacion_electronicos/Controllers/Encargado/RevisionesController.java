@@ -78,21 +78,19 @@ public class RevisionesController implements Initializable, ControladorConRootPa
             Alerts.showAlert("Error","Seleccionar una revisión a inspeccionar.", Alert.AlertType.ERROR,new ButtonType[]{ButtonType.OK});
             return;
         }
-
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Encargado/DetalleRevision.fxml"));
             Parent vistaCentro = loader.load(); // Carga la vista y guarda el root
-
             // Obtener el controlador de esa vista
             Object controlador = loader.getController();
-
-            // Si el controlador tiene un método para recibir el rootPane, lo llamas:
+            // Si el controlador tiene un metodo para recibir el rootPane, lo llamas:
             if (controlador instanceof ControladorConRootPane) {
                 ((ControladorConRootPane) controlador).setRootPane(rootPane);
             }
 
             if(controlador instanceof DetalleRevisionController){
                 ((DetalleRevisionController) controlador).setIdRevision(tblRevisiones.getSelectionModel().getSelectedItem().getId());
+                ((DetalleRevisionController) controlador).cargarDatos();
             }
 
             rootPane.setCenter(vistaCentro);

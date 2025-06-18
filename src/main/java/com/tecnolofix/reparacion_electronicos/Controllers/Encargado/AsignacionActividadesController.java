@@ -6,6 +6,7 @@ import com.tecnolofix.reparacion_electronicos.DB.Implementaciones.OrdenReparacio
 import com.tecnolofix.reparacion_electronicos.DB.Implementaciones.TecnicoDAOImp;
 import com.tecnolofix.reparacion_electronicos.Models.Alerts;
 import com.tecnolofix.reparacion_electronicos.Models.OrdenConDispositivo;
+import com.tecnolofix.reparacion_electronicos.Models.OrdenReparacion;
 import com.tecnolofix.reparacion_electronicos.Models.Tecnico;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -49,7 +50,7 @@ public class AsignacionActividadesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         cmbTipoFalla.getItems().setAll("TODOS","HARDWARE","SOFTWARE");
-        cmbEstado.getItems().setAll("TODOS","PARA-REVISION","PARA-REPARACION");
+        cmbEstado.getItems().setAll("TODOS","REVISION","REPARACION");
 
         cmbEstado.getSelectionModel().select("TODOS");
         cmbTipoFalla.getSelectionModel().select("TODOS");
@@ -90,7 +91,7 @@ public class AsignacionActividadesController implements Initializable {
 
         listaFiltradaOrdenes.setPredicate(orden -> {
             boolean coincideFalla = filtroFalla.equals("TODOS") || orden.getTipoFalla().name().equalsIgnoreCase(filtroFalla);
-            boolean coincideEstado = filtroEstado.equals("TODOS") || orden.getEstado().name().equalsIgnoreCase(filtroEstado);
+            boolean coincideEstado = filtroEstado.equals("TODOS") || orden.getTipoOrden().name().equalsIgnoreCase(filtroEstado);
             return coincideFalla && coincideEstado;
         });
     }
@@ -125,12 +126,21 @@ public class AsignacionActividadesController implements Initializable {
         OrdenReparacionDAO db = new OrdenReparacionDAOImp();
         if(db.enlazaOrdenConTecnico(tblOrdenes.getSelectionModel().getSelectedItem().getId(),tblTecnicos.getSelectionModel().getSelectedItem().getId())){
             Alerts.showAlert("Éxito","Se le ha asignado la tarea al técnico correctamente.",Alert.AlertType.INFORMATION,new ButtonType[]{ButtonType.OK});
+            OrdenConDispositivo resultado = listaOrdenes.stream()
+                    .filter(c -> c.getId()==tblOrdenes.getSelectionModel().getSelectedItem().getId())
+                    .findFirst()
+                    .orElse(null);
+            if(resultado!=null){
+                resultado.setEstado(OrdenReparacion.Estado.ASIGNADO);
+//                tblOrdenes.refresh();
+            }
             listaFiltradaOrdenes = new FilteredList<>(listaOrdenes, o -> true);
             listaFiltradaTecnicos = new FilteredList<>(listaTecnicos, t -> true);
             tblOrdenes.setItems(listaFiltradaOrdenes);
             tblTecnicos.setItems(listaFiltradaTecnicos);
+        }else {
+            Alerts.showAlert("Error", "No se ha podido asignar la tarea al técnico. Intente de nuevo", Alert.AlertType.ERROR, new ButtonType[]{ButtonType.OK});
         }
-        Alerts.showAlert("Error","No se ha podido asignar la tarea al técnico. Intente de nuevo", Alert.AlertType.ERROR,new ButtonType[]{ButtonType.OK});
     }
 
 }

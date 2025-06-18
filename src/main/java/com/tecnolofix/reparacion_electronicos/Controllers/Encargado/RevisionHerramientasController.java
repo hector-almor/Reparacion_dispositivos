@@ -44,6 +44,10 @@ public class RevisionHerramientasController implements Initializable, Controlado
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    }
+
+    public void cargarDatos(){
         clmId.setCellValueFactory(new PropertyValueFactory<>("id"));
         clmNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         clmDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
@@ -66,7 +70,6 @@ public class RevisionHerramientasController implements Initializable, Controlado
             if (controlador instanceof ControladorConRootPane) {
                 ((ControladorConRootPane) controlador).setRootPane(rootPane);
             }
-
             if (controlador instanceof DetalleRevisionController) {
                 ((DetalleRevisionController) controlador).setIdRevision(idOrden);
             }

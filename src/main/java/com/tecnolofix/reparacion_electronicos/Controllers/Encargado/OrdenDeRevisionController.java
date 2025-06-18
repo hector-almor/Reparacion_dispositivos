@@ -70,7 +70,7 @@ public class OrdenDeRevisionController implements Initializable {
         reparacion.setFechaEg(null);
         reparacion.setTipoFalla(OrdenReparacion.TipoFalla.valueOf(cmbTipoFalla.getValue()));
         reparacion.setTipoOrden(OrdenReparacion.TipoOrden.valueOf(cmbTipoRevision.getValue()));
-        String txtLimpio2 = txtObservaciones.getText().replace("\n", " ");
+        String txtLimpio2 = txtDescripcion.getText().replace("\n", " ");
         reparacion.setDescripcion(txtLimpio2);
         reparacion.setEstado(OrdenReparacion.Estado.PENDIENTE);
 

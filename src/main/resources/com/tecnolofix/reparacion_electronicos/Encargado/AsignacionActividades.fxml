@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -8,7 +9,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<?import java.net.URL?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: #2c3e50;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tecnolofix.reparacion_electronicos.Controllers.Encargado.AsignacionActividadesController">
  <stylesheets>
       <URL value="@../EstilosTableView.css" />
@@ -30,8 +30,8 @@
       </TableView>
       <Label layoutX="58.0" layoutY="82.0" text="Filtrar por tipo de falla (H/S):" textFill="WHITE" />
       <ComboBox fx:id="cmbTipoFalla" layoutX="256.0" layoutY="78.0" onAction="#cmbTipoFalla_change" prefHeight="26.0" prefWidth="208.0" />
-      <Label layoutX="500.0" layoutY="82.0" text="Filtrar por estado:" textFill="WHITE" />
-      <ComboBox fx:id="cmbEstado" layoutX="636.0" layoutY="78.0" onAction="#cmbEstado_change" prefHeight="26.0" prefWidth="246.0" />
+      <Label layoutX="500.0" layoutY="82.0" text="Filtrar por reparación/revisión:" textFill="WHITE" />
+      <ComboBox fx:id="cmbEstado" layoutX="704.0" layoutY="78.0" onAction="#cmbEstado_change" prefHeight="26.0" prefWidth="246.0" />
       <Label layoutX="429.0" layoutY="410.0" text="Asignar al técnico:" textFill="WHITE" />
       <TableView fx:id="tblTecnicos" layoutX="104.0" layoutY="436.0" prefHeight="265.0" prefWidth="777.0">
         <columns>

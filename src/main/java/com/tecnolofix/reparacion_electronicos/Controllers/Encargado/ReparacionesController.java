@@ -21,6 +21,7 @@ import javafx.scene.layout.BorderPane;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -54,8 +55,35 @@ public class ReparacionesController implements Initializable, ControladorConRoot
         clmFechaIngreso.setCellValueFactory(new PropertyValueFactory<>("fechaIng"));
         clmFechaEgreso.setCellValueFactory(new PropertyValueFactory<>("fechaEg"));
         clmTipoFalla.setCellValueFactory(new PropertyValueFactory<>("tipoFalla"));
+        clmEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
         clmDispositivo.setCellValueFactory(new PropertyValueFactory<>("nombreDispositivo"));
         clmDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+
+        clmFechaEgreso.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || getTableRow() == null || getTableRow().getItem() == null) {
+                    setText(null); // <- importante para celdas vacías
+                } else if (item == null) {
+                    setText("PENDIENTE");
+                } else {
+                    setText(item.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                }
+            }
+        });
+
+        clmFechaIngreso.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText("");
+                } else {
+                    setText(item.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                }
+            }
+        });
 
         OrdenReparacionDAO db = new OrdenReparacionDAOImp();
         ArrayList<OrdenConDispositivo> ordenes = db.obtenerOrdenReparacionConDispositivo();

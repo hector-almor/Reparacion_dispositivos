@@ -18,6 +18,7 @@ import javafx.scene.layout.BorderPane;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -61,6 +62,10 @@ public class DetalleRevisionController implements Initializable, ControladorConR
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    }
+
+    public void cargarDatos(){
         OrdenReparacionDAO db = new OrdenReparacionDAOImp();
         OrdenCompleta ordenCompleta = db.obtenerRevisionCompleta(idRevision);
         this.cliente = ordenCompleta.getCliente();
@@ -82,15 +87,16 @@ public class DetalleRevisionController implements Initializable, ControladorConR
         orden.setEstado(ordenCompleta.getEstado());
 
         lblIdRevision.setText(lblIdRevision.getText()+" "+orden.getId());
-        lblFechaIngreso.setText(lblFechaIngreso.getText()+" "+orden.getFechaIng());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        lblFechaIngreso.setText(lblFechaIngreso.getText()+" "+orden.getFechaIng().format(formatter));
         String fechaEgreso = (orden.getFechaEg()==null)? "Sin fecha":orden.getFechaEg().toString();
         lblFechaEgreso.setText(lblFechaEgreso.getText()+" "+fechaEgreso);
         lblTipoFalla.setText(lblTipoFalla.getText()+" "+orden.getTipoFalla());
         lblDescripcion.setText(lblDescripcion.getText()+" "+orden.getDescripcion());
         lblEstado.setText(lblEstado.getText()+" "+orden.getEstado());
 
-        lblIdCliente.setText(lblIdCliente+" "+cliente.getId());
-        lblNombreCliente.setText(lblNombreCliente+" "+cliente.getNombre());
+        lblIdCliente.setText(lblIdCliente.getText()+" "+cliente.getId());
+        lblNombreCliente.setText(lblNombreCliente.getText()+" "+cliente.getNombre());
         lblTelefono.setText(lblTelefono.getText()+" "+cliente.getTelefono());
         lblCorreo.setText(lblCorreo.getText()+" "+cliente.getCorreo());
 
@@ -116,19 +122,21 @@ public class DetalleRevisionController implements Initializable, ControladorConR
 
     public void btnHerramientas_click(ActionEvent actionEvent) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Encargado/Revisiones.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Encargado/RevisionHerramientas.fxml"));
             Parent vistaCentro = loader.load(); // Carga la vista y guarda el root
 
             // Obtener el controlador de esa vista
             Object controlador = loader.getController();
 
-            // Si el controlador tiene un método para recibir el rootPane, lo llamas:
+            // Si el controlador tiene un metodo para recibir el rootPane, lo llamas:
             if (controlador instanceof ControladorConRootPane) {
                 ((ControladorConRootPane) controlador).setRootPane(rootPane);
             }
 
             if (controlador instanceof RevisionHerramientasController) {
+                System.out.println(orden.getId());
                 ((RevisionHerramientasController) controlador).setIdOrden(orden.getId());
+                ((RevisionHerramientasController) controlador).cargarDatos();
             }
 
             rootPane.setCenter(vistaCentro);
