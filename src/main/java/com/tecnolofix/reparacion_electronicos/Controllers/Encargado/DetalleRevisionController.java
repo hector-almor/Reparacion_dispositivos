@@ -1,5 +1,6 @@
 package com.tecnolofix.reparacion_electronicos.Controllers.Encargado;
 
+import com.tecnolofix.reparacion_electronicos.Controllers.CargableConId;
 import com.tecnolofix.reparacion_electronicos.Controllers.ControladorConRootPane;
 import com.tecnolofix.reparacion_electronicos.DB.DAO.OrdenReparacionDAO;
 import com.tecnolofix.reparacion_electronicos.DB.Implementaciones.OrdenReparacionDAOImp;
@@ -22,7 +23,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-public class DetalleRevisionController implements Initializable, ControladorConRootPane {
+public class DetalleRevisionController implements Initializable, ControladorConRootPane, CargableConId{
     @FXML Button btnRegresar;
     @FXML Button btnReparar;
     @FXML Button btnHerramientas;
@@ -56,7 +57,7 @@ public class DetalleRevisionController implements Initializable, ControladorConR
         this.rootPane = rootPane;
     }
 
-    public void setIdRevision(int idRevision) {
+    public void setId(int idRevision) {
         this.idRevision = idRevision;
     }
 
@@ -86,27 +87,29 @@ public class DetalleRevisionController implements Initializable, ControladorConR
         orden.setTipoOrden(ordenCompleta.getTipoOrden());
         orden.setEstado(ordenCompleta.getEstado());
 
-        lblIdRevision.setText(lblIdRevision.getText()+" "+orden.getId());
+        lblIdRevision.setText("ID: "+orden.getId());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        lblFechaIngreso.setText(lblFechaIngreso.getText()+" "+orden.getFechaIng().format(formatter));
+        lblFechaIngreso.setText("Fecha ingreso: "+orden.getFechaIng().format(formatter));
         String fechaEgreso = (orden.getFechaEg()==null)? "Sin fecha":orden.getFechaEg().toString();
-        lblFechaEgreso.setText(lblFechaEgreso.getText()+" "+fechaEgreso);
-        lblTipoFalla.setText(lblTipoFalla.getText()+" "+orden.getTipoFalla());
-        lblDescripcion.setText(lblDescripcion.getText()+" "+orden.getDescripcion());
-        lblEstado.setText(lblEstado.getText()+" "+orden.getEstado());
+        lblFechaEgreso.setText("Fecha egreso "+fechaEgreso);
+        lblTipoFalla.setText("Tipo de falla: "+orden.getTipoFalla());
+        lblDescripcion.setText("Descripcion"+orden.getDescripcion());
+        lblEstado.setText("Estado: "+orden.getEstado());
 
-        lblIdCliente.setText(lblIdCliente.getText()+" "+cliente.getId());
-        lblNombreCliente.setText(lblNombreCliente.getText()+" "+cliente.getNombre());
-        lblTelefono.setText(lblTelefono.getText()+" "+cliente.getTelefono());
-        lblCorreo.setText(lblCorreo.getText()+" "+cliente.getCorreo());
+        lblIdCliente.setText("ID: "+cliente.getId());
+        lblNombreCliente.setText("Nombre: "+cliente.getNombre());
+        lblTelefono.setText("Teléfono: "+cliente.getTelefono());
+        lblCorreo.setText("Correo: "+cliente.getCorreo());
 
-        lblIdDispositivo.setText(lblIdDispositivo.getText()+" "+dispositivo.getId());
-        lblNombreDispositivo.setText(lblNombreDispositivo.getText()+" "+dispositivo.getNombre());
-        lblMarca.setText(lblMarca.getText()+" "+dispositivo.getMarca());
-        lblTipoDispositivo.setText(lblTipoDispositivo.getText()+" "+dispositivo.getTipoDispo());
-        lblObservaciones.setText(lblObservaciones.getText()+" "+dispositivo.getObservaciones());
+        lblIdDispositivo.setText("ID: "+dispositivo.getId());
+        lblNombreDispositivo.setText("Nombre: "+dispositivo.getNombre());
+        lblMarca.setText("Marca: "+dispositivo.getMarca());
+        lblTipoDispositivo.setText("Dispositivo: "+dispositivo.getTipoDispo());
+        lblObservaciones.setText("Observaciones: "+dispositivo.getObservaciones());
 
-        lblTecnicoAsignado.setText(lblTecnicoAsignado.getText()+" "+tecnico.getNombre());
+        lblTecnicoAsignado.setText("Técnico asignado: "+tecnico.getNombre());
+
+        System.out.println("idcargado"+orden.getId());
     }
 
     public void btnFinalizar_click(ActionEvent actionEvent) {
@@ -127,17 +130,23 @@ public class DetalleRevisionController implements Initializable, ControladorConR
 
             // Obtener el controlador de esa vista
             Object controlador = loader.getController();
-
+            System.out.println("Después de cargar el controlador");
             // Si el controlador tiene un metodo para recibir el rootPane, lo llamas:
             if (controlador instanceof ControladorConRootPane) {
+                System.out.println("Dentro del instanceof");
                 ((ControladorConRootPane) controlador).setRootPane(rootPane);
             }
 
-            if (controlador instanceof RevisionHerramientasController) {
-                System.out.println(orden.getId());
-                ((RevisionHerramientasController) controlador).setIdOrden(orden.getId());
-                ((RevisionHerramientasController) controlador).cargarDatos();
+            if(controlador instanceof CargableConId){
+                System.out.println("Dentro del instanceof cargable con id:"+orden.getId());
+                ((CargableConId) controlador).setId(orden.getId());
+//                ((CargableConId) controlador).cargarDatos();
             }
+//            if (controlador instanceof RevisionHerramientasController) {
+//                System.out.println(orden.getId());
+//                ((RevisionHerramientasController) controlador).setId(orden.getId());
+//                ((RevisionHerramientasController) controlador).cargarDatos();
+//            }
 
             rootPane.setCenter(vistaCentro);
         } catch (IOException e) {

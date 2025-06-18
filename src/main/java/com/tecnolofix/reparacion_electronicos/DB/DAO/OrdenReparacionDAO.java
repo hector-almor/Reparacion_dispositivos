@@ -38,7 +38,7 @@ public interface OrdenReparacionDAO {
 
     //Devuelve todas las herramientas usadas por una revision, checar tabla de Herramientas y Orden_herramientas
     //Devolver la cantidad usada en la propiedad stockEnUso
-    ArrayList<HerramientaConCantidad> obtenerHerramientasConCantidad();
+    ArrayList<HerramientaConCantidad> obtenerHerramientasConCantidad(int idRevision);
 
     //Devuelve todas las reparaciones con el dispositivo asociado donde (tipo_orden=REPARACION)
     ArrayList<OrdenConDispositivo> obtenerOrdenReparacionConDispositivo();

@@ -1,5 +1,6 @@
 package com.tecnolofix.reparacion_electronicos.Controllers.Encargado;
 
+import com.tecnolofix.reparacion_electronicos.Controllers.CargableConId;
 import com.tecnolofix.reparacion_electronicos.Controllers.ControladorConRootPane;
 import com.tecnolofix.reparacion_electronicos.DB.DAO.OrdenReparacionDAO;
 import com.tecnolofix.reparacion_electronicos.DB.Implementaciones.OrdenReparacionDAOImp;
@@ -88,8 +89,13 @@ public class RevisionesController implements Initializable, ControladorConRootPa
                 ((ControladorConRootPane) controlador).setRootPane(rootPane);
             }
 
+            if(controlador instanceof CargableConId){
+                ((CargableConId) controlador).setId(tblRevisiones.getSelectionModel().getSelectedItem().getId());
+                ((CargableConId) controlador).cargarDatos();
+            }
+
             if(controlador instanceof DetalleRevisionController){
-                ((DetalleRevisionController) controlador).setIdRevision(tblRevisiones.getSelectionModel().getSelectedItem().getId());
+                ((DetalleRevisionController) controlador).setId(tblRevisiones.getSelectionModel().getSelectedItem().getId());
                 ((DetalleRevisionController) controlador).cargarDatos();
             }
 
@@ -98,5 +104,4 @@ public class RevisionesController implements Initializable, ControladorConRootPa
             throw new RuntimeException(e);
         }
     }
-
 }

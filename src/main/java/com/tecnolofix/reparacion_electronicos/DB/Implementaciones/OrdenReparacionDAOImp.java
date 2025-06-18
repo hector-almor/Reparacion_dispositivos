@@ -442,29 +442,49 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
     }
 
     @Override
-    public ArrayList<HerramientaConCantidad> obtenerHerramientasConCantidad() {
+    public ArrayList<HerramientaConCantidad> obtenerHerramientasConCantidad(int idRevision) {
         ArrayList<HerramientaConCantidad> lista = new ArrayList<>();
 
-        String sql = "SELECT ID, Nombre, Tipo, Marca, Cantidad FROM Herramientas";
+        String sql = """
+            SELECT 
+                h.id,
+                h.nombre,
+                h.descripcion,
+                oh.cantidad_usada AS cantidadUsada,
+                h.stock_disponible,
+                h.stock_en_uso,
+                h.stock_mantenimiento
+            FROM 
+                Herramientas h
+            JOIN 
+                Orden_herramientas oh ON h.id = oh.fk_herramienta
+            JOIN 
+                Orden_reparacion o ON oh.fk_orden = o.id
+            WHERE 
+                o.id = ?;
+            """;
 
-        try (DB db = new DB()) {
-            Connection conn = db.getConnection();
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+        try (DB db = new DB();
+             Connection conn = db.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            while (rs.next()) {
-                HerramientaConCantidad herramienta = new HerramientaConCantidad();
+            // Usamos PreparedStatement para evitar SQL injection
+            pstmt.setInt(1, idRevision);
 
-                herramienta.setId(rs.getInt("id"));
-                herramienta.setNombre(rs.getString("nombre"));
-                herramienta.setDescripcion(rs.getString("descripcion"));  // si es ENUM, puedes usar .name()
-                herramienta.setStockDisponible(rs.getInt("stock_disponible"));
-                herramienta.setStockEnUso(rs.getInt("stock_en_uso"));
-                herramienta.setStockMantenimiento(rs.getInt("stock_mantenimiento"));
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    HerramientaConCantidad herramienta = new HerramientaConCantidad();
 
-                lista.add(herramienta);
+                    herramienta.setId(rs.getInt("id"));
+                    herramienta.setNombre(rs.getString("nombre"));
+                    herramienta.setDescripcion(rs.getString("descripcion"));
+                    herramienta.setStockDisponible(rs.getInt("stock_disponible"));
+                    herramienta.setStockEnUso(rs.getInt("cantidadUsada"));
+                    herramienta.setStockMantenimiento(rs.getInt("stock_mantenimiento"));
+                    // Agregamos la cantidad específica usada en esta orden
+                    lista.add(herramienta);
+                }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
