@@ -55,4 +55,9 @@ public class HerramientaDAOImp implements HerramientaDAO {
 
         return lista;
     }
+
+    @Override
+    public boolean actualizarStockDisponible(int idHerramienta, int stockDisponible, int stockEnUso) {
+        return false;
+    }
 }

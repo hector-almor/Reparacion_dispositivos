@@ -53,4 +53,9 @@ public class OrdenHerramientasDAOImp implements OrdenHerramientasDAO {
 
         return lista;
     }
+
+    @Override
+    public boolean registrarHerramientaUsada(int idOrden, int idHerramienta, int cantidadUsada) {
+        return false;
+    }
 }

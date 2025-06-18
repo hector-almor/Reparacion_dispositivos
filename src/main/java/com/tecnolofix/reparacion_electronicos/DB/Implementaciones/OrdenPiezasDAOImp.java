@@ -53,4 +53,9 @@ public class OrdenPiezasDAOImp implements OrdenPiezasDAO {
 
         return lista;
     }
+
+    @Override
+    public boolean registrarHerramientaUsada(int idOrden, String idPieza, int cantidadUsada) {
+        return false;
+    }
 }
