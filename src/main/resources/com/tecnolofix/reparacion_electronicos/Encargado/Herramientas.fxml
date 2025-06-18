@@ -17,12 +17,12 @@
          <font>
             <Font name="System Bold" size="18.0" />
          </font></Label>
-      <TableView fx:id="tblHerramientas" layoutX="52.0" layoutY="209.0" prefHeight="383.0" prefWidth="849.0">
+      <TableView fx:id="tblHerramientas" layoutX="34.0" layoutY="209.0" prefHeight="460.0" prefWidth="922.0">
         <columns>
           <TableColumn fx:id="clmId" prefWidth="75.0" text="ID" />
-          <TableColumn fx:id="clmNombre" prefWidth="207.0" text="Nombre" />
-            <TableColumn fx:id="clmDescripcion" prefWidth="292.0" text="Descripción" />
-            <TableColumn fx:id="clmStockDisponible" prefWidth="145.0" text="Cantidad disponible" />
+          <TableColumn fx:id="clmNombre" prefWidth="165.0" text="Nombre" />
+            <TableColumn fx:id="clmDescripcion" prefWidth="403.0" text="Descripción" />
+            <TableColumn fx:id="clmStockDisponible" prefWidth="149.0" text="Cantidad disponible" />
             <TableColumn fx:id="clmStockUso" prefWidth="127.0" text="Cantidad en uso" />
         </columns>
       </TableView>
