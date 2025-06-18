@@ -6,10 +6,7 @@ import com.tecnolofix.reparacion_electronicos.Models.Cliente;
 import com.tecnolofix.reparacion_electronicos.Models.Pieza;
 import com.tecnolofix.reparacion_electronicos.Models.Tecnico;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class PiezaDAOImp implements PiezaDAO {
@@ -59,6 +56,38 @@ public class PiezaDAOImp implements PiezaDAO {
 
     @Override
     public boolean registrarCompras(ArrayList<Pieza> piezas, int idProveedor) {
-        return false;
+        String sql = "INSERT INTO Compras (nombre_pieza, cantidad, precio_unit, id_proveedor, fecha_compra) " +
+                "VALUES (?, ?, ?, ?, NOW())";
+
+        try (DB db = new DB()) {
+            Connection conn = db.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            for (Pieza pieza : piezas) {
+                stmt.setString(1, pieza.getNombre());
+                stmt.setInt(2, pieza.getStock());
+                stmt.setDouble(3, pieza.getCosto());
+                stmt.setInt(4, idProveedor);
+                stmt.addBatch();  // Agrega a un lote para ejecutar todo junto
+            }
+
+            int[] resultados = stmt.executeBatch();  // Ejecuta todos los INSERTS juntos
+
+            // Verificamos si todos los inserts fueron exitosos
+            for (int result : resultados) {
+                if (result == Statement.EXECUTE_FAILED) {
+                    return false;  // Si alguna falla, retornamos false
+                }
+            }
+
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

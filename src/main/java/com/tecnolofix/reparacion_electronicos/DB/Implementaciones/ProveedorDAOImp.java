@@ -6,10 +6,7 @@ import com.tecnolofix.reparacion_electronicos.Models.Cliente;
 import com.tecnolofix.reparacion_electronicos.Models.Proveedor;
 import com.tecnolofix.reparacion_electronicos.Models.Tecnico;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class ProveedorDAOImp implements ProveedorDAO {
@@ -59,6 +56,27 @@ public class ProveedorDAOImp implements ProveedorDAO {
 
     @Override
     public boolean registrarProveedor(Proveedor proveedor) {
-        return false;
+        String sql = "INSERT INTO Proveedor (Id, Nombre, Correo, Telefono, Direccion) VALUES (?, ?, ?, ?, ?)";
+
+        try (DB db = new DB()) {
+            Connection conn = db.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, proveedor.getId());
+            stmt.setString(2, proveedor.getNombre());
+            stmt.setString(3, proveedor.getCorreo());
+            stmt.setString(4, proveedor.getTelefono());
+            stmt.setString(5, proveedor.getDireccion());
+
+            int filasAfectadas = stmt.executeUpdate();
+            return filasAfectadas > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
