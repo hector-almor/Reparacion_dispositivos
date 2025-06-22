@@ -14,7 +14,7 @@
             <URL value="@../BotonesBootstrap.css" />
          </stylesheets>
          <children>
-            <ToggleButton fx:id="btnOrdenRevision" layoutX="10.0" layoutY="272.0" mnemonicParsing="false" onAction="#btnOrdenRevision_click" prefHeight="85.0" prefWidth="119.0" styleClass="button-info" text="Orden de &#10;reparación">
+            <ToggleButton fx:id="btnOrdenRevision" layoutX="10.0" layoutY="272.0" mnemonicParsing="false" onAction="#btnOrdenRevision_click" prefHeight="85.0" prefWidth="119.0" styleClass="button-info" text="Orden de &#10;revisión">
                <toggleGroup>
                   <ToggleGroup fx:id="toggleMenu" />
                </toggleGroup>
