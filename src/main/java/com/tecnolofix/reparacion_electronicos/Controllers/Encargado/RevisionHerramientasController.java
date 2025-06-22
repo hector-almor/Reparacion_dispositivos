@@ -1,6 +1,7 @@
 package com.tecnolofix.reparacion_electronicos.Controllers.Encargado;
 
 import com.tecnolofix.reparacion_electronicos.Controllers.CargableConId;
+import com.tecnolofix.reparacion_electronicos.Controllers.Contexto;
 import com.tecnolofix.reparacion_electronicos.Controllers.ControladorConRootPane;
 import com.tecnolofix.reparacion_electronicos.DB.DAO.OrdenReparacionDAO;
 import com.tecnolofix.reparacion_electronicos.DB.Implementaciones.OrdenReparacionDAOImp;
@@ -48,20 +49,26 @@ public class RevisionHerramientasController implements Initializable, Controlado
 
     }
 
+    public RevisionHerramientasController(int idOrden) {
+        this.idOrden = idOrden;
+    }
+
     public void cargarDatos(){
         clmId.setCellValueFactory(new PropertyValueFactory<>("id"));
         clmNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         clmDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
         clmCantidad.setCellValueFactory(new PropertyValueFactory<>("stockEnUso"));
-        System.out.println(idOrden);
+//        System.out.println(idOrden);
         OrdenReparacionDAO db = new OrdenReparacionDAOImp();
         ArrayList<HerramientaConCantidad> herramientas = db.obtenerHerramientasConCantidad(idOrden);
         observableHerramientas.setAll(herramientas);
+        tblHerramientas.setItems(observableHerramientas);
     }
 
     public void btnRegresar_click(ActionEvent actionEvent) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Encargado/Revisiones.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Encargado/DetalleRevision.fxml"));
+            loader.setControllerFactory(param->new DetalleRevisionController(idOrden));
             Parent vistaCentro = loader.load(); // Carga la vista y guarda el root
 
             // Obtener el controlador de esa vista
@@ -73,6 +80,7 @@ public class RevisionHerramientasController implements Initializable, Controlado
             }
             if (controlador instanceof DetalleRevisionController) {
                 ((DetalleRevisionController) controlador).setId(idOrden);
+                ((DetalleRevisionController) controlador).cargarDatos();
             }
 
             rootPane.setCenter(vistaCentro);

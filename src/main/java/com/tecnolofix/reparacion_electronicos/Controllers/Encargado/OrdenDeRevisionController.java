@@ -50,6 +50,7 @@ public class OrdenDeRevisionController implements Initializable {
         txtNombreDispositivo.setText("");
         txtCorreo.setText("");
         txtMarca.setText("");
+        cmbTipoRevision.getSelectionModel().clearSelection();
     }
 
     public void btnRegistrar_click(ActionEvent actionEvent) {

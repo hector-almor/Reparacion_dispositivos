@@ -154,7 +154,7 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
 
     @Override
     public boolean enlazaOrdenConTecnico(int idOrden, int idTecnico) {
-        String sql = "UPDATE Orden_reparacion SET Fk_tecnico = ? WHERE ID = ?";
+        String sql = "UPDATE Orden_reparacion SET Fk_tecnico = ?, estado = 'ASIGNADO' WHERE ID = ?";
 
         try (DB db = new DB()) {
             Connection conn = db.getConnection();
@@ -176,12 +176,13 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
     public ArrayList<OrdenConDispositivo> getAllOrdenesConDispositivo() {
         ArrayList<OrdenConDispositivo> lista = new ArrayList<>();
 
-        String sql = "SELECT " +
-                "o.ID AS idOrden, o.Fecha_ing, o.Fecha_eg, o.Tipo_falla, o.Descripcion, o.Estado, o.Tipo_orden, " +
-                "d.ID AS idDispositivo, d.Nombre, d.Marca, d.Tipo_dispo, d.Observaciones " +
-                "FROM Orden_reparacion o " +
-                "INNER JOIN Dispositivo d ON o.Fk_dispositivo = d.ID " +
-                "WHERE o.Estado NOT IN ('PENDIENTE')";
+        String sql = """
+                SELECT o.ID AS idOrden, o.Fecha_ing, o.Fecha_eg, o.Tipo_falla, o.Descripcion, o.Estado, o.Tipo_orden,
+                d.ID AS idDispositivo, d.Nombre, d.Marca, d.Tipo_dispo, d.Observaciones
+                FROM Orden_reparacion o
+                INNER JOIN Dispositivo d ON o.Fk_dispositivo = d.ID
+                WHERE o.Estado NOT IN ('PENDIENTE');
+                """;
 
         try (DB db = new DB()) {
             Connection conn = db.getConnection();
@@ -310,18 +311,20 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
     public OrdenCompleta obtenerReparacionCompleta(int idOrden) {
         OrdenCompleta ordenCompleta = null;
 
-        String sql = "SELECT " +
-                "o.ID, o.Fecha_ing, o.Fecha_eg, o.Tipo_falla, o.Descripcion, o.Tipo_orden, o.Estado, o.Fk_garantia, " +
-                "d.ID AS idDispositivo, d.Nombre AS nombreDispositivo, d.Marca, d.Tipo_dispositivo, d.Observaciones AS observacionesDispositivo, " +
-                "c.ID AS idCliente, c.Nombre AS nombreCliente, c.Correo, c.Telefono, c.Direccion, " +
-                "t.ID AS idTecnico, t.Nombre AS nombreTecnico, t.Especialidad, " +
-                "g.ID AS idGarantia, g.Fecha_inicio, g.Fecha_fin " +
-                "FROM Orden_reparacion o " +
-                "INNER JOIN Dispositivo d ON o.Fk_dispositivo = d.ID " +
-                "INNER JOIN Cliente c ON o.Fk_cliente = c.ID " +
-                "LEFT JOIN Tecnico t ON o.Fk_tecnico = t.ID " +
-                "LEFT JOIN Garantia g ON o.Fk_garantia = g.ID " +
-                "WHERE o.ID = ?";
+        String sql = """
+               SELECT
+               o.ID, o.Fecha_ing, o.Fecha_eg, o.Tipo_falla, o.Descripcion, o.Tipo_orden, o.Estado, o.Fk_garantia,
+               d.ID AS idDispositivo, d.Nombre AS nombreDispositivo, d.Marca, d.Tipo_dispo, d.Observaciones AS observacionesDispositivo,
+               c.ID AS idCliente, c.Nombre AS nombreCliente, c.Correo, c.Telefono,
+               t.ID AS idTecnico, t.Nombre AS nombreTecnico, t.Especialidad,
+               g.ID AS idGarantia, g.Fecha_inicio, g.Fecha_fin
+               FROM Orden_reparacion o
+               INNER JOIN Dispositivo d ON o.Fk_dispositivo = d.ID
+               INNER JOIN Clientes c ON o.Fk_cliente = c.ID
+               LEFT JOIN Tecnicos t ON o.Fk_tecnico = t.ID
+               LEFT JOIN Garantias g ON o.Fk_garantia = g.ID
+               WHERE o.ID = ?
+               """;
 
         try (DB db = new DB()) {
             Connection conn = db.getConnection();
@@ -355,7 +358,7 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
                 ordenCompleta.setIdDispositivo(rs.getInt("idDispositivo"));
                 ordenCompleta.setNombreDispositivo(rs.getString("nombreDispositivo"));
                 ordenCompleta.setMarcaDispositivo(rs.getString("Marca"));
-                ordenCompleta.setTipoDispositivo(Dispositivo.TipoDispositivo.valueOf(rs.getString("Tipo_dispositivo").toUpperCase()));
+                ordenCompleta.setTipoDispositivo(Dispositivo.TipoDispositivo.valueOf(rs.getString("Tipo_dispo").toUpperCase()));
                 ordenCompleta.setObservacionesDispositivo(rs.getString("observacionesDispositivo"));
 
                 // Cliente
@@ -372,7 +375,7 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
                     Tecnico tec = new Tecnico();
                     tec.setId(idTec);
                     tec.setNombre(rs.getString("nombreTecnico"));
-                    tec.setEspecialidad(Tecnico.Especialidad.valueOf(rs.getString("especialidad").toUpperCase()));
+                    tec.setEspecialidad(Tecnico.Especialidad.valueOf(rs.getString("Especialidad").toUpperCase()));
 
                     ordenCompleta.setTecnico(tec);
                 }
@@ -403,7 +406,7 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
             Connection conn = db.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);
 
-            stmt.setString(1, OrdenReparacion.Estado.CANCELADO.name());
+            stmt.setString(1, OrdenReparacion.Estado.ENTREGADO.name());
             stmt.setDate(2, java.sql.Date.valueOf(fechaEgreso));
             stmt.setInt(3, idRevision);
 
@@ -420,7 +423,7 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
 
     @Override
     public boolean marcarParaReparacion(int idRevision) {
-        String sql = "UPDATE Orden_reparacion SET Estado = ? WHERE Tipo_orden = ?";
+        String sql = "UPDATE Orden_reparacion SET Estado = ?, fecha_eg=NULL, tipo_orden='REPARACION' WHERE id = ?";
 
         try (DB db = new DB()) {
             Connection conn = db.getConnection();
@@ -430,7 +433,7 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
             stmt.setString(1, OrdenReparacion.Estado.ASIGNADO.name());
 
             // Tipo de orden a filtrar
-            stmt.setString(2, OrdenReparacion.TipoOrden.REPARACION.name());
+            stmt.setInt(2, idRevision);
 
             int filasAfectadas = stmt.executeUpdate();
             return filasAfectadas > 0;

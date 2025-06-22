@@ -75,7 +75,7 @@ public class EntregarReparacionController implements Initializable, ControladorC
             }
 
             if (controlador instanceof DetalleReparacionController) {
-                ((DetalleReparacionController) controlador).setIdReparacion(idReparacion);
+                ((DetalleReparacionController) controlador).setId(idReparacion);
             }
             rootPane.setCenter(vistaCentro);
         } catch (IOException e) {

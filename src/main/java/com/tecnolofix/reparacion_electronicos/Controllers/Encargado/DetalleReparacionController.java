@@ -1,5 +1,7 @@
 package com.tecnolofix.reparacion_electronicos.Controllers.Encargado;
 
+import com.tecnolofix.reparacion_electronicos.Controllers.CargableConId;
+import com.tecnolofix.reparacion_electronicos.Controllers.Contexto;
 import com.tecnolofix.reparacion_electronicos.Controllers.ControladorConRootPane;
 import com.tecnolofix.reparacion_electronicos.DB.DAO.OrdenReparacionDAO;
 import com.tecnolofix.reparacion_electronicos.DB.Implementaciones.OrdenReparacionDAOImp;
@@ -19,7 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class DetalleReparacionController implements Initializable, ControladorConRootPane {
+public class DetalleReparacionController implements Initializable, ControladorConRootPane, CargableConId {
     @FXML Button btnEntregar;
     @FXML Button btnRegresar;
     @FXML Button btnGarantia;
@@ -54,7 +56,11 @@ public class DetalleReparacionController implements Initializable, ControladorCo
         this.rootPane = rootPane;
     }
 
-    public void setIdReparacion(int idReparacion) {
+    public void setId(int idReparacion) {
+        this.idReparacion = idReparacion;
+    }
+
+    public DetalleReparacionController(int idReparacion){
         this.idReparacion = idReparacion;
     }
 
@@ -64,14 +70,13 @@ public class DetalleReparacionController implements Initializable, ControladorCo
         OrdenCompleta ordenCompleta = db.obtenerReparacionCompleta(idReparacion);
         this.cliente = ordenCompleta.getCliente();
         this.tecnico = ordenCompleta.getTecnico();
-        var dispositivo = new Dispositivo();
+        dispositivo = new Dispositivo();
         dispositivo.setId(ordenCompleta.getIdDispositivo());
         dispositivo.setNombre(ordenCompleta.getNombreDispositivo());
         dispositivo.setMarca(ordenCompleta.getMarcaDispositivo());
         dispositivo.setTipoDispo(ordenCompleta.getTipoDispositivo());
         dispositivo.setObservaciones(ordenCompleta.getObservacionesDispositivo());
-        this.dispositivo = dispositivo;
-        var orden = new OrdenReparacion();
+        orden = new OrdenReparacion();
         orden.setId(ordenCompleta.getId());
         orden.setFechaIng(ordenCompleta.getFechaIng());
         orden.setFechaEg(ordenCompleta.getFechaEg());
@@ -102,6 +107,11 @@ public class DetalleReparacionController implements Initializable, ControladorCo
         lblTecnicoAsignado.setText(lblTecnicoAsignado.getText()+" "+tecnico.getNombre());
 
         garantia = ordenCompleta.getGarantia();
+    }
+
+    @Override
+    public void cargarDatos() {
+
     }
 
     public void btnHerramientasPiezas_click(ActionEvent actionEvent) {
@@ -186,4 +196,6 @@ public class DetalleReparacionController implements Initializable, ControladorCo
             throw new RuntimeException(e);
         }
     }
+
+
 }
