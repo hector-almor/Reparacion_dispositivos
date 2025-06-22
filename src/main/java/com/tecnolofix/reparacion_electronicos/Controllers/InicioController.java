@@ -28,8 +28,10 @@ public class InicioController implements Initializable {
 
     @FXML public TextField txtUsuario;
     @FXML public Button btnIngresar;
-    public ToggleButton toggleButtonEncargado;
-    public ToggleButton toggleButtonTecnico;
+    @FXML ToggleButton toggleButtonEncargado;
+    @FXML ToggleButton toggleButtonTecnico;
+    @FXML Button btnPdfOrden;
+    @FXML Button btnPdfGarantia;
     @FXML ToggleGroup groupRol;
     @FXML PasswordField txtPassword;
 
@@ -118,5 +120,12 @@ public class InicioController implements Initializable {
             toggleButtonTecnico.setStyle("-fx-background-color: #117a8b; -fx-border-color: #0f6674; -fx-text-fill: white;");
             toggleButtonEncargado.setStyle("");
         }
+    }
+
+    public void btnPdfGarantia_click(ActionEvent actionEvent) {
+    }
+
+    public void btnPdfOrden_click(ActionEvent actionEvent) {
+
     }
 }

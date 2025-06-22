@@ -1,5 +1,6 @@
 package com.tecnolofix.reparacion_electronicos.Controllers.Encargado;
 
+import com.tecnolofix.reparacion_electronicos.Controllers.CargableConId;
 import com.tecnolofix.reparacion_electronicos.Controllers.ControladorConRootPane;
 import com.tecnolofix.reparacion_electronicos.DB.DAO.OrdenReparacionDAO;
 import com.tecnolofix.reparacion_electronicos.DB.Implementaciones.OrdenReparacionDAOImp;
@@ -23,7 +24,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class ReparacionHerramientasPiezasController implements Initializable, ControladorConRootPane {
+public class ReparacionHerramientasPiezasController implements Initializable, ControladorConRootPane, CargableConId {
     @FXML TableView<PiezaConCantidad> tblPiezas;
     @FXML Label lblCostoTotal;
     @FXML TableColumn<PiezaConCantidad,Integer> clmCantidadPieza;
@@ -49,7 +50,17 @@ public class ReparacionHerramientasPiezasController implements Initializable, Co
         this.rootPane = rootPane;
     }
 
-    public void setIdReparacion(int idReparacion) {
+    @Override
+    public void setId(int id) {
+        this.idReparacion = id;
+    }
+
+    @Override
+    public void cargarDatos() {
+
+    }
+
+    public ReparacionHerramientasPiezasController(int idReparacion){
         this.idReparacion = idReparacion;
     }
 

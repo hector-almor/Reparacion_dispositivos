@@ -93,8 +93,8 @@ public class DetalleReparacionController implements Initializable, ControladorCo
         lblDescripcion.setText(lblDescripcion.getText()+" "+orden.getDescripcion());
         lblEstado.setText(lblEstado.getText()+" "+orden.getEstado());
 
-        lblIdCliente.setText(lblIdCliente+" "+cliente.getId());
-        lblNombreCliente.setText(lblNombreCliente+" "+cliente.getNombre());
+        lblIdCliente.setText(lblIdCliente.getText()+" "+cliente.getId());
+        lblNombreCliente.setText(lblNombreCliente.getText()+" "+cliente.getNombre());
         lblTelefono.setText(lblTelefono.getText()+" "+cliente.getTelefono());
         lblCorreo.setText(lblCorreo.getText()+" "+cliente.getCorreo());
 
@@ -117,6 +117,7 @@ public class DetalleReparacionController implements Initializable, ControladorCo
     public void btnHerramientasPiezas_click(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Encargado/ReparacionHerramientasPiezas.fxml"));
+            loader.setControllerFactory(param-> new ReparacionHerramientasPiezasController(orden.getId()));
             Parent vistaCentro = loader.load(); // Carga la vista y guarda el root
 
             // Obtener el controlador de esa vista
@@ -127,9 +128,9 @@ public class DetalleReparacionController implements Initializable, ControladorCo
                 ((ControladorConRootPane) controlador).setRootPane(rootPane);
             }
 
-            if(controlador instanceof ReparacionHerramientasPiezasController){
-                ((ReparacionHerramientasPiezasController) controlador).setIdReparacion(orden.getId());
-            }
+//            if(controlador instanceof ReparacionHerramientasPiezasController){
+//                ((ReparacionHerramientasPiezasController) controlador).setIdReparacion(orden.getId());
+//            }
             rootPane.setCenter(vistaCentro);
         } catch (IOException e) {
             throw new RuntimeException(e);
