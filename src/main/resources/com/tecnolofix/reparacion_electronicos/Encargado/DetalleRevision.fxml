@@ -11,24 +11,78 @@
          <font>
             <Font name="System Bold" size="18.0" />
          </font></Label>
-      <Label fx:id="lblIdRevision" layoutX="58.0" layoutY="104.0" text="ID: " textFill="WHITE" />
-      <Label fx:id="lblFechaIngreso" layoutX="180.0" layoutY="113.0" prefHeight="18.0" prefWidth="118.0" text="Fecha de ingreso:" textFill="WHITE" />
-      <Label fx:id="lblFechaEgreso" layoutX="364.0" layoutY="113.0" prefHeight="18.0" prefWidth="118.0" text="Fecha de egreso:" textFill="WHITE" />
-      <Label fx:id="lblTipoFalla" layoutX="594.0" layoutY="113.0" prefHeight="18.0" prefWidth="118.0" text="Tipo de falla:" textFill="WHITE" />
-      <Label fx:id="lblDescripcion" layoutX="58.0" layoutY="187.0" prefHeight="18.0" prefWidth="118.0" text="Descripción:" textFill="WHITE" />
-      <Label fx:id="lblEstado" layoutX="624.0" layoutY="187.0" prefHeight="18.0" prefWidth="118.0" text="Estado:" textFill="WHITE" />
-      <Label layoutX="69.0" layoutY="291.0" prefHeight="18.0" prefWidth="118.0" text="Datos del cliente" textFill="WHITE" />
-      <Label fx:id="lblIdCliente" layoutX="58.0" layoutY="341.0" prefHeight="18.0" prefWidth="118.0" text="ID:" textFill="WHITE" />
-      <Label fx:id="lblNombreCliente" layoutX="261.0" layoutY="350.0" prefHeight="18.0" prefWidth="118.0" text="Nombre:" textFill="WHITE" />
-      <Label fx:id="lblTelefono" layoutX="535.0" layoutY="350.0" prefHeight="18.0" prefWidth="118.0" text="Teléfono:" textFill="WHITE" />
-      <Label fx:id="lblCorreo" layoutX="58.0" layoutY="417.0" prefHeight="18.0" prefWidth="118.0" text="Correo:" textFill="WHITE" />
-      <Label layoutX="51.0" layoutY="487.0" prefHeight="18.0" prefWidth="145.0" text="Datos del dispositivo:" textFill="WHITE" />
-      <Label fx:id="lblIdDispositivo" layoutX="51.0" layoutY="535.0" prefHeight="18.0" prefWidth="118.0" text="ID:" textFill="WHITE" />
-      <Label fx:id="lblNombreDispositivo" layoutX="239.0" layoutY="535.0" prefHeight="18.0" prefWidth="118.0" text="Nombre: " textFill="WHITE" />
-      <Label fx:id="lblMarca" layoutX="500.0" layoutY="535.0" prefHeight="18.0" prefWidth="118.0" text="Marca:" textFill="WHITE" />
-      <Label fx:id="lblTipoDispositivo" layoutX="712.0" layoutY="535.0" prefHeight="18.0" prefWidth="118.0" text="Tipo de dispositivo:" textFill="WHITE" />
-      <Label fx:id="lblObservaciones" layoutX="51.0" layoutY="589.0" prefHeight="18.0" prefWidth="118.0" text="Observaciones:" textFill="WHITE" />
-      <Label fx:id="lblTecnicoAsignado" layoutX="53.0" layoutY="675.0" text="Técnico asignado:" textFill="WHITE" />
+      <Label fx:id="lblIdRevision" layoutX="58.0" layoutY="104.0" prefHeight="18.0" prefWidth="60.0" text="ID: " textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label fx:id="lblFechaIngreso" layoutX="180.0" layoutY="113.0" prefHeight="18.0" prefWidth="240.0" text="Fecha de ingreso:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label fx:id="lblFechaEgreso" layoutX="472.0" layoutY="113.0" prefHeight="18.0" prefWidth="234.0" text="Fecha de egreso:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label fx:id="lblTipoFalla" layoutX="742.0" layoutY="113.0" prefHeight="18.0" prefWidth="234.0" text="Tipo de falla:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label fx:id="lblDescripcion" layoutX="58.0" layoutY="187.0" prefHeight="65.0" prefWidth="680.0" text="Descripción:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label fx:id="lblEstado" layoutX="792.0" layoutY="178.0" prefHeight="18.0" prefWidth="160.0" text="Estado:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label layoutX="453.0" layoutY="298.0" prefHeight="18.0" prefWidth="118.0" text="Datos del cliente" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font></Label>
+      <Label fx:id="lblIdCliente" layoutX="58.0" layoutY="341.0" prefHeight="18.0" prefWidth="118.0" text="ID:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label fx:id="lblNombreCliente" layoutX="261.0" layoutY="350.0" prefHeight="18.0" prefWidth="220.0" text="Nombre:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label fx:id="lblTelefono" layoutX="633.0" layoutY="350.0" prefHeight="18.0" prefWidth="250.0" text="Teléfono:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label fx:id="lblCorreo" layoutX="58.0" layoutY="417.0" prefHeight="18.0" prefWidth="270.0" text="Correo:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font></Label>
+      <Label layoutX="453.0" layoutY="474.0" prefHeight="20.0" prefWidth="195.0" text="Datos del dispositivo" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font></Label>
+      <Label fx:id="lblIdDispositivo" layoutX="51.0" layoutY="535.0" prefHeight="18.0" prefWidth="95.0" text="ID:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label fx:id="lblNombreDispositivo" layoutX="202.0" layoutY="535.0" prefHeight="18.0" prefWidth="234.0" text="Nombre: " textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label fx:id="lblMarca" layoutX="500.0" layoutY="535.0" prefHeight="18.0" prefWidth="182.0" text="Marca:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label fx:id="lblTipoDispositivo" layoutX="712.0" layoutY="535.0" prefHeight="18.0" prefWidth="250.0" text="Tipo de dispositivo:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label fx:id="lblObservaciones" layoutX="51.0" layoutY="589.0" prefHeight="51.0" prefWidth="921.0" text="Observaciones:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label fx:id="lblTecnicoAsignado" layoutX="53.0" layoutY="675.0" prefHeight="18.0" prefWidth="307.0" text="Técnico asignado:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
       <Button fx:id="btnFinalizar" layoutX="544.0" layoutY="684.0" mnemonicParsing="false" onAction="#btnFinalizar_click" style="-fx-background-color: #e67e22;" text="Finalizar sin reparación" />
       <Button fx:id="btnHerramientas" layoutX="386.0" layoutY="671.0" mnemonicParsing="false" onAction="#btnHerramientas_click" prefHeight="51.0" prefWidth="110.0" style="-fx-background-color: #16a6b8;" text="Herramientas &#10;usadas" textAlignment="CENTER" />
       <Button fx:id="btnReparar" layoutX="751.0" layoutY="680.0" mnemonicParsing="false" onAction="#btnReparar_click" style="-fx-background-color: #e67e22;" text="Mandar a reparación" />

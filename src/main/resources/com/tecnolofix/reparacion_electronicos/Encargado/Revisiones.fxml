@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -8,7 +9,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<?import java.net.URL?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: #2c3e50;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tecnolofix.reparacion_electronicos.Controllers.Encargado.RevisionesController">
     <stylesheets>
       <URL value="@../EstilosTableView.css" />
@@ -28,8 +28,13 @@
             <TableColumn fx:id="clmDescripcion" prefWidth="295.0" text="Descripción" />
         </columns>
       </TableView>
-      <Label layoutX="70.0" layoutY="104.0" text="Filtrar por:" textFill="#fff8f8" />
-      <ComboBox fx:id="cmbFiltro" layoutX="183.0" layoutY="100.0" onAction="#cmbFiltro_change" prefHeight="26.0" prefWidth="289.0" />
-      <Button fx:id="btnVerRevision" layoutX="442.0" layoutY="587.0" mnemonicParsing="false" onAction="#btnVerRevision_click" text="Ver revisión" />
+      <Label layoutX="120.0" layoutY="104.0" text="Filtrar por estado:" textFill="#fff8f8" />
+      <ComboBox fx:id="cmbFiltro" layoutX="244.0" layoutY="100.0" onAction="#cmbFiltro_change" prefHeight="26.0" prefWidth="224.0" />
+      <Button fx:id="btnVerRevision" layoutX="441.0" layoutY="572.0" mnemonicParsing="false" onAction="#btnVerRevision_click" prefHeight="42.0" prefWidth="120.0" style="-fx-background-color: #e67e22;" text="Ver revisión">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Button>
+      <Label layoutX="516.0" layoutY="104.0" text="Filtrar por tipo de falla:" textFill="#fff8f8" />
+      <ComboBox fx:id="cmbFiltroFalla" layoutX="685.0" layoutY="100.0" onAction="#cmbFiltroFalla_change" prefHeight="26.0" prefWidth="224.0" />
    </children>
 </AnchorPane>

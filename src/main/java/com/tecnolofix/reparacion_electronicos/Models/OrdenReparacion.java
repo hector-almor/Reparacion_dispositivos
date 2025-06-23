@@ -29,8 +29,7 @@ public class OrdenReparacion {
         ASIGNADO,
         PROGRESO,
         COMPLETADO,
-        ENTREGADO,
-        CANCELADO
+        ENTREGADO
     }
 
     public OrdenReparacion() {

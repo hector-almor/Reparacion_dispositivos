@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -8,7 +9,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<?import java.net.URL?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: #2c3e50;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tecnolofix.reparacion_electronicos.Controllers.Encargado.ReparacionesController">
     <stylesheets>
       <URL value="@../EstilosTableView.css" />
@@ -18,7 +18,7 @@
          <font>
             <Font name="System Bold" size="18.0" />
          </font></Label>
-      <TableView layoutX="45.0" layoutY="180.0" prefHeight="374.0" prefWidth="932.0">
+      <TableView fx:id="tblReparaciones" layoutX="45.0" layoutY="180.0" prefHeight="374.0" prefWidth="932.0">
          <columns>
             <TableColumn fx:id="clmId" prefWidth="75.0" text="ID" />
             <TableColumn fx:id="clmFechaIngreso" prefWidth="133.0" text="Fecha de ingreso" />
@@ -26,12 +26,13 @@
             <TableColumn fx:id="clmEstado" prefWidth="101.0" text="Estado" />
             <TableColumn fx:id="clmTipoFalla" prefWidth="113.0" text="Tipo de falla" />
             <TableColumn fx:id="clmDispositivo" prefWidth="103.0" text="Dispositivo" />
-            <TableColumn prefWidth="276.0" text="Descripción" />
             <TableColumn fx:id="clmDescripcion" prefWidth="276.0" text="Descripción" />
          </columns>
       </TableView>
-      <Label layoutX="80.0" layoutY="114.0" text="Filtrar por:" textFill="WHITE" />
-      <ComboBox fx:id="cmbFiltro" layoutX="193.0" layoutY="110.0" onAction="#cmbFiltro_change" prefHeight="26.0" prefWidth="289.0" />
+      <Label layoutX="105.0" layoutY="114.0" text="Filtrar por estado:" textFill="WHITE" />
+      <ComboBox fx:id="cmbFiltro" layoutX="240.0" layoutY="110.0" onAction="#cmbFiltro_change" prefHeight="26.0" prefWidth="199.0" />
       <Button fx:id="btnVerReparacion" layoutX="452.0" layoutY="597.0" mnemonicParsing="false" onAction="#btnVerReparacion_click" style="-fx-background-color: #e67e22;" text="Ver reparación" />
+      <Label layoutX="511.0" layoutY="114.0" text="Filtrar por tipo de falla:" textFill="WHITE" />
+      <ComboBox fx:id="cmbFiltroFalla" layoutX="684.0" layoutY="110.0" onAction="#cmbFiltroFalla_change" prefHeight="26.0" prefWidth="199.0" />
    </children>
 </AnchorPane>

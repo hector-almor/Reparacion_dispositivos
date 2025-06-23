@@ -1,5 +1,7 @@
 package com.tecnolofix.reparacion_electronicos.Controllers.Encargado;
 
+import com.tecnolofix.reparacion_electronicos.Controllers.CargableConId;
+import com.tecnolofix.reparacion_electronicos.Controllers.Contexto;
 import com.tecnolofix.reparacion_electronicos.Controllers.ControladorConRootPane;
 import com.tecnolofix.reparacion_electronicos.DB.DAO.OrdenReparacionDAO;
 import com.tecnolofix.reparacion_electronicos.DB.Implementaciones.OrdenReparacionDAOImp;
@@ -23,7 +25,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class RevisionHerramientasController implements Initializable, ControladorConRootPane {
+public class RevisionHerramientasController implements Initializable, ControladorConRootPane, CargableConId {
     @FXML Button btnRegresar;
     @FXML TableColumn<HerramientaConCantidad,Integer> clmCantidad;
     @FXML TableColumn<HerramientaConCantidad,String> clmDescripcion;
@@ -32,7 +34,7 @@ public class RevisionHerramientasController implements Initializable, Controlado
     @FXML TableView<HerramientaConCantidad> tblHerramientas;
 
     private BorderPane rootPane;
-    private int idOrden;
+    public int idOrden;
     ObservableList<HerramientaConCantidad> observableHerramientas = FXCollections.observableArrayList();
 
     @Override
@@ -40,23 +42,33 @@ public class RevisionHerramientasController implements Initializable, Controlado
         this.rootPane = rootPane;
     }
 
-    public void setIdOrden(int idOrden) {this.idOrden = idOrden;}
+    public void setId(int idOrden) {this.idOrden = idOrden;}
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    }
+
+    public RevisionHerramientasController(int idOrden) {
+        this.idOrden = idOrden;
+    }
+
+    public void cargarDatos(){
         clmId.setCellValueFactory(new PropertyValueFactory<>("id"));
         clmNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         clmDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
         clmCantidad.setCellValueFactory(new PropertyValueFactory<>("stockEnUso"));
-
+//        System.out.println(idOrden);
         OrdenReparacionDAO db = new OrdenReparacionDAOImp();
-        ArrayList<HerramientaConCantidad> herramientas = db.obtenerHerramientasConCantidad();
+        ArrayList<HerramientaConCantidad> herramientas = db.obtenerHerramientasConCantidad(idOrden);
         observableHerramientas.setAll(herramientas);
+        tblHerramientas.setItems(observableHerramientas);
     }
 
     public void btnRegresar_click(ActionEvent actionEvent) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Encargado/Revisiones.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Encargado/DetalleRevision.fxml"));
+            loader.setControllerFactory(param->new DetalleRevisionController(idOrden));
             Parent vistaCentro = loader.load(); // Carga la vista y guarda el root
 
             // Obtener el controlador de esa vista
@@ -66,9 +78,9 @@ public class RevisionHerramientasController implements Initializable, Controlado
             if (controlador instanceof ControladorConRootPane) {
                 ((ControladorConRootPane) controlador).setRootPane(rootPane);
             }
-
             if (controlador instanceof DetalleRevisionController) {
-                ((DetalleRevisionController) controlador).setIdRevision(idOrden);
+                ((DetalleRevisionController) controlador).setId(idOrden);
+                ((DetalleRevisionController) controlador).cargarDatos();
             }
 
             rootPane.setCenter(vistaCentro);

@@ -3,6 +3,9 @@ module com.tecnolofix.reparacion_electronicos {
     requires javafx.fxml;
     requires java.sql;
     requires mysql.connector.j;
+    requires kernel;
+    requires layout;
+    requires java.desktop;
 
 
     opens com.tecnolofix.reparacion_electronicos to javafx.fxml;

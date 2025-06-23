@@ -56,7 +56,7 @@ public class PiezaDAOImp implements PiezaDAO {
 
     @Override
     public boolean registrarCompras(ArrayList<Pieza> piezas, int idProveedor) {
-        String sql = "INSERT INTO Compras (nombre_pieza, cantidad, precio_unit, id_proveedor, fecha_compra) " +
+        String sql = "INSERT INTO Compras (nombre, cantidad, precio_unit, id_proveedor, fecha_compra) " +
                 "VALUES (?, ?, ?, ?, NOW())";
 
         try (DB db = new DB()) {

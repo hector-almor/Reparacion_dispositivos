@@ -1,5 +1,7 @@
 package com.tecnolofix.reparacion_electronicos.Controllers.Encargado;
 
+import com.tecnolofix.reparacion_electronicos.Controllers.CargableConId;
+import com.tecnolofix.reparacion_electronicos.Controllers.Contexto;
 import com.tecnolofix.reparacion_electronicos.Controllers.ControladorConRootPane;
 import com.tecnolofix.reparacion_electronicos.DB.DAO.OrdenReparacionDAO;
 import com.tecnolofix.reparacion_electronicos.DB.Implementaciones.OrdenReparacionDAOImp;
@@ -25,6 +27,7 @@ import java.util.Date;
 import java.util.ResourceBundle;
 
 public class RevisionesController implements Initializable, ControladorConRootPane {
+    @FXML ComboBox<String> cmbFiltroFalla;
     @FXML TableView<OrdenConDispositivo> tblRevisiones;
     @FXML Button btnVerRevision;
     @FXML ComboBox<String> cmbFiltro;
@@ -48,8 +51,11 @@ public class RevisionesController implements Initializable, ControladorConRootPa
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        cmbFiltro.getItems().setAll("TODOS","ASIGNADO","PROGRESO","COMPLETADO","ENTREGADO","CANCELADO");
+        cmbFiltro.getItems().setAll("TODOS","ASIGNADO","PROGRESO","COMPLETADO","ENTREGADO");
         cmbFiltro.getSelectionModel().select("TODOS");
+
+        cmbFiltroFalla.getItems().setAll("TODOS","HARDWARE","SOFTWARE");
+        cmbFiltroFalla.getSelectionModel().select("TODOS");
 
         clmId.setCellValueFactory(new PropertyValueFactory<>("id"));
         clmFechaIngreso.setCellValueFactory(new PropertyValueFactory<>("fechaIng"));
@@ -65,12 +71,27 @@ public class RevisionesController implements Initializable, ControladorConRootPa
         listaFiltradaOrdenes = new FilteredList<>(listaOrdenes,o->true);
         tblRevisiones.setItems(listaFiltradaOrdenes);
     }
-    public void cmbFiltro_change(ActionEvent actionEvent) {
-        String filtro = cmbFiltro.getSelectionModel().getSelectedItem();
 
-        listaFiltradaOrdenes.setPredicate(orden->
-            orden.getEstado().name().equalsIgnoreCase(filtro)
-        );
+    public void cmbFiltro_change(ActionEvent actionEvent) {
+        String filtroEstado = cmbFiltro.getSelectionModel().getSelectedItem();
+        String filtroFalla = cmbFiltroFalla.getSelectionModel().getSelectedItem();
+
+        listaFiltradaOrdenes.setPredicate(orden-> {
+            boolean coincideFalla = filtroFalla.equals("TODOS") || orden.getTipoFalla().name().equalsIgnoreCase(filtroFalla);
+            boolean coincideEstado = filtroEstado.equals("TODOS") || orden.getEstado().name().equalsIgnoreCase(filtroEstado);
+            return coincideFalla && coincideEstado;
+        });
+    }
+
+    public void cmbFiltroFalla_change(ActionEvent actionEvent) {
+        String filtroEstado = cmbFiltro.getSelectionModel().getSelectedItem();
+        String filtroFalla = cmbFiltroFalla.getSelectionModel().getSelectedItem();
+
+        listaFiltradaOrdenes.setPredicate(orden-> {
+            boolean coincideFalla = filtroFalla.equals("TODOS") || orden.getTipoFalla().name().equalsIgnoreCase(filtroFalla);
+            boolean coincideEstado = filtroEstado.equals("TODOS") || orden.getEstado().name().equalsIgnoreCase(filtroEstado);
+            return coincideFalla && coincideEstado;
+        });
     }
 
     public void btnVerRevision_click(ActionEvent actionEvent) {
@@ -78,21 +99,23 @@ public class RevisionesController implements Initializable, ControladorConRootPa
             Alerts.showAlert("Error","Seleccionar una revisión a inspeccionar.", Alert.AlertType.ERROR,new ButtonType[]{ButtonType.OK});
             return;
         }
-
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Encargado/DetalleRevision.fxml"));
             Parent vistaCentro = loader.load(); // Carga la vista y guarda el root
-
             // Obtener el controlador de esa vista
             Object controlador = loader.getController();
-
-            // Si el controlador tiene un método para recibir el rootPane, lo llamas:
+            // Si el controlador tiene un metodo para recibir el rootPane, lo llamas:
             if (controlador instanceof ControladorConRootPane) {
                 ((ControladorConRootPane) controlador).setRootPane(rootPane);
             }
 
+            if(controlador instanceof CargableConId){
+                ((CargableConId) controlador).setId(tblRevisiones.getSelectionModel().getSelectedItem().getId());
+                ((CargableConId) controlador).cargarDatos();
+            }
             if(controlador instanceof DetalleRevisionController){
-                ((DetalleRevisionController) controlador).setIdRevision(tblRevisiones.getSelectionModel().getSelectedItem().getId());
+                ((DetalleRevisionController) controlador).setId(tblRevisiones.getSelectionModel().getSelectedItem().getId());
+                ((DetalleRevisionController) controlador).cargarDatos();
             }
 
             rootPane.setCenter(vistaCentro);
@@ -100,5 +123,4 @@ public class RevisionesController implements Initializable, ControladorConRootPa
             throw new RuntimeException(e);
         }
     }
-
 }

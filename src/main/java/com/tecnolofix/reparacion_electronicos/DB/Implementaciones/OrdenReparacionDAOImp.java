@@ -30,17 +30,51 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
             Connection conn = db.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);
 
+            //Insertar cliente
+            String sqlCliente = "INSERT INTO Clientes (nombre, telefono,correo) VALUES (?,?,?)";
+            PreparedStatement psCliente = conn.prepareStatement(sqlCliente, Statement.RETURN_GENERATED_KEYS);
+            psCliente.setString(1, cliente.getNombre());
+            psCliente.setString(2, cliente.getTelefono());
+            psCliente.setString(3, cliente.getCorreo());
+            psCliente.executeUpdate();
+
+            ResultSet rsCliente = psCliente.getGeneratedKeys();
+            int idCliente = 0;
+            if (rsCliente.next()) {
+                idCliente = rsCliente.getInt(1);
+            }
+
+            //Insertar dispositivo
+            String sqlDispositivo = "INSERT INTO Dispositivo (nombre, marca, tipo_dispo, observaciones) VALUES (?, ?, ?, ?)";
+            PreparedStatement psDispositivo = conn.prepareStatement(sqlDispositivo, Statement.RETURN_GENERATED_KEYS);
+            psDispositivo.setString(1, dispositivo.getNombre());
+            psDispositivo.setString(2, dispositivo.getMarca());
+            psDispositivo.setString(3, dispositivo.getTipoDispo().name());
+            psDispositivo.setString(4, dispositivo.getObservaciones());
+            psDispositivo.executeUpdate();
+
+            ResultSet rsDispositivo = psDispositivo.getGeneratedKeys();
+            int idDispositivo = 0;
+            if (rsDispositivo.next()) {
+                idDispositivo = rsDispositivo.getInt(1);
+            }
+
+            //Reparación
             stmt.setInt(1, reparacion.getId());
-            stmt.setDate(2, java.sql.Date.valueOf(reparacion.getFechaIng()));
-            stmt.setDate(3, java.sql.Date.valueOf(reparacion.getFechaEg()));
+            stmt.setDate(2, Date.valueOf(reparacion.getFechaIng()));
+            if (reparacion.getFechaEg() != null) {
+                stmt.setDate(3, java.sql.Date.valueOf(reparacion.getFechaEg()));
+            } else {
+                stmt.setNull(3, java.sql.Types.DATE);
+            }
             stmt.setString(4, reparacion.getTipoFalla().name());
             stmt.setString(5, reparacion.getDescripcion());
             stmt.setString(6, reparacion.getTipoOrden().name());
             stmt.setString(7, reparacion.getEstado().name());
-            stmt.setInt(8, cliente.getId());
-            stmt.setInt(9, dispositivo.getId());
-            stmt.setInt(10, reparacion.getFkTecnico());
-            stmt.setInt(11, reparacion.getFkGarantia());
+            stmt.setInt(8, idCliente);
+            stmt.setInt(9, idDispositivo);
+            stmt.setNull(10, Types.INTEGER);
+            stmt.setNull(11, Types.INTEGER);
 
             int filasAfectadas = stmt.executeUpdate();
             return filasAfectadas > 0;
@@ -57,11 +91,14 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
     public ArrayList<OrdenConDispositivo> obtenerOrdenesConDispositivo() {
         ArrayList<OrdenConDispositivo> lista = new ArrayList<>();
 
-        String sql = "SELECT " +
-                "o.ID AS idOrden, o.Fecha_ing, o.Fecha_eg, o.Tipo_falla, o.Descripcion, o.Estado, o.Tipo_orden, " +
-                "d.ID AS idDispositivo, d.Marca, d.Modelo, d.Numero_serie " +
-                "FROM Orden_reparacion o " +
-                "INNER JOIN Dispositivo d ON o.Fk_dispositivo = d.ID";
+        String sql = """
+            SELECT o.ID AS idOrden, o.Fecha_ing, o.Fecha_eg, o.Tipo_falla, o.Descripcion, o.Estado, o.Tipo_orden,
+            d.ID AS idDispositivo, d.Marca, d.Nombre, d.Observaciones, d.tipo_dispo
+            FROM Orden_reparacion o
+            INNER JOIN Dispositivo d ON o.fk_dispositivo = d.id
+            WHERE o.estado = "PENDIENTE";
+            """;
+
 
         try (DB db = new DB()) {
             Connection conn = db.getConnection();
@@ -103,7 +140,7 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
                 orden.setTipoDispositivo(Dispositivo.TipoDispositivo.valueOf(rs.getString("tipo_dispo").toUpperCase()));
 
 
-                orden.setObservacionesDispositivo(rs.getString("obervaciones"));
+                orden.setObservacionesDispositivo(rs.getString("observaciones"));
 
                 lista.add(orden);
             }
@@ -117,7 +154,7 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
 
     @Override
     public boolean enlazaOrdenConTecnico(int idOrden, int idTecnico) {
-        String sql = "UPDATE Orden_reparacion SET Fk_tecnico = ? WHERE ID = ?";
+        String sql = "UPDATE Orden_reparacion SET Fk_tecnico = ?, estado = 'ASIGNADO' WHERE ID = ?";
 
         try (DB db = new DB()) {
             Connection conn = db.getConnection();
@@ -139,12 +176,13 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
     public ArrayList<OrdenConDispositivo> getAllOrdenesConDispositivo() {
         ArrayList<OrdenConDispositivo> lista = new ArrayList<>();
 
-        String sql = "SELECT " +
-                "o.ID AS idOrden, o.Fecha_ing, o.Fecha_eg, o.Tipo_falla, o.Descripcion, o.Estado, o.Tipo_orden, " +
-                "d.ID AS idDispositivo, d.Nombre, d.Marca, d.Modelo, d.Tipo_dispositivo, d.Observaciones " +
-                "FROM Orden_reparacion o " +
-                "INNER JOIN Dispositivo d ON o.Fk_dispositivo = d.ID " +
-                "WHERE o.Estado NOT IN ('ASIGNADO', 'CANCELADO')";
+        String sql = """
+                SELECT o.ID AS idOrden, o.Fecha_ing, o.Fecha_eg, o.Tipo_falla, o.Descripcion, o.Estado, o.Tipo_orden,
+                d.ID AS idDispositivo, d.Nombre, d.Marca, d.Tipo_dispo, d.Observaciones
+                FROM Orden_reparacion o
+                INNER JOIN Dispositivo d ON o.Fk_dispositivo = d.ID
+                WHERE o.Estado NOT IN ('PENDIENTE');
+                """;
 
         try (DB db = new DB()) {
             Connection conn = db.getConnection();
@@ -172,7 +210,7 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
                 orden.setIdDispositivo(rs.getInt("idDispositivo"));
                 orden.setNombreDispositivo(rs.getString("Nombre"));
                 orden.setMarcaDispositivo(rs.getString("Marca"));
-                orden.setTipoDispositivo(Dispositivo.TipoDispositivo.valueOf(rs.getString("Tipo_dispositivo").toUpperCase()));
+                orden.setTipoDispositivo(Dispositivo.TipoDispositivo.valueOf(rs.getString("Tipo_dispo").toUpperCase()));
                 orden.setObservacionesDispositivo(rs.getString("Observaciones"));
 
                 lista.add(orden);
@@ -187,32 +225,30 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
 
     @Override
     public OrdenCompleta obtenerRevisionCompleta(int idOrden) {
-        OrdenCompleta ordenCompleta = null;
-
-        String sql = "SELECT " +
-                "o.ID, o.Fecha_ing, o.Fecha_eg, o.Tipo_falla, o.Descripcion, o.Estado, o.Tipo_orden, " +
-                "d.ID AS d_ID, d.Nombre AS d_Nombre, d.Marca, d.Modelo, d.Tipo_dispositivo, d.Observaciones, " +
-                "c.ID AS c_ID, c.Nombre AS c_Nombre, c.Correo, c.Telefono, c.Direccion, " +
-                "t.ID AS t_ID, t.Nombre AS t_Nombre, t.Especialidad, " +
-                "g.ID AS g_ID, g.Tipo_garantia, g.Fecha_inicio, g.Fecha_fin " +
-                "FROM Orden_reparacion o " +
-                "INNER JOIN Dispositivo d ON o.Fk_dispositivo = d.ID " +
-                "INNER JOIN Cliente c ON o.Fk_cliente = c.ID " +
-                "LEFT JOIN Tecnico t ON o.Fk_tecnico = t.ID " +
-                "LEFT JOIN Garantia g ON o.Fk_garantia = g.ID " +
-                "WHERE o.ID = ?";
+        OrdenCompleta ordenCompleta = new OrdenCompleta();
+        String sql = """
+            SELECT 
+                o.ID AS o_ID, o.Fecha_ing, o.Fecha_eg, o.Tipo_falla, o.Descripcion, o.Estado, o.Tipo_orden,
+                d.ID AS d_ID, d.Nombre AS d_Nombre, d.Marca, d.Tipo_dispo, d.Observaciones,
+                c.ID AS c_ID, c.Nombre AS c_Nombre, c.Correo, c.Telefono,
+                t.ID AS t_ID, t.Nombre AS t_Nombre, t.Especialidad,
+                g.ID AS g_ID, g.Fecha_inicio, g.Fecha_fin
+            FROM Orden_reparacion o
+            INNER JOIN Dispositivo d ON o.Fk_dispositivo = d.ID
+            INNER JOIN Clientes c ON o.Fk_cliente = c.ID
+            LEFT JOIN Tecnicos t ON o.Fk_tecnico = t.ID
+            LEFT JOIN Garantias g ON o.Fk_garantia = g.ID
+            WHERE o.ID = ?
+            """;
 
         try (DB db = new DB()) {
             Connection conn = db.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, idOrden);
             ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                ordenCompleta = new OrdenCompleta();
-
+            while(rs.next()) {
                 // Datos de la orden
-                ordenCompleta.setId(rs.getInt("ID"));
+                ordenCompleta.setId(rs.getInt("o_id"));
                 Date fi = rs.getDate("Fecha_ing");
                 ordenCompleta.setFechaIng(fi != null ? fi.toLocalDate() : null);
                 Date fe = rs.getDate("Fecha_eg");
@@ -227,7 +263,7 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
                 disp.setId(rs.getInt("d_ID"));
                 disp.setNombre(rs.getString("d_Nombre"));
                 disp.setMarca(rs.getString("Marca"));
-                disp.setTipoDispo(Dispositivo.TipoDispositivo.valueOf(rs.getString("Tipo_dispositivo").toUpperCase()));
+                disp.setTipoDispo(Dispositivo.TipoDispositivo.valueOf(rs.getString("Tipo_dispo").toUpperCase()));
                 disp.setObservaciones(rs.getString("Observaciones"));
                 ordenCompleta.setIdDispositivo(disp.getId());
                 ordenCompleta.setNombreDispositivo(disp.getNombre());
@@ -249,7 +285,7 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
                     Tecnico tec = new Tecnico();
                     tec.setId(idTec);
                     tec.setNombre(rs.getString("t_Nombre"));
-                    tec.setEspecialidad(Tecnico.Especialidad.valueOf(rs.getString("especialidad").toUpperCase()));
+                    tec.setEspecialidad(Tecnico.Especialidad.valueOf(rs.getString("Especialidad").toUpperCase()));
                     ordenCompleta.setTecnico(tec);
                 }
 
@@ -265,11 +301,9 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
                     ordenCompleta.setGarantia(gar);
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return ordenCompleta;
     }
 
@@ -277,18 +311,20 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
     public OrdenCompleta obtenerReparacionCompleta(int idOrden) {
         OrdenCompleta ordenCompleta = null;
 
-        String sql = "SELECT " +
-                "o.ID, o.Fecha_ing, o.Fecha_eg, o.Tipo_falla, o.Descripcion, o.Tipo_orden, o.Estado, o.Fk_garantia, " +
-                "d.ID AS idDispositivo, d.Nombre AS nombreDispositivo, d.Marca, d.Tipo_dispositivo, d.Observaciones AS observacionesDispositivo, " +
-                "c.ID AS idCliente, c.Nombre AS nombreCliente, c.Correo, c.Telefono, c.Direccion, " +
-                "t.ID AS idTecnico, t.Nombre AS nombreTecnico, t.Especialidad, " +
-                "g.ID AS idGarantia, g.Fecha_inicio, g.Fecha_fin " +
-                "FROM Orden_reparacion o " +
-                "INNER JOIN Dispositivo d ON o.Fk_dispositivo = d.ID " +
-                "INNER JOIN Cliente c ON o.Fk_cliente = c.ID " +
-                "LEFT JOIN Tecnico t ON o.Fk_tecnico = t.ID " +
-                "LEFT JOIN Garantia g ON o.Fk_garantia = g.ID " +
-                "WHERE o.ID = ?";
+        String sql = """
+               SELECT
+               o.ID, o.Fecha_ing, o.Fecha_eg, o.Tipo_falla, o.Descripcion, o.Tipo_orden, o.Estado, o.Fk_garantia,
+               d.ID AS idDispositivo, d.Nombre AS nombreDispositivo, d.Marca, d.Tipo_dispo, d.Observaciones AS observacionesDispositivo,
+               c.ID AS idCliente, c.Nombre AS nombreCliente, c.Correo, c.Telefono,
+               t.ID AS idTecnico, t.Nombre AS nombreTecnico, t.Especialidad,
+               g.ID AS idGarantia, g.Fecha_inicio, g.Fecha_fin
+               FROM Orden_reparacion o
+               INNER JOIN Dispositivo d ON o.Fk_dispositivo = d.ID
+               INNER JOIN Clientes c ON o.Fk_cliente = c.ID
+               LEFT JOIN Tecnicos t ON o.Fk_tecnico = t.ID
+               LEFT JOIN Garantias g ON o.Fk_garantia = g.ID
+               WHERE o.ID = ?
+               """;
 
         try (DB db = new DB()) {
             Connection conn = db.getConnection();
@@ -322,7 +358,7 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
                 ordenCompleta.setIdDispositivo(rs.getInt("idDispositivo"));
                 ordenCompleta.setNombreDispositivo(rs.getString("nombreDispositivo"));
                 ordenCompleta.setMarcaDispositivo(rs.getString("Marca"));
-                ordenCompleta.setTipoDispositivo(Dispositivo.TipoDispositivo.valueOf(rs.getString("Tipo_dispositivo").toUpperCase()));
+                ordenCompleta.setTipoDispositivo(Dispositivo.TipoDispositivo.valueOf(rs.getString("Tipo_dispo").toUpperCase()));
                 ordenCompleta.setObservacionesDispositivo(rs.getString("observacionesDispositivo"));
 
                 // Cliente
@@ -339,7 +375,7 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
                     Tecnico tec = new Tecnico();
                     tec.setId(idTec);
                     tec.setNombre(rs.getString("nombreTecnico"));
-                    tec.setEspecialidad(Tecnico.Especialidad.valueOf(rs.getString("especialidad").toUpperCase()));
+                    tec.setEspecialidad(Tecnico.Especialidad.valueOf(rs.getString("Especialidad").toUpperCase()));
 
                     ordenCompleta.setTecnico(tec);
                 }
@@ -370,7 +406,7 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
             Connection conn = db.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);
 
-            stmt.setString(1, OrdenReparacion.Estado.CANCELADO.name());
+            stmt.setString(1, OrdenReparacion.Estado.ENTREGADO.name());
             stmt.setDate(2, java.sql.Date.valueOf(fechaEgreso));
             stmt.setInt(3, idRevision);
 
@@ -387,7 +423,7 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
 
     @Override
     public boolean marcarParaReparacion(int idRevision) {
-        String sql = "UPDATE Orden_reparacion SET Estado = ? WHERE Tipo_orden = ?";
+        String sql = "UPDATE Orden_reparacion SET Estado = ?, fecha_eg=NULL, tipo_orden='REPARACION' WHERE id = ?";
 
         try (DB db = new DB()) {
             Connection conn = db.getConnection();
@@ -397,7 +433,7 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
             stmt.setString(1, OrdenReparacion.Estado.ASIGNADO.name());
 
             // Tipo de orden a filtrar
-            stmt.setString(2, OrdenReparacion.TipoOrden.REPARACION.name());
+            stmt.setInt(2, idRevision);
 
             int filasAfectadas = stmt.executeUpdate();
             return filasAfectadas > 0;
@@ -409,29 +445,49 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
     }
 
     @Override
-    public ArrayList<HerramientaConCantidad> obtenerHerramientasConCantidad() {
+    public ArrayList<HerramientaConCantidad> obtenerHerramientasConCantidad(int idRevision) {
         ArrayList<HerramientaConCantidad> lista = new ArrayList<>();
 
-        String sql = "SELECT ID, Nombre, Tipo, Marca, Cantidad FROM Herramienta";
+        String sql = """
+            SELECT 
+                h.id,
+                h.nombre,
+                h.descripcion,
+                oh.cantidad_usada AS cantidadUsada,
+                h.stock_disponible,
+                h.stock_en_uso,
+                h.stock_mantenimiento
+            FROM 
+                Herramientas h
+            JOIN 
+                Orden_herramientas oh ON h.id = oh.fk_herramienta
+            JOIN 
+                Orden_reparacion o ON oh.fk_orden = o.id
+            WHERE 
+                o.id = ?;
+            """;
 
-        try (DB db = new DB()) {
-            Connection conn = db.getConnection();
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+        try (DB db = new DB();
+             Connection conn = db.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            while (rs.next()) {
-                HerramientaConCantidad herramienta = new HerramientaConCantidad();
+            // Usamos PreparedStatement para evitar SQL injection
+            pstmt.setInt(1, idRevision);
 
-                herramienta.setId(rs.getInt("id"));
-                herramienta.setNombre(rs.getString("nombre"));
-                herramienta.setDescripcion(rs.getString("descripcion"));  // si es ENUM, puedes usar .name()
-                herramienta.setStockDisponible(rs.getInt("stock_disponible"));
-                herramienta.setStockEnUso(rs.getInt("stock_en_uso"));
-                herramienta.setStockMantenimiento(rs.getInt("stock_mantenimiento"));
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    HerramientaConCantidad herramienta = new HerramientaConCantidad();
 
-                lista.add(herramienta);
+                    herramienta.setId(rs.getInt("id"));
+                    herramienta.setNombre(rs.getString("nombre"));
+                    herramienta.setDescripcion(rs.getString("descripcion"));
+                    herramienta.setStockDisponible(rs.getInt("stock_disponible"));
+                    herramienta.setStockEnUso(rs.getInt("cantidadUsada"));
+                    herramienta.setStockMantenimiento(rs.getInt("stock_mantenimiento"));
+                    // Agregamos la cantidad específica usada en esta orden
+                    lista.add(herramienta);
+                }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -445,7 +501,7 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
 
         String sql = "SELECT " +
                 "o.ID AS idOrden, o.Fecha_ing, o.Fecha_eg, o.Tipo_falla, o.Descripcion, o.Estado, o.Tipo_orden, " +
-                "d.ID AS idDispositivo, d.Nombre, d.Marca, d.Tipo_dispositivo, d.Observaciones " +
+                "d.ID AS idDispositivo, d.Nombre, d.Marca, d.Tipo_dispo, d.Observaciones " +
                 "FROM Orden_reparacion o " +
                 "INNER JOIN Dispositivo d ON o.Fk_dispositivo = d.ID";
 
@@ -473,7 +529,7 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
                 orden.setIdDispositivo(rs.getInt("idDispositivo"));
                 orden.setNombreDispositivo(rs.getString("Nombre"));
                 orden.setMarcaDispositivo(rs.getString("Marca"));
-                orden.setTipoDispositivo(Dispositivo.TipoDispositivo.valueOf(rs.getString("Tipo_dispositivo").toUpperCase()));
+                orden.setTipoDispositivo(Dispositivo.TipoDispositivo.valueOf(rs.getString("Tipo_dispo").toUpperCase()));
                 orden.setObservacionesDispositivo(rs.getString("Observaciones"));
 
                 lista.add(orden);

@@ -48,6 +48,8 @@
                 <Font name="System Bold" size="18.0" />
             </font>
         </Button>
+      <Button fx:id="btnPdfGarantia" layoutX="44.0" layoutY="309.0" mnemonicParsing="false" onAction="#btnPdfGarantia_click" prefHeight="72.0" prefWidth="137.0" text="PDF garantía" />
+      <Button fx:id="btnPdfOrden" layoutX="224.0" layoutY="319.0" mnemonicParsing="false" onAction="#btnPdfOrden_click" prefHeight="72.0" prefWidth="186.0" text="PDF orden reparación" />
     </children>
    <opaqueInsets>
       <Insets />

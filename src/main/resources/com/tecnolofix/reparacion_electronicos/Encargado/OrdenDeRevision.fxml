@@ -35,7 +35,10 @@
       <ComboBox fx:id="cmbTipoFalla" layoutX="207.0" layoutY="421.0" prefHeight="26.0" prefWidth="228.0" />
       <Label layoutX="266.0" layoutY="469.0" text="Descripción" textFill="WHITE" />
       <TextArea fx:id="txtDescripcion" layoutX="127.0" layoutY="496.0" prefHeight="120.0" prefWidth="389.0" />
-      <Button fx:id="btnRegistrar" layoutX="689.0" layoutY="590.0" mnemonicParsing="false" onAction="#btnRegistrar_click" style="-fx-background-color: #e67e22;" text="Registrar" />
+      <Button fx:id="btnRegistrar" layoutX="685.0" layoutY="554.0" mnemonicParsing="false" onAction="#btnRegistrar_click" prefHeight="62.0" prefWidth="97.0" style="-fx-background-color: #e67e22;" text="Registrar">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Button>
       <Label layoutX="127.0" layoutY="105.0" text="Registrar como:" textFill="WHITE" />
       <ComboBox fx:id="cmbTipoRevision" layoutX="282.0" layoutY="101.0" prefHeight="26.0" prefWidth="245.0" />
    </children>

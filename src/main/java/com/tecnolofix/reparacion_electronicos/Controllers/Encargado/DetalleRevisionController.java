@@ -1,5 +1,7 @@
 package com.tecnolofix.reparacion_electronicos.Controllers.Encargado;
 
+import com.tecnolofix.reparacion_electronicos.Controllers.CargableConId;
+import com.tecnolofix.reparacion_electronicos.Controllers.Contexto;
 import com.tecnolofix.reparacion_electronicos.Controllers.ControladorConRootPane;
 import com.tecnolofix.reparacion_electronicos.DB.DAO.OrdenReparacionDAO;
 import com.tecnolofix.reparacion_electronicos.DB.Implementaciones.OrdenReparacionDAOImp;
@@ -18,10 +20,11 @@ import javafx.scene.layout.BorderPane;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-public class DetalleRevisionController implements Initializable, ControladorConRootPane {
+public class DetalleRevisionController implements Initializable, ControladorConRootPane, CargableConId{
     @FXML Button btnRegresar;
     @FXML Button btnReparar;
     @FXML Button btnHerramientas;
@@ -55,24 +58,35 @@ public class DetalleRevisionController implements Initializable, ControladorConR
         this.rootPane = rootPane;
     }
 
-    public void setIdRevision(int idRevision) {
+    public void setId(int idRevision) {
         this.idRevision = idRevision;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    }
+
+    public DetalleRevisionController(int idRevision){
+        this.idRevision = idRevision;
+    }
+
+    public DetalleRevisionController(){}
+
+    public void cargarDatos(){
         OrdenReparacionDAO db = new OrdenReparacionDAOImp();
-        OrdenCompleta ordenCompleta = db.obtenerRevisionCompleta(idRevision);
+        //System.out.println("contexto del id revision: " + idRevision+ " "+Contexto.idRevision);
+        Contexto.idRevision = idRevision;
+        OrdenCompleta ordenCompleta = db.obtenerRevisionCompleta(Contexto.idRevision);
         this.cliente = ordenCompleta.getCliente();
         this.tecnico = ordenCompleta.getTecnico();
-        var dispositivo = new Dispositivo();
+        dispositivo = new Dispositivo();
         dispositivo.setId(ordenCompleta.getIdDispositivo());
         dispositivo.setNombre(ordenCompleta.getNombreDispositivo());
         dispositivo.setMarca(ordenCompleta.getMarcaDispositivo());
         dispositivo.setTipoDispo(ordenCompleta.getTipoDispositivo());
         dispositivo.setObservaciones(ordenCompleta.getObservacionesDispositivo());
-        this.dispositivo = dispositivo;
-        var orden = new OrdenReparacion();
+        orden = new OrdenReparacion();
         orden.setId(ordenCompleta.getId());
         orden.setFechaIng(ordenCompleta.getFechaIng());
         orden.setFechaEg(ordenCompleta.getFechaEg());
@@ -81,56 +95,62 @@ public class DetalleRevisionController implements Initializable, ControladorConR
         orden.setTipoOrden(ordenCompleta.getTipoOrden());
         orden.setEstado(ordenCompleta.getEstado());
 
-        lblIdRevision.setText(lblIdRevision.getText()+" "+orden.getId());
-        lblFechaIngreso.setText(lblFechaIngreso.getText()+" "+orden.getFechaIng());
-        String fechaEgreso = (orden.getFechaEg()==null)? "Sin fecha":orden.getFechaEg().toString();
-        lblFechaEgreso.setText(lblFechaEgreso.getText()+" "+fechaEgreso);
-        lblTipoFalla.setText(lblTipoFalla.getText()+" "+orden.getTipoFalla());
-        lblDescripcion.setText(lblDescripcion.getText()+" "+orden.getDescripcion());
-        lblEstado.setText(lblEstado.getText()+" "+orden.getEstado());
+        lblIdRevision.setText("ID: "+orden.getId());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        lblFechaIngreso.setText("Fecha ingreso: "+orden.getFechaIng().format(formatter));
+        String fechaEgreso = (orden.getFechaEg()==null)? "Sin fecha":orden.getFechaEg().format(formatter);
+        lblFechaEgreso.setText("Fecha egreso: "+fechaEgreso);
+        lblTipoFalla.setText("Tipo de falla: "+orden.getTipoFalla());
+        lblDescripcion.setText("Descripción: "+orden.getDescripcion());
+        lblEstado.setText("Estado: "+orden.getEstado());
 
-        lblIdCliente.setText(lblIdCliente+" "+cliente.getId());
-        lblNombreCliente.setText(lblNombreCliente+" "+cliente.getNombre());
-        lblTelefono.setText(lblTelefono.getText()+" "+cliente.getTelefono());
-        lblCorreo.setText(lblCorreo.getText()+" "+cliente.getCorreo());
+        lblIdCliente.setText("ID: "+cliente.getId());
+        lblNombreCliente.setText("Nombre: "+cliente.getNombre());
+        lblTelefono.setText("Teléfono: "+cliente.getTelefono());
+        lblCorreo.setText("Correo: "+cliente.getCorreo());
 
-        lblIdDispositivo.setText(lblIdDispositivo.getText()+" "+dispositivo.getId());
-        lblNombreDispositivo.setText(lblNombreDispositivo.getText()+" "+dispositivo.getNombre());
-        lblMarca.setText(lblMarca.getText()+" "+dispositivo.getMarca());
-        lblTipoDispositivo.setText(lblTipoDispositivo.getText()+" "+dispositivo.getTipoDispo());
-        lblObservaciones.setText(lblObservaciones.getText()+" "+dispositivo.getObservaciones());
+        lblIdDispositivo.setText("ID: "+dispositivo.getId());
+        lblNombreDispositivo.setText("Nombre: "+dispositivo.getNombre());
+        lblMarca.setText("Marca: "+dispositivo.getMarca());
+        lblTipoDispositivo.setText("Dispositivo: "+dispositivo.getTipoDispo());
+        lblObservaciones.setText("Observaciones: "+dispositivo.getObservaciones());
 
-        lblTecnicoAsignado.setText(lblTecnicoAsignado.getText()+" "+tecnico.getNombre());
+        lblTecnicoAsignado.setText("Técnico asignado: "+tecnico.getNombre());
+
+        Contexto.idRevision = orden.getId();
     }
 
     public void btnFinalizar_click(ActionEvent actionEvent) {
+        if(orden.getEstado().name().equalsIgnoreCase("ENTREGADO")){
+            Alerts.showAlert("Error","Esta revisión ya ha sido entregada.", Alert.AlertType.ERROR,new ButtonType[]{ButtonType.OK});
+            return;
+        }
         OrdenReparacionDAO db = new OrdenReparacionDAOImp();
         if(db.cancelarRevision(orden.getId(),LocalDate.now())){
-            Alerts.showAlert("Éxito","Se ha marcado la reparación como cancelada.", Alert.AlertType.CONFIRMATION,new ButtonType[]{ButtonType.OK});
-            lblEstado.setText("Estado: CANCELADO");
-            lblFechaEgreso.setText("Fecha de egreso: "+LocalDate.now());
+            Alerts.showAlert("Éxito","Se ha marcado la revisión como entregada.", Alert.AlertType.CONFIRMATION,new ButtonType[]{ButtonType.OK});
+            lblEstado.setText("Estado: ENTREGADO");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            lblFechaEgreso.setText("Fecha de egreso: "+LocalDate.now().format(formatter));
         }else{
-            Alerts.showAlert("Error","Algo falló al cancelar la reparación, intentar de nuevo.", Alert.AlertType.ERROR,new ButtonType[]{ButtonType.OK});
+            Alerts.showAlert("Error","Algo falló al entregar la reparación, intentar de nuevo.", Alert.AlertType.ERROR,new ButtonType[]{ButtonType.OK});
         }
     }
 
     public void btnHerramientas_click(ActionEvent actionEvent) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Encargado/Revisiones.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Encargado/RevisionHerramientas.fxml"));
+            loader.setControllerFactory(param-> new RevisionHerramientasController(orden.getId()));
             Parent vistaCentro = loader.load(); // Carga la vista y guarda el root
 
-            // Obtener el controlador de esa vista
             Object controlador = loader.getController();
 
-            // Si el controlador tiene un método para recibir el rootPane, lo llamas:
             if (controlador instanceof ControladorConRootPane) {
                 ((ControladorConRootPane) controlador).setRootPane(rootPane);
             }
 
-            if (controlador instanceof RevisionHerramientasController) {
-                ((RevisionHerramientasController) controlador).setIdOrden(orden.getId());
+            if(controlador instanceof CargableConId){
+                ((CargableConId) controlador).cargarDatos();
             }
-
             rootPane.setCenter(vistaCentro);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -141,7 +161,8 @@ public class DetalleRevisionController implements Initializable, ControladorConR
         OrdenReparacionDAO db = new OrdenReparacionDAOImp();
         if(db.marcarParaReparacion(orden.getId())){
             Alerts.showAlert("Éxito","Se ha marcado la revisión ahora como reparación.",Alert.AlertType.CONFIRMATION,new ButtonType[]{ButtonType.OK});
-            lblEstado.setText("Estado: ASIGNADO");
+            lblEstado.setText("Estado: REPARACION");
+            lblFechaEgreso.setText("Fecha de egreso: Sin fecha");
         }
     }
 
@@ -163,5 +184,4 @@ public class DetalleRevisionController implements Initializable, ControladorConR
             throw new RuntimeException(e);
         }
     }
-
 }
