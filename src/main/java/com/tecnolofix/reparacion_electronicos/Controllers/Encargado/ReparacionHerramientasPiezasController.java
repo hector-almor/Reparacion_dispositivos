@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ReparacionHerramientasPiezasController implements Initializable, ControladorConRootPane, CargableConId {
+    @FXML TableColumn<PiezaConCantidad,Double> clmCostoTotal;
     @FXML TableView<PiezaConCantidad> tblPiezas;
     @FXML Label lblCostoTotal;
     @FXML TableColumn<PiezaConCantidad,Integer> clmCantidadPieza;
@@ -71,17 +72,19 @@ public class ReparacionHerramientasPiezasController implements Initializable, Co
         clmDescripcionHerramienta.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
         clmCantidadHerramienta.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
 
-        clmIdPieza.setCellValueFactory(new PropertyValueFactory<>("idPieza"));
+        clmIdPieza.setCellValueFactory(new PropertyValueFactory<>("id"));
         clmNombrePieza.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         clmDescripcionPieza.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
         clmCosto.setCellValueFactory(new PropertyValueFactory<>("costo"));
         clmCantidadPieza.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
+        clmCostoTotal.setCellValueFactory(new PropertyValueFactory<>("costoTipoPieza"));
 
         OrdenReparacionDAO db = new OrdenReparacionDAOImp();
         HerramientasPiezasConCosto obj = db.obtenerHerramientasPiezasConCosto(idReparacion);
         ArrayList<HerramientaConCantidad> herramientas = obj.getHerramientas();
         ArrayList<PiezaConCantidad> piezas = obj.getPiezas();
         double totalPiezas = obj.getCostoTotalPiezas();
+        lblCostoTotal.setText(lblCostoTotal.getText()+" $"+totalPiezas);
 
         observableHerramientas.addAll(herramientas);
         observablePiezas.addAll(piezas);
@@ -92,7 +95,8 @@ public class ReparacionHerramientasPiezasController implements Initializable, Co
 
     public void btnRegresar_click(ActionEvent actionEvent) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Encargado/Reparaciones.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Encargado/DetalleReparacion.fxml"));
+            loader.setControllerFactory(param->new DetalleReparacionController(idReparacion));
             Parent vistaCentro = loader.load(); // Carga la vista y guarda el root
 
             // Obtener el controlador de esa vista

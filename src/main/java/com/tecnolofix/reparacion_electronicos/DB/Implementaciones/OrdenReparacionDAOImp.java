@@ -317,7 +317,7 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
                d.ID AS idDispositivo, d.Nombre AS nombreDispositivo, d.Marca, d.Tipo_dispo, d.Observaciones AS observacionesDispositivo,
                c.ID AS idCliente, c.Nombre AS nombreCliente, c.Correo, c.Telefono,
                t.ID AS idTecnico, t.Nombre AS nombreTecnico, t.Especialidad,
-               g.ID AS idGarantia, g.Fecha_inicio, g.Fecha_fin
+               g.ID AS idGarantia, g.Fecha_inicio, g.Fecha_fin, g.cobertura, g.duracion
                FROM Orden_reparacion o
                INNER JOIN Dispositivo d ON o.Fk_dispositivo = d.ID
                INNER JOIN Clientes c ON o.Fk_cliente = c.ID
@@ -382,11 +382,13 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
 
                 // Garantía (puede ser null)
                 int idGarantia = rs.getInt("idGarantia");
-                if (!rs.wasNull()) {
+                if (idGarantia!=0) {
                     Garantia gar = new Garantia();
                     gar.setId(idGarantia);
                     gar.setFechaInicio(rs.getDate("Fecha_inicio").toLocalDate());
                     gar.setFechaFin(rs.getDate("Fecha_fin").toLocalDate());
+                    gar.setDuracion(rs.getInt("duracion"));
+                    gar.setCobertura(rs.getString("cobertura"));
                     ordenCompleta.setGarantia(gar);
                 }
             }
@@ -503,7 +505,8 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
                 "o.ID AS idOrden, o.Fecha_ing, o.Fecha_eg, o.Tipo_falla, o.Descripcion, o.Estado, o.Tipo_orden, " +
                 "d.ID AS idDispositivo, d.Nombre, d.Marca, d.Tipo_dispo, d.Observaciones " +
                 "FROM Orden_reparacion o " +
-                "INNER JOIN Dispositivo d ON o.Fk_dispositivo = d.ID";
+                "INNER JOIN Dispositivo d ON o.Fk_dispositivo = d.ID " +
+                "WHERE estado NOT IN ('PENDIENTE')";
 
         try (DB db = new DB()) {
             Connection conn = db.getConnection();
@@ -546,62 +549,114 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
     public HerramientasPiezasConCosto obtenerHerramientasPiezasConCosto(int idReparacion) {
         HerramientasPiezasConCosto resultado = new HerramientasPiezasConCosto();
         ArrayList<PiezaConCantidad> piezas = new ArrayList<>();
-        double costoTotal = 0.0;
+        ArrayList<HerramientaConCantidad> herramientas = new ArrayList<>();
+        double costoTotalOrden = 0.0d;
 
         try (DB db = new DB()) {
             Connection conn = db.getConnection();
 
-            String sql = "SELECT p.ID, p.Nombre, up.Cantidad, up.Costo_unitario " +
-                    "FROM Uso_pieza up " +
-                    "INNER JOIN Pieza p ON up.Fk_pieza = p.ID " +
-                    "WHERE up.Fk_orden = ?";
+            String sql = """
+                    SELECT
+                p.id,
+                p.nombre,
+                p.descripcion,
+                op.cantidad,
+                p.costo AS costo_unitario,
+                (p.costo * op.cantidad) AS costo_total,
+                (SELECT SUM(p2.costo * op2.cantidad)
+                 FROM Piezas p2
+                 JOIN Orden_piezas op2 ON p2.id = op2.fk_pieza
+                 WHERE op2.fk_orden = ?) AS costo_total_orden
+            FROM
+                Orden_piezas op
+            JOIN
+                Piezas p ON op.fk_pieza = p.id
+            WHERE
+                op.fk_orden = ?;
+            """;
 
-            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-                stmt.setInt(1, idReparacion);
-                ResultSet rs = stmt.executeQuery();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, idReparacion);
+            stmt.setInt(2, idReparacion);
+            ResultSet rs = stmt.executeQuery();
 
-                while (rs.next()) {
-                    PiezaConCantidad pc = new PiezaConCantidad();
-                    pc.setId(rs.getString("id")); // Usa getInt si el id es int
-                    pc.setNombre(rs.getString("Nombre"));
-
-                    // Agrega estos si los tienes en tu clase y si quieres incluirlos:
-                    pc.setStock(rs.getInt("Cantidad"));
-                    pc.setCosto(rs.getDouble("Costo_unitario"));
-
-                    piezas.add(pc);
-                    costoTotal += rs.getInt("Cantidad") * rs.getDouble("Costo_unitario");
-                }
+            while (rs.next()){
+                PiezaConCantidad pc = new PiezaConCantidad();
+                pc.setId(rs.getString("id")); // Usa getInt si el id es int
+                pc.setNombre(rs.getString("nombre"));
+                pc.setDescripcion(rs.getString("descripcion"));
+                pc.setCosto(rs.getInt("costo_unitario"));
+                pc.setCantidad(rs.getInt("cantidad"));
+                pc.setCostoTipoPieza(rs.getDouble("costo_total"));
+                piezas.add(pc);
+                costoTotalOrden = rs.getDouble("costo_total_orden");
             }
 
             resultado.setPiezas(piezas);
-            resultado.setCostoTotalPiezas(costoTotal);
+            resultado.setCostoTotalPiezas(costoTotalOrden);
+
+            sql = """
+            SELECT
+                h.id,
+                h.nombre,
+                h.descripcion,
+                oh.cantidad_usada
+            FROM
+                Orden_herramientas oh
+            JOIN
+                Herramientas h ON oh.fk_herramienta = h.id
+            WHERE
+                oh.fk_orden = ?;
+            """;
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, idReparacion);
+            rs = stmt.executeQuery();
+            while (rs.next()){
+                HerramientaConCantidad h = new HerramientaConCantidad();
+                h.setId(rs.getInt("id"));
+                h.setNombre(rs.getString("nombre"));
+                h.setDescripcion(rs.getString("descripcion"));
+                h.setCantidad(rs.getInt("cantidad_usada"));
+                herramientas.add(h);
+            }
+            resultado.setHerramientas(herramientas);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return resultado;
     }
 
     @Override
     public boolean entregarReparacion(int idReparacion, Garantia garantia) {
-        String sql = "UPDATE Orden_reparacion SET estado = ?, Fk_garantia = ?, fecha_eg = ? WHERE ID = ?";
+        int idGarantiaGenerada = 0;
+        String sql = """
+        INSERT INTO Garantias(fecha_inicio,duracion,cobertura) VALUES(?,?,?);
+        """;
 
-        try (DB db = new DB()) {
+        try(DB db = new DB()){
             Connection conn = db.getConnection();
-            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-                stmt.setString(1, OrdenReparacion.Estado.ENTREGADO.name()); // Cambia el estado a ENTREGADO
-                stmt.setInt(2, garantia.getId());                           // Asigna la garantía
-                stmt.setDate(3, Date.valueOf(LocalDate.now()));             // Fecha actual como fecha de egreso
-                stmt.setInt(4, idReparacion);                               // ID de la orden
+            PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stmt.setDate(1,java.sql.Date.valueOf(garantia.getFechaInicio()));
+            stmt.setInt(2, garantia.getDuracion());
+            stmt.setString(3, garantia.getCobertura());
+            stmt.executeUpdate();
 
-                int rowsUpdated = stmt.executeUpdate();
-                return rowsUpdated > 0;
+            ResultSet rs = stmt.getGeneratedKeys();
+            if(rs.next()){
+                idGarantiaGenerada = rs.getInt(1);
             }
+
+            sql = """
+            UPDATE Orden_reparacion SET estado='ENTREGADO', fecha_eg=?, fk_garantia=? WHERE id=?;
+            """;
+            stmt = conn.prepareStatement(sql);
+            stmt.setDate(1, java.sql.Date.valueOf(LocalDate.now()));
+            stmt.setInt(2, idGarantiaGenerada);
+            stmt.setInt(3, idReparacion);
+            return stmt.executeUpdate() > 0;
         } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            throw new RuntimeException(e);
         }
     }
 

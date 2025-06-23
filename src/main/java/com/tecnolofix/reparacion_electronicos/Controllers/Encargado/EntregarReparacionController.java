@@ -35,35 +35,38 @@ public class EntregarReparacionController implements Initializable, ControladorC
         this.rootPane = rootPane;
     }
 
-    public void setIdReparacion(int idReparacion) {
+    public EntregarReparacionController(int idReparacion) {
         this.idReparacion = idReparacion;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        spnrDuracion = new Spinner<>(1,24,3);
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 24, 3);
+        spnrDuracion.setValueFactory(valueFactory);
+        spnrDuracion.setEditable(true);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String fechaFormateada = LocalDate.now().format(formatter);
         lblFechaInicio.setText(lblFechaInicio.getText()+" "+fechaFormateada);
 
         LocalDate fechaActual = LocalDate.now();
-        int diasASumar = spnrDuracion.getValue();
-        LocalDate fechaFinal = fechaActual.plusDays(diasASumar);
+        int mesesASumar = spnrDuracion.getValue();
+        LocalDate fechaFinal = fechaActual.plusMonths(mesesASumar);
         String fechaFinalFormateada = fechaFinal.format(formatter);
 
         lblFechaFinalizacion.setText(lblFechaFinalizacion.getText()+" "+fechaFinalFormateada);
 
         spnrDuracion.valueProperty().addListener((obs, oldValue, newValue) -> {
-            LocalDate nuevaFecha = LocalDate.now().plusDays(newValue);
+            LocalDate nuevaFecha = LocalDate.now().plusMonths(newValue);
             DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            lblFechaInicio.setText("Fecha de finalización: " + nuevaFecha.format(formatter2));
+            lblFechaFinalizacion.setText("Fecha de finalización: " + nuevaFecha.format(formatter2));
         });
     }
 
     public void btnRegresar_click(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Encargado/DetalleReparacion.fxml"));
+            loader.setControllerFactory(p->new DetalleReparacionController(idReparacion));
             Parent vistaCentro = loader.load(); // Carga la vista y guarda el root
 
             // Obtener el controlador de esa vista
@@ -74,9 +77,6 @@ public class EntregarReparacionController implements Initializable, ControladorC
                 ((ControladorConRootPane) controlador).setRootPane(rootPane);
             }
 
-            if (controlador instanceof DetalleReparacionController) {
-                ((DetalleReparacionController) controlador).setId(idReparacion);
-            }
             rootPane.setCenter(vistaCentro);
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -14,13 +14,31 @@
             <Font name="System Bold" size="18.0" />
          </font></Label>
       <Button fx:id="btnRegresar" layoutX="85.0" layoutY="42.0" mnemonicParsing="false" onAction="#btnRegresar_click" style="-fx-background-color: #e67e22;" text="Regresar" />
-      <Label layoutX="484.0" layoutY="127.0" text="Agregar garantía" textFill="WHITE" />
-      <Label fx:id="lblFechaInicio" layoutX="74.0" layoutY="190.0" text="Fecha de inicio: " textFill="WHITE" />
-      <Label layoutX="319.0" layoutY="199.0" text="Duración (meses):" textFill="WHITE" />
-      <Spinner fx:id="spnrDuracion" layoutX="463.0" layoutY="195.0" />
-      <Label fx:id="lblFechaFinalizacion" layoutX="686.0" layoutY="199.0" text="Fecha finalización:" textFill="WHITE" />
-      <Label layoutX="81.0" layoutY="286.0" text="Cobertura:" textFill="WHITE" />
+      <Label layoutX="475.0" layoutY="128.0" text="Agregar garantía" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="15.0" />
+         </font></Label>
+      <Label fx:id="lblFechaInicio" layoutX="29.0" layoutY="193.0" prefHeight="20.0" prefWidth="224.0" text="Fecha de inicio: " textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label layoutX="275.0" layoutY="194.0" text="Duración (meses):" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Spinner fx:id="spnrDuracion" layoutX="419.0" layoutY="190.0" />
+      <Label fx:id="lblFechaFinalizacion" layoutX="642.0" layoutY="194.0" prefHeight="20.0" prefWidth="284.0" text="Fecha finalización:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label layoutX="81.0" layoutY="286.0" text="Cobertura:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
       <TextArea fx:id="txtCobertura" layoutX="199.0" layoutY="286.0" prefHeight="124.0" prefWidth="707.0" />
-      <Button fx:id="btnFinalizar" layoutX="477.0" layoutY="453.0" mnemonicParsing="false" onAction="#btnFinalizar_click" style="-fx-background-color: #e67e22;" text="Finalizar entrega" />
+      <Button fx:id="btnFinalizar" layoutX="445.0" layoutY="453.0" mnemonicParsing="false" onAction="#btnFinalizar_click" prefHeight="44.0" prefWidth="162.0" style="-fx-background-color: #e67e22;" text="Finalizar entrega">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Button>
    </children>
 </AnchorPane>

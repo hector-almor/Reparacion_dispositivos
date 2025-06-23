@@ -7,6 +7,16 @@ public class PiezaConCantidad {
     private String descripcion;
     private int stock;
     private double costo;
+
+    public double getCostoTipoPieza() {
+        return costoTipoPieza;
+    }
+
+    public void setCostoTipoPieza(double costoTipoPieza) {
+        this.costoTipoPieza = costoTipoPieza;
+    }
+
+    private double costoTipoPieza;
     private int cantidad;
 
     // Constructor vacío

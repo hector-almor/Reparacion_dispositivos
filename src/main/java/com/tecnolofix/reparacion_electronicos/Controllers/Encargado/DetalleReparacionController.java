@@ -102,7 +102,8 @@ public class DetalleReparacionController implements Initializable, ControladorCo
         lblNombreDispositivo.setText(lblNombreDispositivo.getText()+" "+dispositivo.getNombre());
         lblMarca.setText(lblMarca.getText()+" "+dispositivo.getMarca());
         lblTipoDispositivo.setText(lblTipoDispositivo.getText()+" "+dispositivo.getTipoDispo());
-        lblObservaciones.setText(lblObservaciones.getText()+" "+dispositivo.getObservaciones());
+        String observaciones = (dispositivo.getObservaciones().isEmpty()||dispositivo.getObservaciones().isBlank())? "Sin observaciones":dispositivo.getObservaciones();
+        lblObservaciones.setText(lblObservaciones.getText()+" "+observaciones);
 
         lblTecnicoAsignado.setText(lblTecnicoAsignado.getText()+" "+tecnico.getNombre());
 
@@ -128,9 +129,6 @@ public class DetalleReparacionController implements Initializable, ControladorCo
                 ((ControladorConRootPane) controlador).setRootPane(rootPane);
             }
 
-//            if(controlador instanceof ReparacionHerramientasPiezasController){
-//                ((ReparacionHerramientasPiezasController) controlador).setIdReparacion(orden.getId());
-//            }
             rootPane.setCenter(vistaCentro);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -138,19 +136,28 @@ public class DetalleReparacionController implements Initializable, ControladorCo
     }
 
     public void btnGarantia_click(ActionEvent actionEvent) {
-        if(orden.getFkGarantia()==-1){
-            Alerts.showAlert("Aviso","Esta orden de reparación aún no tiene garantía", Alert.AlertType.CONFIRMATION,new ButtonType[]{ButtonType.OK});
+        if(garantia==null||garantia.getId()==0){
+            Alerts.showAlert("Error","Esta reparación aún no tiene garantía.", Alert.AlertType.ERROR,new ButtonType[]{ButtonType.OK});
             return;
         }
 
-        String txtGarantia = """
-                            Garantía
-                Fecha de inicio: %s
-                Duración: %s
-                Fecha de fin: %s
-                Cobertura: %s
-                """.formatted(garantia.getFechaInicio(),garantia.getDuracion(),garantia.getFechaFin(),garantia.getCobertura());
-        Alerts.showAlert("Detalle de garantía",txtGarantia,Alert.AlertType.CONFIRMATION,new ButtonType[]{ButtonType.OK});
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Encargado/Garantia.fxml"));
+            loader.setControllerFactory(param-> new GarantiaController(garantia,idReparacion));
+            Parent vistaCentro = loader.load(); // Carga la vista y guarda el root
+
+            // Obtener el controlador de esa vista
+            Object controlador = loader.getController();
+
+            // Si el controlador tiene un método para recibir el rootPane, lo llamas:
+            if (controlador instanceof ControladorConRootPane) {
+                ((ControladorConRootPane) controlador).setRootPane(rootPane);
+            }
+
+            rootPane.setCenter(vistaCentro);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void btnRegresar_click(ActionEvent actionEvent) {
@@ -175,10 +182,12 @@ public class DetalleReparacionController implements Initializable, ControladorCo
     public void btnEntregar_click(ActionEvent actionEvent) {
         if(!orden.getEstado().name().equalsIgnoreCase("COMPLETADO")){
             Alerts.showAlert("Error","No se puede entregar una orden de reparación aún no completada.", Alert.AlertType.ERROR,new ButtonType[]{ButtonType.OK});
+            return;
         }
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Encargado/Reparaciones.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Encargado/EntregarReparacion.fxml"));
+            loader.setControllerFactory(param-> new EntregarReparacionController(orden.getId()));
             Parent vistaCentro = loader.load(); // Carga la vista y guarda el root
 
             // Obtener el controlador de esa vista
@@ -187,10 +196,6 @@ public class DetalleReparacionController implements Initializable, ControladorCo
             // Si el controlador tiene un método para recibir el rootPane, lo llamas:
             if (controlador instanceof ControladorConRootPane) {
                 ((ControladorConRootPane) controlador).setRootPane(rootPane);
-            }
-
-            if(controlador instanceof EntregarReparacionController){
-                ((EntregarReparacionController) controlador).setIdReparacion(idReparacion);
             }
             rootPane.setCenter(vistaCentro);
         } catch (IOException e) {
