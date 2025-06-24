@@ -78,10 +78,10 @@ public class OrdenDeRevisionController implements Initializable {
 
         OrdenReparacionDAO db = new OrdenReparacionDAOImp();
         if(db.registrarRevision(reparacion,dispositivo,cliente)){
-            Alerts.showAlert("Éxito","Se ha registrado la revisión correctamente", Alert.AlertType.CONFIRMATION,new ButtonType[]{ButtonType.OK});
+            Alerts.showAlert("Éxito","Se ha registrado la revisión/reparación correctamente", Alert.AlertType.CONFIRMATION,new ButtonType[]{ButtonType.OK});
             limpiarCampos();
         }else{
-            Alerts.showAlert("Error","Hubo un error al registrar la revisión, intente de nuevo", Alert.AlertType.ERROR,new ButtonType[]{ButtonType.OK});
+            Alerts.showAlert("Error","Hubo un error al registrar la revisión/reparación, intente de nuevo", Alert.AlertType.ERROR,new ButtonType[]{ButtonType.OK});
 
         }
     }

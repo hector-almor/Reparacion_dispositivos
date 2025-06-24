@@ -6,8 +6,6 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 
-
-
 import java.io.IOException;
 import java.sql.*;
 import java.awt.Desktop;

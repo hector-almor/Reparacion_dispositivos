@@ -5,6 +5,9 @@ import com.tecnolofix.reparacion_electronicos.DB.DAO.OrdenReparacionDAO;
 import com.tecnolofix.reparacion_electronicos.DB.Implementaciones.OrdenReparacionDAOImp;
 import com.tecnolofix.reparacion_electronicos.Models.Alerts;
 import com.tecnolofix.reparacion_electronicos.Models.Garantia;
+import com.tecnolofix.reparacion_electronicos.Models.PdfGarantia;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -93,6 +96,32 @@ public class EntregarReparacionController implements Initializable, ControladorC
         OrdenReparacionDAO db = new OrdenReparacionDAOImp();
         if(db.entregarReparacion(idReparacion, garantia)) {
             Alerts.showAlert("Éxito","Se ha marcado como entregada la reparación y se ha generado la garantía", Alert.AlertType.INFORMATION,new ButtonType[]{ButtonType.OK});
+
+            Task<Void> task = new Task<>() {
+                @Override
+                protected Void call() {
+                    try {
+                        PdfGarantia.generarGarantia(idReparacion);
+                        Platform.runLater(() -> Alerts.showAlert(
+                                "Éxito",
+                                "PDF generado correctamente en el directorio actual.",
+                                Alert.AlertType.INFORMATION,
+                                new ButtonType[]{ButtonType.OK}
+                        ));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Platform.runLater(() -> Alerts.showAlert(
+                                "Error",
+                                "Ocurrió un error al generar el PDF:\n" + e.getMessage(),
+                                Alert.AlertType.ERROR,
+                                new ButtonType[]{ButtonType.OK}
+                        ));
+                    }
+                    return null;
+                }
+            };
+
+            new Thread(task).start();
         }
         else {
             Alerts.showAlert("Error","Ha habido un error al generar la garantía y marcar la reparación como entregada", Alert.AlertType.INFORMATION,new ButtonType[]{ButtonType.OK});

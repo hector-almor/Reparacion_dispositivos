@@ -1,13 +1,19 @@
 package com.tecnolofix.reparacion_electronicos.Controllers.Encargado;
 
 import com.tecnolofix.reparacion_electronicos.Controllers.ControladorConRootPane;
+import com.tecnolofix.reparacion_electronicos.Models.Alerts;
 import com.tecnolofix.reparacion_electronicos.Models.Garantia;
+import com.tecnolofix.reparacion_electronicos.Models.PdfGarantia;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 
@@ -70,5 +76,30 @@ public class GarantiaController implements Initializable, ControladorConRootPane
     }
 
     public void btnImprimir_click(ActionEvent actionEvent) {
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() {
+                try {
+                    PdfGarantia.generarGarantia(idReparacion);
+                    Platform.runLater(() -> Alerts.showAlert(
+                            "Éxito",
+                            "PDF generado correctamente en el directorio actual.",
+                            Alert.AlertType.INFORMATION,
+                            new ButtonType[]{ButtonType.OK}
+                    ));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Platform.runLater(() -> Alerts.showAlert(
+                            "Error",
+                            "Ocurrió un error al generar el PDF:\n" + e.getMessage(),
+                            Alert.AlertType.ERROR,
+                            new ButtonType[]{ButtonType.OK}
+                    ));
+                }
+                return null;
+            }
+        };
+
+        new Thread(task).start();
     }
 }

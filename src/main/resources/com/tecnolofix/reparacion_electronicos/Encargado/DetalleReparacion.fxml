@@ -87,14 +87,19 @@
          <font>
             <Font name="System Bold" size="13.0" />
          </font></Button>
-      <Button fx:id="btnGarantia" layoutX="646.0" layoutY="696.0" mnemonicParsing="false" onAction="#btnGarantia_click" prefHeight="38.0" prefWidth="118.0" style="-fx-background-color: #16a6b8;" text="Ver garantía">
+      <Button fx:id="btnGarantia" layoutX="740.0" layoutY="692.0" mnemonicParsing="false" onAction="#btnGarantia_click" prefHeight="38.0" prefWidth="118.0" style="-fx-background-color: #16a6b8;" text="Ver garantía">
          <font>
             <Font name="System Bold" size="13.0" />
          </font></Button>
       <Button fx:id="btnRegresar" layoutX="59.0" layoutY="47.0" mnemonicParsing="false" onAction="#btnRegresar_click" style="-fx-background-color: #e67e22;" text="Regresar" />
-      <Button fx:id="btnEntregar" layoutX="817.0" layoutY="698.0" mnemonicParsing="false" onAction="#btnEntregar_click" prefHeight="44.0" prefWidth="94.0" style="-fx-background-color: #16a6b8;" text="Entregar">
+      <Button fx:id="btnEntregar" layoutX="876.0" layoutY="688.0" mnemonicParsing="false" onAction="#btnEntregar_click" prefHeight="44.0" prefWidth="94.0" style="-fx-background-color: #16a6b8;" text="Entregar">
          <font>
             <Font name="System Bold" size="13.0" />
          </font></Button>
+      <Button fx:id="btnImprimir" layoutX="608.0" layoutY="692.0" mnemonicParsing="false" onAction="#btnImprimir_click" prefHeight="38.0" prefWidth="118.0" style="-fx-background-color: #16a6b8;" text="Imprimir">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

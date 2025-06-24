@@ -6,6 +6,7 @@ import com.tecnolofix.reparacion_electronicos.Controllers.ControladorConRootPane
 import com.tecnolofix.reparacion_electronicos.DB.DAO.OrdenReparacionDAO;
 import com.tecnolofix.reparacion_electronicos.DB.Implementaciones.OrdenReparacionDAOImp;
 import com.tecnolofix.reparacion_electronicos.Models.*;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,11 +18,13 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class DetalleReparacionController implements Initializable, ControladorConRootPane, CargableConId {
+    @FXML Button btnImprimir;
     @FXML Button btnEntregar;
     @FXML Button btnRegresar;
     @FXML Button btnGarantia;
@@ -185,6 +188,11 @@ public class DetalleReparacionController implements Initializable, ControladorCo
             return;
         }
 
+        if(orden.getEstado().name().equalsIgnoreCase("ENTREGADO")){
+            Alerts.showAlert("Error","Esta reparación ya fue entregada.", Alert.AlertType.ERROR,new ButtonType[]{ButtonType.OK});
+            return;
+        }
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Encargado/EntregarReparacion.fxml"));
             loader.setControllerFactory(param-> new EntregarReparacionController(orden.getId()));
@@ -204,4 +212,24 @@ public class DetalleReparacionController implements Initializable, ControladorCo
     }
 
 
+    public void btnImprimir_click(ActionEvent actionEvent) {
+
+        String destino = "orden_" + idReparacion + ".pdf";
+
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() {
+                PdfOrdenReparacion generador = new PdfOrdenReparacion();
+                try {
+                    generador.generarPDF(idReparacion, destino);
+                    System.out.println("PDF generado correctamente en: " + new File(destino).getAbsolutePath());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        };
+
+        new Thread(task).start();
+    }
 }

@@ -6,6 +6,7 @@ module com.tecnolofix.reparacion_electronicos {
     requires kernel;
     requires layout;
     requires java.desktop;
+    requires io;
 
 
     opens com.tecnolofix.reparacion_electronicos to javafx.fxml;
