@@ -71,8 +71,13 @@ public class UsarHerramientasController implements Initializable, ControladorCon
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        spnrCantidadUsar = new Spinner<>(0,10,0);
-        spnrDevolver = new Spinner<>(0,10,0);
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 50, 1);
+        spnrCantidadUsar.setValueFactory(valueFactory);
+        spnrCantidadUsar.setEditable(true);
+
+        SpinnerValueFactory<Integer> valueFactory2 = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 50, 1);
+        spnrDevolver.setValueFactory(valueFactory2);
+        spnrDevolver.setEditable(true);
 
         clmId.setCellValueFactory(new PropertyValueFactory<>("id"));
         clmNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
@@ -156,6 +161,7 @@ public class UsarHerramientasController implements Initializable, ControladorCon
             herramientaUsada.setStockEnUso(spnrCantidadUsar.getValue());
 
             observableHerramientasUso.add(herramientaUsada);
+            tblHerramientasUso.setItems(observableHerramientasUso);
             RepararController.herramientasEnUso = new ArrayList<>(observableHerramientasUso);
             tblHerramientas.refresh();
             tblHerramientasUso.refresh();

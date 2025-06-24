@@ -57,7 +57,7 @@ public class OrdenHerramientasDAOImp implements OrdenHerramientasDAO {
     @Override
     public boolean registrarHerramientaUsada(int idOrden, int idHerramienta, int cantidadUsada) {
 
-        String sql = "INSERT INTO Uso_herramienta (Fk_orden, Fk_herramienta, Cantidad) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO Orden_herramientas (fk_orden, fk_herramienta, cantidad_usada) VALUES (?, ?, ?)";
 
         try (DB db = new DB()) {
             Connection conn = db.getConnection();

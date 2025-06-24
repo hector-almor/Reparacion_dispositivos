@@ -5,11 +5,9 @@ import com.tecnolofix.reparacion_electronicos.DB.DB;
 import com.tecnolofix.reparacion_electronicos.Models.Cliente;
 import com.tecnolofix.reparacion_electronicos.Models.Herramienta;
 import com.tecnolofix.reparacion_electronicos.Models.Tecnico;
+import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class HerramientaDAOImp implements HerramientaDAO {
@@ -58,6 +56,18 @@ public class HerramientaDAOImp implements HerramientaDAO {
 
     @Override
     public boolean actualizarStockDisponible(int idHerramienta, int stockDisponible, int stockEnUso) {
-        return false;
+        String sql = """
+        UPDATE Herramientas SET stock_disponible=stock_disponible+(?), stock_en_uso=stock_en_uso+(?) WHERE id=?;
+        """;
+        try(DB db = new DB()){
+            Connection conn = db.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, stockDisponible);
+            stmt.setInt(2, stockEnUso);
+            stmt.setInt(3, idHerramienta);
+            return stmt.executeUpdate()>0;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
