@@ -662,7 +662,35 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
 
     @Override
     public ArrayList<OrdenConDispositivo> obtenerOrdenesDeTecnico(int idTecnico) {
-        return null;
+        ArrayList<OrdenConDispositivo> ordenesDeTecnico = new ArrayList<>();
+        String sql = """
+        SELECT *, o.id, d.id FROM Orden_reparacion o\s
+        INNER JOIN Dispositivo d ON d.id = o.fk_dispositivo
+        WHERE o.fk_tecnico=?
+        """;
+        try(DB db = new DB()){
+            Connection conn = db.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, idTecnico);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()){
+                OrdenConDispositivo ord = new OrdenConDispositivo();
+                ord.setId(rs.getInt("o.id"));
+                ord.setFechaIng(rs.getDate("fecha_ing").toLocalDate());
+                ord.setTipoFalla(OrdenReparacion.TipoFalla.valueOf(rs.getString("tipo_falla")));
+                ord.setDescripcion(rs.getString("descripcion"));
+                ord.setEstado(OrdenReparacion.Estado.valueOf(rs.getString("estado")));
+                ord.setTipoOrden(OrdenReparacion.TipoOrden.valueOf(rs.getString("tipo_orden")));
+                ord.setFkCliente(rs.getInt("fk_cliente"));
+                ord.setFkTecnico(rs.getInt("fk_tecnico"));
+                ord.setIdDispositivo(rs.getInt("d.id"));
+                ord.setNombreDispositivo(rs.getString("nombre"));
+                ordenesDeTecnico.add(ord);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return ordenesDeTecnico;
     }
 
     @Override

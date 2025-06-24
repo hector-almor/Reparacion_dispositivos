@@ -46,11 +46,11 @@ public class InicioController implements Initializable {
             Tecnico tecnico = new Tecnico();
             tecnico.setUsuario(txtUsuario.getText());
             tecnico.setContraseña(txtPassword.getText());
-//            tecnico =  dbTecnico.loginTecnico(tecnico);
-//            if(tecnico != null) {
-            if(true){
-                PrincipalTecnicoController.sesionTecnico = tecnico;
+            tecnico =  dbTecnico.loginTecnico(tecnico);
+            if(tecnico!=null) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Tecnico/Principal_tecnico.fxml"));
+                Tecnico finalTecnico = tecnico;
+                loader.setControllerFactory(p->new PrincipalTecnicoController(finalTecnico));
                 Parent root = loader.load();
 
                 Scene scene = new Scene(root); // Crea la escena antes

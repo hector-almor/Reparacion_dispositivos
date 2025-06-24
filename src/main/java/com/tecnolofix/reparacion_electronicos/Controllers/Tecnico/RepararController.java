@@ -52,6 +52,10 @@ public class RepararController implements Initializable, ControladorConRootPane 
         this.rootPane = rootPane;
     }
 
+    public RepararController(int idReparacion) {
+        this.idReparacion = idReparacion;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         OrdenReparacionDAO db = new OrdenReparacionDAOImp();
@@ -130,9 +134,10 @@ public class RepararController implements Initializable, ControladorConRootPane 
             if (controlador instanceof ControladorConRootPane) {
                 ((ControladorConRootPane) controlador).setRootPane(rootPane);
             }
-            if(controlador instanceof ReparacionesController){
-                ((RepararController) controlador).setIdReparacion(idReparacion);
-            }
+
+//            if(controlador instanceof ReparacionesController){
+//                ((RepararController) controlador).setIdReparacion(idReparacion);
+//            }
 
             rootPane.setCenter(vistaCentro);
         } catch (IOException e) {

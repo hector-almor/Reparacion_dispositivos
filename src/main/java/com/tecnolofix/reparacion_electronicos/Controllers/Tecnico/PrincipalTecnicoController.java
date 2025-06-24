@@ -23,18 +23,43 @@ public class PrincipalTecnicoController implements Initializable {
     @FXML ToggleButton btnHerramientas;
     @FXML ToggleButton btnReparaciones;
     @FXML ToggleGroup toggleMenu;
-    @FXML BorderPane rootPane;
+    @FXML public BorderPane rootPane;
 
     public static Tecnico sesionTecnico;
 
+    public PrincipalTecnicoController(Tecnico sesionTecnico) {
+        this.sesionTecnico = sesionTecnico;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Parent vistaCentro = null;
+//        Parent vistaCentro = null;
+//        try {
+//            vistaCentro = FXMLLoader.load(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Tecnico/Reparaciones.fxml"));
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Tecnico/Reparaciones.fxml"));
+        loader.setControllerFactory(p->new ReparacionesController(rootPane));
+        Parent vistaCentro = null; // Carga la vista y guarda el root
         try {
-            vistaCentro = FXMLLoader.load(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Tecnico/Reparaciones.fxml"));
+            vistaCentro = loader.load();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        // Obtener el controlador de esa vista
+//        Object controlador = loader.getController();
+//        System.out.println("fuera del if de cambiar centro");
+        // Si el controlador tiene un mtodo para recibir el rootPane, lo llamas:
+//        if (controlador instanceof ControladorConRootPane) {
+//            System.out.println("dentro del if para pasarlo");
+//            ((ControladorConRootPane) controlador).setRootPane(rootPane);
+//        }
+
+        rootPane.setCenter(vistaCentro);
+
         // Reemplazar el centro del BorderPane con la nueva vista
         rootPane.setCenter(vistaCentro);
         rootPane.setTop(null);
@@ -62,8 +87,7 @@ public class PrincipalTecnicoController implements Initializable {
 
             // Obtener el controlador de esa vista
             Object controlador = loader.getController();
-
-            // Si el controlador tiene un método para recibir el rootPane, lo llamas:
+            // Si el controlador tiene un mtodo para recibir el rootPane, lo llamas:
             if (controlador instanceof ControladorConRootPane) {
                 ((ControladorConRootPane) controlador).setRootPane(rootPane);
             }
@@ -76,6 +100,23 @@ public class PrincipalTecnicoController implements Initializable {
     }
 
     public void btnReparaciones_click(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Tecnico/Reparaciones.fxml"));
+            loader.setControllerFactory(p->new ReparacionesController(rootPane));
+            Parent vistaCentro = loader.load(); // Carga la vista y guarda el root
+
+            // Obtener el controlador de esa vista
+            Object controlador = loader.getController();
+            // Si el controlador tiene un mtodo para recibir el rootPane, lo llamas:
+            if (controlador instanceof ControladorConRootPane) {
+                ((ControladorConRootPane) controlador).setRootPane(rootPane);
+            }
+
+            rootPane.setCenter(vistaCentro);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        actualizarEstilos();
     }
 
     public void btnHerramientas_click(ActionEvent actionEvent) {

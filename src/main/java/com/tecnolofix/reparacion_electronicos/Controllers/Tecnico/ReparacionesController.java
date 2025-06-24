@@ -20,6 +20,7 @@ import javafx.scene.layout.BorderPane;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -45,6 +46,12 @@ public class ReparacionesController implements Initializable, ControladorConRoot
         this.rootPane = rootPane;
     }
 
+    public ReparacionesController(BorderPane rootPane) {
+        this.rootPane = rootPane;
+    }
+
+    public ReparacionesController(){}
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         cmbFiltro.getItems().setAll("TODOS","REVISION","REPARACION");
@@ -63,6 +70,27 @@ public class ReparacionesController implements Initializable, ControladorConRoot
         ordenConDispositivos.setAll(ordenes);
         listaFiltrada = new FilteredList<>(ordenConDispositivos, o->true);
         tblReparaciones.setItems(listaFiltrada);
+
+        clmFechaIngreso.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText("");
+                } else {
+                    setText(item.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                }
+            }
+        });
+
+
+    }
+
+    public void cmbFiltro_changed(ActionEvent actionEvent) {
+        listaFiltrada.setPredicate(orden -> {
+            String cmbfiltro = cmbFiltro.getSelectionModel().getSelectedItem();
+            return cmbfiltro.equals("TODOS") || orden.getTipoOrden().name().equalsIgnoreCase(cmbfiltro);
+        });
     }
 
     public void btnDetalleReparacion_click(ActionEvent actionEvent) {
@@ -70,7 +98,8 @@ public class ReparacionesController implements Initializable, ControladorConRoot
             Alerts.showAlert("Error","Selecciona antes una reparación.", Alert.AlertType.INFORMATION,new ButtonType[]{ButtonType.OK});
         }else{
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Tecnico/Reparaciones.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Tecnico/Reparar.fxml"));
+                loader.setControllerFactory(p->new RepararController(tblReparaciones.getSelectionModel().getSelectedItem().getId()));
                 Parent vistaCentro = loader.load(); // Carga la vista y guarda el root
 
                 // Obtener el controlador de esa vista
@@ -79,9 +108,6 @@ public class ReparacionesController implements Initializable, ControladorConRoot
                 // Si el controlador tiene un método para recibir el rootPane, lo llamas:
                 if (controlador instanceof ControladorConRootPane) {
                     ((ControladorConRootPane) controlador).setRootPane(rootPane);
-                }
-                if(controlador instanceof ReparacionesController){
-                    ((RepararController) controlador).setIdReparacion(tblReparaciones.getSelectionModel().getSelectedItem().getId());
                 }
 
                 rootPane.setCenter(vistaCentro);

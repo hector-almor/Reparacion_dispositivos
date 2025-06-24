@@ -14,7 +14,7 @@
       <URL value="@../EstilosTableView.css" />
    </stylesheets>
    <children>
-      <ComboBox fx:id="cmbFiltro" layoutX="420.0" layoutY="104.0" prefHeight="26.0" prefWidth="219.0" />
+      <ComboBox fx:id="cmbFiltro" layoutX="420.0" layoutY="104.0" onAction="#cmbFiltro_changed" prefHeight="26.0" prefWidth="219.0" />
       <TableView fx:id="tblReparaciones" layoutX="35.0" layoutY="166.0" prefHeight="374.0" prefWidth="932.0">
          <columns>
             <TableColumn fx:id="clmId" prefWidth="75.0" text="ID" />
@@ -23,7 +23,6 @@
             <TableColumn fx:id="clmEstado" prefWidth="101.0" text="Estado" />
             <TableColumn fx:id="clmTipoFalla" prefWidth="113.0" text="Tipo de falla" />
             <TableColumn fx:id="clmDispositivo" prefWidth="103.0" text="Dispositivo" />
-            <TableColumn prefWidth="276.0" text="Descripción" />
             <TableColumn fx:id="clmDescripcion" prefWidth="276.0" text="Descripción" />
          </columns>
       </TableView>
