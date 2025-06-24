@@ -26,7 +26,7 @@
             <TableColumn fx:id="clmNombre" prefWidth="165.0" text="Nombre" />
             <TableColumn fx:id="clmDescripcion" prefWidth="403.0" text="Descripción" />
             <TableColumn fx:id="clmStockDisponible" prefWidth="149.0" text="Cantidad disponible" />
-            <TableColumn fx:id="clmStockUso" prefWidth="127.0" text="Cantidad usada" />
+            <TableColumn fx:id="clmStockUso" prefWidth="127.0" text="Cantidad en uso" />
          </columns>
       </TableView>
       <TextField fx:id="txtFiltro" layoutX="491.0" layoutY="96.0" />
@@ -42,7 +42,7 @@
             <TableColumn fx:id="clmCantidadUso" prefWidth="126.0" text="Cantidad en uso" />
          </columns>
       </TableView>
-      <Label layoutX="406.0" layoutY="432.0" text="Herramientas en uso" textFill="WHITE">
+      <Label layoutX="406.0" layoutY="432.0" text="Tus herramientas en uso" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>

@@ -695,12 +695,36 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
 
     @Override
     public boolean cambiarEstadoReparacion(int idReparacion, String estado) {
-        return false;
+        String sql = """
+        UPDATE Orden_reparacion SET estado=? WHERE id=?;
+        """;
+        try(DB db = new DB()){
+            Connection conn = db.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, estado);
+            stmt.setInt(2, idReparacion);
+            return stmt.executeUpdate()>0;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
     public boolean actualizarDescripcionReparacion(int idReparacion, String descripcion) {
-        return false;
+        String sql = """
+        UPDATE Orden_reparacion SET descripcion=? WHERE id=?;
+        """;
+        try(DB db = new DB()){
+            Connection conn = db.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, descripcion);
+            stmt.setInt(2, idReparacion);
+            return stmt.executeUpdate()>0;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public boolean loginTecnico(Tecnico t) {

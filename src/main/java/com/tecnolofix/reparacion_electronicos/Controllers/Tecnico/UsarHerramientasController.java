@@ -65,6 +65,10 @@ public class UsarHerramientasController implements Initializable, ControladorCon
         this.idReparacion = idReparacion;
     }
 
+    public UsarHerramientasController(int idReparacion) {
+        this.idReparacion = idReparacion;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         spnrCantidadUsar = new Spinner<>(0,10,0);
@@ -203,6 +207,7 @@ public class UsarHerramientasController implements Initializable, ControladorCon
     public void btnRegresar_click(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Tecnico/Reparar.fxml"));
+            loader.setControllerFactory(p->new RepararController(idReparacion));
             Parent vistaCentro = loader.load(); // Carga la vista y guarda el root
 
             // Obtener el controlador de esa vista

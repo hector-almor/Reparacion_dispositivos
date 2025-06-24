@@ -55,6 +55,10 @@ public class UsarPiezasController implements Initializable, ControladorConRootPa
         this.idReparacion = idOrden;
     }
 
+    public UsarPiezasController(int idReparacion) {
+        this.idReparacion = idReparacion;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         clmId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -86,6 +90,7 @@ public class UsarPiezasController implements Initializable, ControladorConRootPa
     public void btnRegresar_click(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Tecnico/Reparar.fxml"));
+            loader.setControllerFactory(p-> new RepararController(idReparacion));
             Parent vistaCentro = loader.load(); // Carga la vista y guarda el root
 
             // Obtener el controlador de esa vista
