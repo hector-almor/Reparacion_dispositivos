@@ -29,23 +29,23 @@
             <TableColumn fx:id="clmCosto" prefWidth="145.0" text="Costo unitario" />
          </columns>
       </TableView>
-      <TextField fx:id="txtFiltro" layoutX="455.0" layoutY="75.0" />
+      <TextField fx:id="txtFiltro" layoutX="474.0" layoutY="75.0" />
       <Label layoutX="295.0" layoutY="79.0" text="Filtrar por nombre:" textFill="WHITE" />
       <Label layoutX="306.0" layoutY="366.0" text="Cantidad a usar:" textFill="WHITE" />
       <Button fx:id="btnUsar" layoutX="595.0" layoutY="356.0" mnemonicParsing="false" onAction="#btnUsar_click" prefHeight="38.0" prefWidth="100.0" style="-fx-background-color: #16a6b8;" text="Usar " textAlignment="CENTER" />
       <Spinner fx:id="spnrCantidadUsar" layoutX="430.0" layoutY="362.0" prefHeight="26.0" prefWidth="131.0" />
-      <Label layoutX="450.0" layoutY="424.0" text="Piezas usadas" textFill="WHITE">
+      <Label layoutX="450.0" layoutY="424.0" text="Piezas en uso" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <TableView fx:id="tblPiezasUso" layoutX="48.0" layoutY="458.0" prefHeight="212.0" prefWidth="903.0">
+      <TableView fx:id="tblPiezasUso" layoutX="52.0" layoutY="460.0" prefHeight="212.0" prefWidth="894.0">
          <columns>
             <TableColumn fx:id="clmIdUso" prefWidth="75.0" text="ID" />
             <TableColumn fx:id="clmNNombreUso" prefWidth="202.0" text="Nombre" />
-            <TableColumn fx:id="clmDescripcionUso" prefWidth="413.0" text="Descripción" />
-            <TableColumn fx:id="clmStockUso" prefWidth="78.0" text="En uso" />
-            <TableColumn fx:id="clmCostoUnitario" prefWidth="132.0" text="Costo unitario" />
+            <TableColumn fx:id="clmDescripcionUso" prefWidth="404.0" text="Descripción" />
+            <TableColumn fx:id="clmStockUso" prefWidth="88.0" text="En uso" />
+            <TableColumn fx:id="clmCostoUnitario" prefWidth="122.0" text="Costo unitario" />
          </columns>
       </TableView>
       <Button fx:id="btnRegresar" layoutX="67.0" layoutY="45.0" mnemonicParsing="false" onAction="#btnRegresar_click" style="-fx-background-color: #e67e22;" text="Regresar" />
