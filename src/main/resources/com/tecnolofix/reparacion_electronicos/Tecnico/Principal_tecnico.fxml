@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.URL?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
@@ -19,6 +20,7 @@
                </toggleGroup></ToggleButton>
             <ToggleButton fx:id="btnHerramientas" layoutX="10.0" layoutY="308.0" mnemonicParsing="false" onAction="#btnHerramientas_click" prefHeight="73.0" prefWidth="119.0" styleClass="button-info" text="Herramientas" textAlignment="CENTER" toggleGroup="$toggleMenu" />
             <ToggleButton fx:id="btnPiezas" layoutX="10.0" layoutY="471.0" mnemonicParsing="false" onAction="#btnPiezas_click" prefHeight="73.0" prefWidth="119.0" styleClass="button-info" text="Piezas" toggleGroup="$toggleMenu" />
+            <Button fx:id="btnSalir" mnemonicParsing="false" onAction="#btnSalir_click" prefHeight="73.0" prefWidth="119.0" style="-fx-background-color: #e67e22;" text="Salir" />
          </children>
       </VBox>
    </left>

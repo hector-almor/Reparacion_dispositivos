@@ -7,17 +7,21 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class PrincipalTecnicoController implements Initializable {
+    @FXML Button btnSalir;
     @FXML VBox vboxBotones;
     @FXML ToggleButton btnPiezas;
     @FXML ToggleButton btnHerramientas;
@@ -127,4 +131,21 @@ public class PrincipalTecnicoController implements Initializable {
         cambiarCentro("/com/tecnolofix/reparacion_electronicos/Encargado/Piezas.fxml");
     }
 
+    public void btnSalir_click(ActionEvent actionEvent) throws IOException {
+        Stage stageActual = (Stage) btnSalir.getScene().getWindow();
+        stageActual.close();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Inicio.fxml"));
+        Parent root = loader.load();
+
+        Scene scene = new Scene(root); // Crea la escena antes
+
+        Stage newStage = new Stage();
+        newStage.setTitle("Dashboard");
+        newStage.setScene(scene);       // Asigna la escena
+        newStage.sizeToScene();         // Ajusta el tamaño DESPUÉS de setScene
+        newStage.setMinWidth(1000);
+        newStage.setMinHeight(500);
+        newStage.show();
+    }
 }
