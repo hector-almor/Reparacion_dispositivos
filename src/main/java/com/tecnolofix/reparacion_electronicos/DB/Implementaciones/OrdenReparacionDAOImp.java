@@ -727,6 +727,34 @@ public class OrdenReparacionDAOImp implements OrdenReparacionDAO {
         }
     }
 
+    @Override
+    public ArrayList<Pieza> obtenerPiezasReparacion(int idReparacion) {
+        ArrayList<Pieza> piezas = new ArrayList<>();
+        String sql = """
+        SELECT *, op.id, p.id FROM Orden_piezas op
+        INNER JOIN Piezas p ON op.fk_pieza = p.id
+        WHERE fk_orden = ?;
+        """;
+        try(DB db = new DB()){
+            Connection conn = db.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, idReparacion);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()){
+                Pieza p = new Pieza();
+                p.setId(rs.getString("p.id"));
+                p.setNombre(rs.getString("nombre"));
+                p.setDescripcion(rs.getString("descripcion"));
+                p.setStock(rs.getInt("cantidad"));
+                p.setCosto(rs.getDouble("costo"));
+                piezas.add(p);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return piezas;
+    }
+
     public boolean loginTecnico(Tecnico t) {
         try (DB db = new DB()) {
             Connection conn = db.getConnection();

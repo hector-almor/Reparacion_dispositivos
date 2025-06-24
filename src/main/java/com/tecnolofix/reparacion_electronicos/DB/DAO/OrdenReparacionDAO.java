@@ -59,4 +59,7 @@ public interface OrdenReparacionDAO {
 
     //Actualiza la descripción de una reparación (usar parámetros)
     boolean actualizarDescripcionReparacion(int idReparacion,String descripcion);
+
+    //Obtener todas las piezas usadas por una reparación
+    ArrayList<Pieza> obtenerPiezasReparacion(int idReparacion);
 }

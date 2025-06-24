@@ -55,6 +55,7 @@ public class ReparacionesController implements Initializable, ControladorConRoot
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         cmbFiltro.getItems().setAll("TODOS","REVISION","REPARACION");
+        cmbFiltro.getSelectionModel().select("TODOS");
 
         clmId.setCellValueFactory(new PropertyValueFactory<>("id"));
         clmFechaIngreso.setCellValueFactory(new PropertyValueFactory<>("fechaIng"));

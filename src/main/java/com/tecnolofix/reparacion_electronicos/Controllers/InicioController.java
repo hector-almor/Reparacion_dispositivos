@@ -72,7 +72,7 @@ public class InicioController implements Initializable {
                 Alerts.showAlert("Error","Usuario y/o contraseña incorrectos.", Alert.AlertType.ERROR,new ButtonType[]{ButtonType.OK});
             }
         }else{
-            try(Connection conn = DriverManager.getConnection(DB.getUrl(),"admin","Administrador123")){
+            try(Connection conn = DriverManager.getConnection(DB.getUrl(),txtUsuario.getText().trim(),txtPassword.getText().trim())){
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/tecnolofix/reparacion_electronicos/Encargado/Principal_encargado.fxml"));
                 Parent root = loader.load();
 

@@ -55,20 +55,29 @@ public class OrdenPiezasDAOImp implements OrdenPiezasDAO {
     }
 
     @Override
-    public boolean registrarHerramientaUsada(int idOrden, String idPieza, int cantidadUsada) {
+    public boolean registrarPiezaUsada(int idOrden, String idPieza, int cantidadUsada) {
 
-        String sql = "INSERT INTO Uso_pieza (Fk_orden, Fk_pieza, Cantidad) VALUES (?, ?, ?)";
+        String sql = """
+        INSERT INTO Orden_piezas(fk_orden, fk_pieza, cantidad) VALUES (?,?,?);
+        """;
 
         try (DB db = new DB()) {
             Connection conn = db.getConnection();
-            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-                stmt.setInt(1, idOrden);
-                stmt.setString(2, idPieza);
-                stmt.setInt(3, cantidadUsada);
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, idOrden);
+            stmt.setString(2, idPieza);
+            stmt.setInt(3, cantidadUsada);
 
-                int rowsInserted = stmt.executeUpdate();
-                return rowsInserted > 0;
-            }
+            int rowsInserted = stmt.executeUpdate();
+            if(rowsInserted == 0) return false;
+
+            sql = """
+            UPDATE Piezas SET stock=stock-? WHERE id=?;
+            """;
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, cantidadUsada);
+            stmt.setString(2, idPieza);
+            return stmt.executeUpdate()>0;
         } catch (Exception e) {
             e.printStackTrace();
             return false;

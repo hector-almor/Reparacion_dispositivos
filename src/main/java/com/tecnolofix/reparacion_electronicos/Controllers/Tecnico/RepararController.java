@@ -36,7 +36,7 @@ public class RepararController implements Initializable, ControladorConRootPane 
     @FXML Label lblFechaIngreso;
     @FXML Label lblIdRevision;
 
-    public static ArrayList<Pieza> piezasEnUso;
+//    public static ArrayList<Pieza> piezasEnUso;
     public static ArrayList<Herramienta> herramientasEnUso;
 
     private int idReparacion;
@@ -118,7 +118,7 @@ public class RepararController implements Initializable, ControladorConRootPane 
         }
         OrdenReparacionDAO db = new OrdenReparacionDAOImp();
         if(db.cambiarEstadoReparacion(idReparacion,"COMPLETADO")){
-            Alerts.showAlert("Éxito","Se ha marcado la reparación como completada.", Alert.AlertType.INFORMATION,new ButtonType[]{ButtonType.OK});
+            Alerts.showAlert("Éxito","Se ha marcado la revisión/reparación como completada.", Alert.AlertType.INFORMATION,new ButtonType[]{ButtonType.OK});
             lblEstado.setText("Estado: COMPLETADO");
             orden.setEstado(OrdenReparacion.Estado.COMPLETADO);
         }else{
