@@ -5,6 +5,7 @@ import com.tecnolofix.reparacion_electronicos.DB.DAO.TecnicoDAO;
 import com.tecnolofix.reparacion_electronicos.DB.DB;
 import com.tecnolofix.reparacion_electronicos.DB.Implementaciones.TecnicoDAOImp;
 import com.tecnolofix.reparacion_electronicos.Models.Alerts;
+import com.tecnolofix.reparacion_electronicos.Models.PdfOrdenReparacion;
 import com.tecnolofix.reparacion_electronicos.Models.Tecnico;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -127,5 +129,17 @@ public class InicioController implements Initializable {
 
     public void btnPdfOrden_click(ActionEvent actionEvent) {
 
+        int idOrden = 21; // ID fijo como pediste
+        String destino = "orden_" + idOrden + ".pdf";
+
+        PdfOrdenReparacion generador = new PdfOrdenReparacion();
+        try {
+            generador.generarPDF(idOrden, destino);
+            System.out.println("PDF generado correctamente en: " + new File(destino).getAbsolutePath());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
-}
+    }
+

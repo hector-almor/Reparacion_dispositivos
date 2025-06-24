@@ -56,6 +56,22 @@ public class OrdenHerramientasDAOImp implements OrdenHerramientasDAO {
 
     @Override
     public boolean registrarHerramientaUsada(int idOrden, int idHerramienta, int cantidadUsada) {
-        return false;
+
+        String sql = "INSERT INTO Uso_herramienta (Fk_orden, Fk_herramienta, Cantidad) VALUES (?, ?, ?)";
+
+        try (DB db = new DB()) {
+            Connection conn = db.getConnection();
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setInt(1, idOrden);
+                stmt.setInt(2, idHerramienta);
+                stmt.setInt(3, cantidadUsada);
+
+                int rowsInserted = stmt.executeUpdate();
+                return rowsInserted > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
