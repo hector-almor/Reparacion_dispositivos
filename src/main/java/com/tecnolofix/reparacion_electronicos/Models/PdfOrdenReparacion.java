@@ -15,9 +15,9 @@ import java.io.File;
 
 
 public class PdfOrdenReparacion {
-    private static final String URL = "jdbc:mysql://localhost:3307/reparacion_dispositivos";
-    private static final String USER = "root";
-    private static final String PASSWORD = "admin";
+    private static final String URL = "jdbc:mysql://localhost:3306/reparacion_dispositivos";
+    private static final String USER = "admin";
+    private static final String PASSWORD = "Administrador123";
 
     public void generarPDF(int idOrden, String destino) throws IOException {
         PdfWriter writer = new PdfWriter(destino);
