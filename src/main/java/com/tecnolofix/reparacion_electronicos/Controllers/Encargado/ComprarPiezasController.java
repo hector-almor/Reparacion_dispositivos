@@ -17,13 +17,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.InputMethodEvent;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ComprarPiezasController implements Initializable, ControladorConRootPane {
     @FXML Button btnNuevoProveedor;
@@ -45,6 +45,12 @@ public class ComprarPiezasController implements Initializable, ControladorConRoo
     ArrayList<Proveedor> proveedores = new ArrayList<>();
     ObservableList<Pieza> observablePiezas = FXCollections.observableArrayList();
 
+    ArrayList<Pieza> piezasBD = new ArrayList<>();
+    ArrayList<Pieza> piezasBDUpdate = new ArrayList<>();
+    ArrayList<Pieza> piezasBDAdd = new ArrayList<>();
+    Map<String,Pieza> diccionarioPiezas;
+
+
     private BorderPane rootPane;
 
     @Override
@@ -64,6 +70,25 @@ public class ComprarPiezasController implements Initializable, ControladorConRoo
         clmCosto.setCellValueFactory(new PropertyValueFactory<>("costo"));
         clmCantidad.setCellValueFactory(new PropertyValueFactory<>("stock"));
         tblPiezas.setItems(observablePiezas);
+
+        PiezaDAO dbPiezas = new PiezaDAOImp();
+        piezasBD = dbPiezas.getAllPiezas();
+
+        diccionarioPiezas = new HashMap<>();
+        for(Pieza pieza : piezasBD ){
+            diccionarioPiezas.put(pieza.getId(),pieza);
+        }
+
+
+        txtId.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(diccionarioPiezas.containsKey(txtId.getText())){
+                txtCantidad.requestFocus();
+                txtDescripcion.setText(diccionarioPiezas.get(txtId.getText()).getDescripcion());
+                txtNombre.setText(diccionarioPiezas.get(txtId.getText()).getNombre());
+                txtCosto.setText(String.valueOf(diccionarioPiezas.get(txtId.getText()).getCosto()));
+            }
+        });
+
     }
 
     public void btnAgregar_click(ActionEvent actionEvent) {
@@ -75,6 +100,12 @@ public class ComprarPiezasController implements Initializable, ControladorConRoo
         newPieza.setStock(Integer.parseInt(txtCantidad.getText().trim()));
         observablePiezas.add(newPieza);
 
+        if(diccionarioPiezas.containsKey(newPieza.getId())){
+            piezasBDUpdate.add(newPieza);
+        }else{
+            piezasBDAdd.add(newPieza);
+        }
+
         txtId.setText("");
         txtNombre.setText("");
         txtDescripcion.setText("");
@@ -83,10 +114,16 @@ public class ComprarPiezasController implements Initializable, ControladorConRoo
     }
 
     public void btnRegistrar_click(ActionEvent actionEvent) {
+        if(cmbProveedor.getSelectionModel().getSelectedItem() == null){
+            Alerts.showAlert("Error","Seleccione un proveedor antes de registrar la compra.", Alert.AlertType.ERROR,new ButtonType[]{ButtonType.OK});
+            return;
+        }
+
         PiezaDAO db  = new PiezaDAOImp();
-        if(db.registrarCompras(new ArrayList<>(observablePiezas),cmbProveedor.getSelectionModel().getSelectedItem().getId())){
+        if(db.registrarCompras(piezasBDAdd,piezasBDUpdate,new ArrayList<>(observablePiezas),cmbProveedor.getSelectionModel().getSelectedItem().getId())){
             Alerts.showAlert("Éxito","Se registró la compra correctamente.", Alert.AlertType.INFORMATION,new ButtonType[]{ButtonType.OK});
             observablePiezas.clear();
+            cmbProveedor.getSelectionModel().clearSelection();
         }else{
             Alerts.showAlert("Error","No se pudo registrar la compra. Intente de nuevo", Alert.AlertType.ERROR,new ButtonType[]{ButtonType.OK});
         }

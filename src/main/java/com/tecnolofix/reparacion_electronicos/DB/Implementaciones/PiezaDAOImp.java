@@ -55,36 +55,61 @@ public class PiezaDAOImp implements PiezaDAO {
     }
 
     @Override
-    public boolean registrarCompras(ArrayList<Pieza> piezas, int idProveedor) {
-        String sql = "INSERT INTO Compras (nombre, cantidad, precio_unit, id_proveedor, fecha_compra) " +
-                "VALUES (?, ?, ?, ?, NOW())";
+    public boolean registrarCompras(ArrayList<Pieza> piezasAdd,ArrayList<Pieza> piezasUpdate,ArrayList<Pieza> compraTotal, int idProveedor) {
+        String sql = """
+        INSERT INTO Piezas(id, nombre, descripcion, stock, costo) VALUES (?,?,?,?,?);
+        """;
 
         try (DB db = new DB()) {
             Connection conn = db.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);
 
-            for (Pieza pieza : piezas) {
-                stmt.setString(1, pieza.getNombre());
-                stmt.setInt(2, pieza.getStock());
-                stmt.setDouble(3, pieza.getCosto());
-                stmt.setInt(4, idProveedor);
+            for (Pieza pieza : piezasAdd) {
+                stmt.setString(1, pieza.getId());
+                stmt.setString(2, pieza.getNombre());
+                stmt.setString(3, pieza.getDescripcion());
+                stmt.setInt(4, pieza.getStock());
+                stmt.setDouble(5, pieza.getCosto());
                 stmt.addBatch();  // Agrega a un lote para ejecutar todo junto
             }
-
-            int[] resultados = stmt.executeBatch();  // Ejecuta todos los INSERTS juntos
-
-            // Verificamos si todos los inserts fueron exitosos
-            for (int result : resultados) {
-                if (result == Statement.EXECUTE_FAILED) {
-                    return false;  // Si alguna falla, retornamos false
-                }
+            int[] resultado = stmt.executeBatch();
+            for(int r: resultado) {
+                if(r==Statement.EXECUTE_FAILED) return false;
             }
 
+            sql= """
+            UPDATE Piezas SET stock=stock+?, costo=? WHERE id=?;
+            """;
+            stmt = conn.prepareStatement(sql);
+            for (Pieza pieza : piezasUpdate) {
+                stmt.setInt(1, pieza.getStock());
+                stmt.setDouble(2, pieza.getCosto());
+                stmt.setString(3, pieza.getId());
+                System.out.println("%d %f %s".formatted(pieza.getStock(), pieza.getCosto(), pieza.getId()));
+                stmt.addBatch();
+            }
+            resultado = stmt.executeBatch();
+            for(int r: resultado) {
+                if(r==Statement.EXECUTE_FAILED) return false;
+            }
+
+            sql= """
+            INSERT INTO Compras(cantidad,precio,fk_proveedor,fk_pieza) VALUES(?,?,?,?);
+            """;
+            stmt = conn.prepareStatement(sql);
+            for(Pieza pieza : compraTotal) {
+                stmt.setInt(1,pieza.getStock());
+                stmt.setDouble(2,pieza.getCosto());
+                stmt.setInt(3,idProveedor);
+                stmt.setString(4,pieza.getId());
+                stmt.addBatch();
+            }
+            resultado = stmt.executeBatch();
+            for(int r: resultado) {
+                if(r==Statement.EXECUTE_FAILED) return false;
+            }
             return true;
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
         } catch (Exception e) {
             e.printStackTrace();
             return false;

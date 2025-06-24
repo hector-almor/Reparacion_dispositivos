@@ -45,7 +45,7 @@
          </font>
       </Label>
       <TextField fx:id="txtCantidad" layoutX="771.0" layoutY="194.0" />
-      <Button fx:id="btnAgregar" layoutX="477.0" layoutY="264.0" mnemonicParsing="false" onAction="#btnAgregar_click" style="-fx-background-color: #e67e22;" styleClass="button-dark" text="Agregar" />
+      <Button fx:id="btnAgregar" layoutX="477.0" layoutY="264.0" mnemonicParsing="false" onAction="#btnAgregar_click" prefHeight="35.0" prefWidth="86.0" style="-fx-background-color: #e67e22;" styleClass="button-dark" text="Agregar" />
       <TableView fx:id="tblPiezas" layoutX="74.0" layoutY="327.0" prefHeight="200.0" prefWidth="852.0">
          <columns>
             <TableColumn fx:id="clmId" prefWidth="99.0" style="-fx-alignment: CENTER;" text="ID" />
@@ -55,7 +55,7 @@
             <TableColumn fx:id="clmCantidad" prefWidth="98.0" style="-fx-alignment: CENTER;" text="Cantidad" />
          </columns>
       </TableView>
-      <Button fx:id="btnRegistrar" layoutX="475.0" layoutY="558.0" mnemonicParsing="false" onAction="#btnRegistrar_click" style="-fx-background-color: #e67e22;" styleClass="button-dark" text="Registrar" />
+      <Button fx:id="btnRegistrar" layoutX="475.0" layoutY="558.0" mnemonicParsing="false" onAction="#btnRegistrar_click" prefHeight="35.0" prefWidth="92.0" style="-fx-background-color: #e67e22;" styleClass="button-dark" text="Registrar" />
       <Label layoutX="434.0" layoutY="45.0" text="Comprar piezas" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />

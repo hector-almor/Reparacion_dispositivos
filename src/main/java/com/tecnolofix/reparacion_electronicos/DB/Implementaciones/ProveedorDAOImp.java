@@ -56,24 +56,20 @@ public class ProveedorDAOImp implements ProveedorDAO {
 
     @Override
     public boolean registrarProveedor(Proveedor proveedor) {
-        String sql = "INSERT INTO Proveedor (Id, Nombre, Correo, Telefono, Direccion) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Proveedores (nombre, correo, telefono, direccion) VALUES (?, ?, ?, ?)";
 
         try (DB db = new DB()) {
             Connection conn = db.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);
 
-            stmt.setInt(1, proveedor.getId());
-            stmt.setString(2, proveedor.getNombre());
-            stmt.setString(3, proveedor.getCorreo());
-            stmt.setString(4, proveedor.getTelefono());
-            stmt.setString(5, proveedor.getDireccion());
+            stmt.setString(1, proveedor.getNombre());
+            stmt.setString(2, proveedor.getCorreo());
+            stmt.setString(3, proveedor.getTelefono());
+            stmt.setString(4, proveedor.getDireccion());
 
             int filasAfectadas = stmt.executeUpdate();
             return filasAfectadas > 0;
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
