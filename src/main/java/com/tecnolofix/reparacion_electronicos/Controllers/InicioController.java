@@ -7,6 +7,7 @@ import com.tecnolofix.reparacion_electronicos.DB.Implementaciones.TecnicoDAOImp;
 import com.tecnolofix.reparacion_electronicos.Models.Alerts;
 import com.tecnolofix.reparacion_electronicos.Models.PdfOrdenReparacion;
 import com.tecnolofix.reparacion_electronicos.Models.Tecnico;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -129,17 +130,35 @@ public class InicioController implements Initializable {
 
     public void btnPdfOrden_click(ActionEvent actionEvent) {
 
-        int idOrden = 21; // ID fijo como pediste
-        String destino = "orden_" + idOrden + ".pdf";
+//        int idOrden = 24; // ID fijo como pediste
+//        String destino = "orden_" + idOrden + ".pdf";
+//
+//        PdfOrdenReparacion generador = new PdfOrdenReparacion();
+//        try {
+//            generador.generarPDF(idOrden, destino);
+//            System.out.println("PDF generado correctamente en: " + new File(destino).getAbsolutePath());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
-        PdfOrdenReparacion generador = new PdfOrdenReparacion();
-        try {
-            generador.generarPDF(idOrden, destino);
-            System.out.println("PDF generado correctamente en: " + new File(destino).getAbsolutePath());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
+            int idOrden = 24;
+            String destino = "orden_" + idOrden + ".pdf";
+
+            Task<Void> task = new Task<>() {
+                @Override
+                protected Void call() {
+                    PdfOrdenReparacion generador = new PdfOrdenReparacion();
+                    try {
+                        generador.generarPDF(idOrden, destino);
+                        System.out.println("PDF generado correctamente en: " + new File(destino).getAbsolutePath());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+            };
+
+            new Thread(task).start();
     }
-    }
-
+}
